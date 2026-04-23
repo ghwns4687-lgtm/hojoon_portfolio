@@ -155,18 +155,18 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 /* 썸네일 이미지 */
 .gt-bg{
   width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .6s cubic-bezier(.25,.46,.45,.94),filter .4s;
+  transition:transform .6s cubic-bezier(.25,.46,.45,.94),filter .4s,opacity .4s;
 }
 
-/* 썸네일 hover 영상 */
-.gt-vid{
+/* 썸네일 hover YouTube iframe */
+.gt-yt{
   position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none;
+  border:none;opacity:0;transition:opacity .5s;pointer-events:none;
 }
-.gi:hover .gt-vid{opacity:1;}
-.gi:hover .gt-bg{opacity:0;}
-/* hover — 배경 살짝 채도 올라옴 */
-.gi:hover .gt-bg{transform:scale(1.06);filter:brightness(1.08) saturate(1.1);}
+.gi:hover .gt-yt{opacity:1;}
+.gi:hover .gt-bg{opacity:0;transform:scale(1.06);}
+/* hover — 배경 살짝 채도 올라옴 (비hover시만) */
+.gi:not(:hover) .gt-bg{transform:scale(1);filter:brightness(1) saturate(1);}
 
 /* hover 오버레이 */
 .gi-ov{
@@ -368,6 +368,12 @@ footer{
 .dp-vid-wrap{position:relative;width:100%;background:#0e0e0e;}
 .dp-vid-wrap.has-vid{aspect-ratio:16/9;}
 .dp-vid-wrap video,.dp-vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;object-fit:cover;}
+/* 영상 하단 그라데이션 */
+.dp-vid-wrap.has-vid::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:35%;z-index:3;pointer-events:none;
+  background:linear-gradient(to bottom,transparent 0%,var(--bg) 100%);
+}
 .dp-no-vid{
   padding:3rem;display:flex;align-items:center;gap:1rem;
   border-bottom:1px solid var(--bd);
@@ -375,7 +381,7 @@ footer{
 .dp-no-vid span{font-family:var(--M);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);}
 
 /* 이미지 — 풀width, 자연스러운 비율 */
-.dp-imgs{display:flex;flex-direction:column;gap:2px;}
+.dp-imgs{display:flex;flex-direction:column;gap:1.5rem;padding:2rem 0;}
 .dp-img{width:100%;background:#0e0e0e;overflow:hidden;position:relative;}
 .dp-img.ph{aspect-ratio:16/9;}
 .dp-img.ph::after{
@@ -410,7 +416,7 @@ footer{
   <div class="h-media">
     <div class="h-fb"></div>
     <iframe
-      src="https://www.youtube.com/embed/pcbIy87UkNY?autoplay=1&mute=1&loop=1&playlist=pcbIy87UkNY&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3"
+      src="https://www.youtube.com/embed/CQ0DzSbh4ks?autoplay=1&mute=1&loop=1&playlist=CQ0DzSbh4ks&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=3"
       allow="autoplay; fullscreen" allowfullscreen
       onload="this.classList.add('loaded')">
     </iframe>
@@ -458,10 +464,10 @@ footer{
     <div class="wk-m">9 Projects<br>Click → Detail</div>
   </div>
   <div class="grid">
-    <div class="gi c8 rv" onclick="openDetail('game',0)" onmouseenter="playThumbVid(this)" onmouseleave="stopThumbVid(this)">
+    <div class="gi c8 rv" onclick="openDetail('game',0)" onmouseenter="loadThumbYT(this)" onmouseleave="unloadThumbYT(this)">
       <div class="gt">
         <img class="gt-bg" src="image/medieval_war_pavilion/medieval_war_pavilion_thumb.png" alt="Medieval War Pavilion" loading="lazy">
-        <video class="gt-vid" src="image/medieval_war_pavilion/medieval_war_pavilion_clip_01.mp4" muted loop playsinline preload="none"></video>
+        <iframe class="gt-yt" data-src="https://www.youtube.com/embed/CQ0DzSbh4ks?autoplay=1&mute=1&loop=1&playlist=CQ0DzSbh4ks&controls=0&disablekb=1&modestbranding=1&rel=0&start=3" allow="autoplay" allowfullscreen></iframe>
       </div>
       <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Featured · Environment · UE5 · 2024</span></div></div>
       <div class="gi-lbl"><span>01 — Medieval War Pavilion</span></div>
@@ -718,14 +724,14 @@ function showDetail(cat,i){
   document.getElementById('dp').scrollTop=0;
 }
 
-/* 썸네일 hover 영상 제어 */
-function playThumbVid(el){
-  const v=el.querySelector('.gt-vid');
-  if(v){v.play();}
+/* 썸네일 hover YouTube 제어 */
+function loadThumbYT(el){
+  const f=el.querySelector('.gt-yt');
+  if(f&&!f.src)f.src=f.dataset.src;
 }
-function stopThumbVid(el){
-  const v=el.querySelector('.gt-vid');
-  if(v){v.pause();v.currentTime=0;}
+function unloadThumbYT(el){
+  const f=el.querySelector('.gt-yt');
+  if(f){f.src='';}
 }
 function closeDetail(){
   history.pushState(null,'','#');
