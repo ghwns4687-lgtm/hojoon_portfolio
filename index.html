@@ -157,6 +157,14 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
   width:100%;height:100%;object-fit:cover;display:block;
   transition:transform .6s cubic-bezier(.25,.46,.45,.94),filter .4s;
 }
+
+/* 썸네일 hover 영상 */
+.gt-vid{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none;
+}
+.gi:hover .gt-vid{opacity:1;}
+.gi:hover .gt-bg{opacity:0;}
 /* hover — 배경 살짝 채도 올라옴 */
 .gi:hover .gt-bg{transform:scale(1.06);filter:brightness(1.08) saturate(1.1);}
 
@@ -450,8 +458,11 @@ footer{
     <div class="wk-m">9 Projects<br>Click → Detail</div>
   </div>
   <div class="grid">
-    <div class="gi c8 rv" onclick="openDetail('game',0)">
-      <div class="gt"><div class="gt-bg p1"></div></div>
+    <div class="gi c8 rv" onclick="openDetail('game',0)" onmouseenter="playThumbVid(this)" onmouseleave="stopThumbVid(this)">
+      <div class="gt">
+        <img class="gt-bg" src="image/medieval_war_pavilion/medieval_war_pavilion_thumb.png" alt="Medieval War Pavilion" loading="lazy">
+        <video class="gt-vid" src="image/medieval_war_pavilion/medieval_war_pavilion_clip_01.mp4" muted loop playsinline preload="none"></video>
+      </div>
       <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Featured · Environment · UE5 · 2024</span></div></div>
       <div class="gi-lbl"><span>01 — Medieval War Pavilion</span></div>
     </div>
@@ -607,6 +618,43 @@ function openDetail(cat,i){
   history.pushState({cat,i},'','#'+(cat==='game'?'work':'space')+'-'+(i+1));
   showDetail(cat,i);
 }
+
+/* ── 디테일 페이지 미디어 데이터 ── */
+const DETAIL_MEDIA = {
+  game_0: {
+    youtubeId: 'CQ0DzSbh4ks',
+    items: [
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_01.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_02.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_03.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_04.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_05.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_06.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_07.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_08.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_09.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_10.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_11.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_12.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_13.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_14.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_15.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_16.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_17.png'},
+      {type:'vid', src:'image/medieval_war_pavilion/medieval_war_pavilion_clip_01.mp4'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_18.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_19.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_20.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_21.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_22.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_23.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_24.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_25.png'},
+      {type:'img', src:'image/medieval_war_pavilion/medieval_war_pavilion_26.png'},
+    ]
+  }
+};
+
 function showDetail(cat,i){
   const w=cat==='game'?GW[i]:SW[i];
   const lines=w.t.split('\n');
@@ -619,21 +667,65 @@ function showDetail(cat,i){
      ${w.engine?`<span>Engine &nbsp;<strong>${w.engine}</strong></span>`:''}
      ${w.tools?`<span>Tools &nbsp;<strong>${w.tools}</strong></span>`:''}
      <span>Year &nbsp;<strong>${w.year}</strong></span>`;
-  // 영상
+
+  // 영상 — YouTube 최상단 자동재생
   const vEl=document.getElementById('dp-vid');
-  if(cat==='game'&&w.hasVideo){
+  const mediaKey = `${cat}_${i}`;
+  const media = DETAIL_MEDIA[mediaKey];
+
+  if(media && media.youtubeId){
     vEl.className='dp-vid-wrap has-vid';
-    // ↓ 실제 파일 경로로 교체: videos/작업물명.mp4
-    vEl.innerHTML=`<video autoplay muted loop playsinline><source src="" type="video/mp4"></video>
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
-        <span style="font-family:var(--M);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(221,216,204,.18);">[ mp4 경로 입력 필요 ]</span>
+    vEl.innerHTML=`
+      <iframe
+        src="https://www.youtube.com/embed/${media.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${media.youtubeId}&controls=1&modestbranding=1&rel=0"
+        allow="autoplay; fullscreen" allowfullscreen>
+      </iframe>
+      <div style="position:absolute;bottom:0;left:0;right:0;height:180px;
+        background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:2;">
       </div>`;
-  }else{
+  } else if(cat==='game'&&w.hasVideo){
+    vEl.className='dp-vid-wrap has-vid';
+    vEl.innerHTML=`<video autoplay muted loop playsinline><source src="" type="video/mp4"></video>`;
+  } else {
     vEl.className='dp-no-vid';
     vEl.innerHTML=`<span>이미지로 확인하세요</span>`;
   }
+
+  // 이미지 + 클립 렌더링
+  const imgEl=document.getElementById('dp-imgs');
+  if(media && media.items){
+    imgEl.innerHTML = media.items.map(item=>{
+      if(item.type==='img'){
+        return `<div class="dp-img"><img class="dp-img-bg" src="${item.src}" alt="" loading="lazy"></div>`;
+      } else {
+        return `<div class="dp-img">
+          <video style="width:100%;height:auto;display:block;background:#0e0e0e;"
+            autoplay muted loop playsinline>
+            <source src="${item.src}" type="video/mp4">
+          </video>
+        </div>`;
+      }
+    }).join('');
+  } else {
+    imgEl.innerHTML=`
+      <div class="dp-img ph"></div>
+      <div class="dp-img ph"></div>
+      <div class="dp-img ph"></div>
+      <div class="dp-img ph"></div>`;
+  }
+
   document.getElementById('dp').classList.add('open');
   document.getElementById('dp').scrollTop=0;
+}
+
+/* 썸네일 hover 영상 제어 */
+function playThumbVid(el){
+  const v=el.querySelector('.gt-vid');
+  if(v){v.play();}
+}
+function stopThumbVid(el){
+  const v=el.querySelector('.gt-vid');
+  if(v){v.pause();v.currentTime=0;}
 }
 function closeDetail(){
   history.pushState(null,'','#');
