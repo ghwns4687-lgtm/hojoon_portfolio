@@ -41,7 +41,7 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 .h-media iframe{
   position:absolute;top:50%;left:50%;
   width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;
-  transform:translate(-50%,-50%);border:none;opacity:0;transition:opacity 1.2s;
+  transform:translate(-50%,-50%);border:none;opacity:0;transition:opacity 2s ease;
 }
 .h-media iframe.loaded{opacity:1;}
 .h-fb{
@@ -382,7 +382,7 @@ footer{
 .dp-no-vid span{font-family:var(--M);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);}
 
 /* 이미지 — 풀width, 자연스러운 비율 */
-.dp-imgs{display:flex;flex-direction:column;gap:1.5rem;padding:2rem 0;}
+.dp-imgs{display:flex;flex-direction:column;gap:4rem;padding:4rem 2.5rem 6rem;}
 .dp-img{width:100%;background:#0e0e0e;overflow:hidden;position:relative;}
 .dp-img.ph{aspect-ratio:16/9;}
 .dp-img.ph::after{
@@ -416,10 +416,9 @@ footer{
 <section id="hero">
   <div class="h-media">
     <div class="h-fb"></div>
-    <iframe
+    <iframe id="hero-iframe"
       src="https://www.youtube.com/embed/CQ0DzSbh4ks?autoplay=1&mute=1&loop=1&playlist=CQ0DzSbh4ks&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=5"
-      allow="autoplay; fullscreen" allowfullscreen
-      onload="this.classList.add('loaded')">
+      allow="autoplay; fullscreen" allowfullscreen>
     </iframe>
   </div>
   <div class="h-ov"></div>
@@ -744,6 +743,11 @@ window.addEventListener('load',()=>{
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('s',scrollY>50);
 });
+// Hero 영상 페이드인 — 1.5초 후 부드럽게 등장
+setTimeout(()=>{
+  const f=document.getElementById('hero-iframe');
+  if(f)f.classList.add('loaded');
+},1500);
 const obs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});
 },{threshold:0.06});
