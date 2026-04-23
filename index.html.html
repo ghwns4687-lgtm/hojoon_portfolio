@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOJOON — 3D Background Artist</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080808;--sur:#0e0e0e;
+  --txt:#ddd8cc;--t2:rgba(221,216,204,.35);--t3:rgba(221,216,204,.1);
+  --ac:#3af;--ac2:rgba(51,170,255,.08);
+  --bd:rgba(221,216,204,.06);
+  --M:'IBM Plex Mono',monospace;--D:'Bebas Neue',sans-serif;--B:'Noto Sans KR',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:var(--B);overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 2.5rem;height:44px;transition:background .3s;
+}
+nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
+.nav-l{font-family:var(--M);font-size:10px;letter-spacing:.14em;color:var(--t2);}
+.nav-r{display:flex;align-items:center;gap:2rem;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-family:var(--M);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t2);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--ac);}
+.nav-dot{display:flex;align-items:center;gap:.4rem;font-family:var(--M);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);}
+.ndot{width:5px;height:5px;border-radius:50%;background:var(--ac);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+/* ════════════════════
+   HERO — 영상 중심, 텍스트 절제
+════════════════════ */
+#hero{position:relative;height:100vh;min-height:640px;overflow:hidden;}
+.h-media{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#080808;}
+.h-media iframe{
+  position:absolute;top:50%;left:50%;
+  width:177.78vh;height:56.25vw;min-width:100%;min-height:100%;
+  transform:translate(-50%,-50%);border:none;opacity:0;transition:opacity 1.2s;
+}
+.h-media iframe.loaded{opacity:1;}
+.h-fb{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 55% at 60% 35%,rgba(12,28,60,.7) 0%,transparent 65%),#080808;
+}
+.h-fb::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(51,170,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(51,170,255,.018) 1px,transparent 1px);
+  background-size:90px 90px;
+}
+/* 오버레이 — 아래만 어둡게, 위는 영상 잘 보이게 */
+.h-ov{
+  position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(to bottom,rgba(8,8,8,.0) 0%,rgba(8,8,8,.0) 40%,rgba(8,8,8,.55) 70%,rgba(8,8,8,.98) 100%),
+    linear-gradient(to right,rgba(8,8,8,.5) 0%,transparent 50%);
+}
+
+/* ENV — 왼쪽 삐져나옴, 더 희미하게 */
+.h-ghost-env{
+  position:absolute;z-index:2;
+  font-family:var(--D);font-size:clamp(12rem,28vw,26rem);
+  line-height:.82;letter-spacing:-.02em;
+  color:transparent;-webkit-text-stroke:1px rgba(51,170,255,.07);
+  pointer-events:none;user-select:none;
+  left:-0.05em;top:42%;transform:translateY(-50%);
+}
+/* ARTIST — 오른쪽 하단 삐져나옴, 더 희미하게 */
+.h-ghost-art{
+  position:absolute;z-index:2;
+  font-family:var(--D);font-size:clamp(8rem,18vw,17rem);
+  line-height:.82;letter-spacing:-.02em;
+  color:transparent;-webkit-text-stroke:1px rgba(51,170,255,.05);
+  pointer-events:none;user-select:none;
+  right:-0.03em;bottom:12%;
+}
+
+/* 하단 텍스트 — 꼭 필요한 것만 */
+.h-main{
+  position:absolute;bottom:0;left:0;right:0;z-index:3;
+  padding:0 2.5rem 2.5rem;
+}
+.h-eye{
+  font-family:var(--M);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ac);display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem;
+}
+.h-eye::before{content:'';width:18px;height:1px;background:var(--ac);}
+.h-role{
+  font-family:var(--D);font-size:clamp(3rem,7.5vw,7rem);
+  line-height:.86;letter-spacing:.01em;color:var(--txt);display:block;
+}
+.h-role .ac{color:var(--ac);}
+.h-name{
+  font-family:var(--M);font-size:clamp(.7rem,1.2vw,.9rem);
+  letter-spacing:.28em;text-transform:uppercase;color:var(--t2);display:block;margin-top:.4rem;
+}
+.h-divider{
+  width:100%;height:1px;background:rgba(221,216,204,.06);margin:1.2rem 0;
+}
+.h-bot{display:flex;justify-content:space-between;align-items:center;}
+/* 툴 뱃지 — Hero 하단에 항상 보임 */
+.h-tools-badges{display:flex;flex-wrap:wrap;gap:.4rem;}
+.h-badge{
+  font-family:var(--M);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  padding:.5rem 1rem;
+  border:1px solid rgba(221,216,204,.12);
+  color:var(--t2);
+  transition:border-color .2s,color .2s;
+}
+.h-badge:hover{border-color:var(--ac);color:var(--ac);}
+.h-badge.main{border-color:rgba(51,170,255,.25);color:rgba(51,170,255,.7);}
+.h-sc{font-family:var(--M);font-size:9px;letter-spacing:.2em;color:var(--t3);display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
+.scl{width:1px;height:28px;background:rgba(221,216,204,.12);animation:sb 2s infinite;}
+@keyframes sb{0%,100%{opacity:.2;}50%{opacity:.6;}}
+
+/* ════════════════════
+   WORKS
+════════════════════ */
+#works{background:var(--bg);}
+.wk-hd{
+  padding:4rem 2.5rem 0;
+  display:flex;justify-content:space-between;align-items:flex-end;position:relative;
+}
+.wk-t{
+  font-family:var(--D);font-size:clamp(5rem,15vw,14rem);
+  line-height:.84;letter-spacing:-.01em;color:var(--txt);
+  position:relative;z-index:2;margin-bottom:-2rem;
+}
+.wk-t .ac{color:var(--ac);}
+/* hover시 글자 흔들림 */
+.wk-t span{display:inline-block;transition:transform .2s,color .2s;}
+.wk-t:hover span{animation:glitch .3s ease;}
+@keyframes glitch{
+  0%{transform:none;}20%{transform:translate(-2px,1px);}
+  40%{transform:translate(2px,-1px);}60%{transform:translate(-1px,2px);}
+  80%{transform:translate(1px,-1px);}100%{transform:none;}
+}
+.wk-m{font-family:var(--M);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);text-align:right;line-height:2;padding-bottom:2.5rem;flex-shrink:0;}
+
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;position:relative;z-index:1;}
+.gi{position:relative;overflow:hidden;cursor:pointer;background:#0e0e0e;}
+.gi.c8{grid-column:span 8;}.gi.c4{grid-column:span 4;}
+.gi.c5{grid-column:span 5;}.gi.c7{grid-column:span 7;}
+.gi.c6{grid-column:span 6;}
+
+.gi.c8 .gt,.gi.c7 .gt{aspect-ratio:16/9;}
+.gi.c4 .gt,.gi.c5 .gt,.gi.c6 .gt{aspect-ratio:4/3;}
+.gt{overflow:hidden;position:relative;}
+
+/* 썸네일 이미지 */
+.gt-bg{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s cubic-bezier(.25,.46,.45,.94),filter .4s;
+}
+/* hover — 배경 살짝 채도 올라옴 */
+.gi:hover .gt-bg{transform:scale(1.06);filter:brightness(1.08) saturate(1.1);}
+
+/* hover 오버레이 */
+.gi-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,8,8,.94) 0%,rgba(8,8,8,.02) 45%);
+  opacity:0;transition:opacity .28s;
+  display:flex;align-items:flex-end;padding:1.25rem;
+}
+.gi:hover .gi-ov{opacity:1;}
+
+/* 타이틀 — hover시 한 글자씩 슬라이드업 */
+.ov-t{
+  font-family:var(--D);letter-spacing:.06em;color:var(--txt);
+  line-height:1;display:block;overflow:hidden;
+}
+.gi.c8 .ov-t,.gi.c7 .ov-t{font-size:1.6rem;}
+.gi.c4 .ov-t,.gi.c5 .ov-t,.gi.c6 .ov-t{font-size:1.2rem;}
+.ov-t-inner{
+  display:block;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.25,.46,.45,.94);
+}
+.gi:hover .ov-t-inner{transform:translateY(0);}
+
+.ov-m{
+  font-family:var(--M);font-size:9px;letter-spacing:.12em;color:var(--ac);
+  text-transform:uppercase;margin-top:.3rem;display:block;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .3s .08s,transform .3s .08s;
+}
+.gi:hover .ov-m{opacity:1;transform:translateY(0);}
+
+/* 번호 라벨 */
+.gi-lbl{
+  position:absolute;bottom:0;left:0;right:0;padding:.6rem 1rem;
+  background:linear-gradient(to top,rgba(8,8,8,.65) 0%,transparent 100%);
+  transition:opacity .25s;
+}
+.gi:hover .gi-lbl{opacity:0;}
+.gi-lbl span{font-family:var(--M);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);}
+
+/* 파란 테두리 hover 효과 */
+.gi::after{
+  content:'';position:absolute;inset:0;
+  border:1px solid transparent;
+  transition:border-color .25s;pointer-events:none;
+}
+.gi:hover::after{border-color:rgba(51,170,255,.2);}
+
+.p1{background:linear-gradient(135deg,#18150a,#26200e);}
+.p2{background:linear-gradient(135deg,#0a0e18,#10162a);}
+.p3{background:linear-gradient(135deg,#180a0a,#261010);}
+.p4{background:linear-gradient(135deg,#0a1810,#10241a);}
+.p5{background:linear-gradient(135deg,#18120a,#261c0e);}
+.p6{background:linear-gradient(135deg,#0e0a18,#161226);}
+.p7{background:linear-gradient(135deg,#160a0c,#221012);}
+.p8{background:linear-gradient(135deg,#0a1610,#101e14);}
+.p9{background:linear-gradient(135deg,#120a04,#1e1408);}
+
+/* ════════════════════
+   SPACE DESIGN — 가로 스크롤
+════════════════════ */
+#space{padding:5rem 0 4rem;border-top:1px solid var(--bd);overflow:hidden;}
+.sp-hd{padding:0 2.5rem 2rem;display:flex;justify-content:space-between;align-items:flex-end;}
+.sp-tag{font-family:var(--M);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ac);margin-bottom:.5rem;display:block;}
+.sp-t{font-family:var(--D);font-size:clamp(2.5rem,6vw,5.5rem);line-height:.88;color:var(--txt);}
+.sp-t .ac{color:var(--ac);}
+.sp-desc{font-family:var(--M);font-size:10px;letter-spacing:.1em;color:var(--t2);line-height:1.8;text-align:right;max-width:260px;}
+
+.sp-track{display:flex;gap:2px;overflow-x:auto;overflow-y:hidden;padding:0 2.5rem;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.sp-track::-webkit-scrollbar{display:none;}
+
+.sp-item{flex-shrink:0;width:300px;position:relative;overflow:hidden;cursor:pointer;background:#0e0e0e;}
+.sp-item:first-child{width:400px;}
+.sp-thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
+.sp-bg{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.25,.46,.45,.94),filter .3s;}
+.sp-item:hover .sp-bg{transform:scale(1.05);filter:brightness(1.06);}
+
+.sp-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,8,8,.92) 0%,transparent 55%);
+  opacity:0;transition:opacity .28s;
+  display:flex;align-items:flex-end;padding:1rem;
+}
+.sp-item:hover .sp-ov{opacity:1;}
+.sp-ov-t{font-family:var(--D);font-size:1.1rem;letter-spacing:.06em;color:var(--txt);display:block;overflow:hidden;}
+.sp-ov-t-inner{display:block;transform:translateY(100%);transition:transform .3s cubic-bezier(.25,.46,.45,.94);}
+.sp-item:hover .sp-ov-t-inner{transform:translateY(0);}
+.sp-ov-m{font-family:var(--M);font-size:9px;letter-spacing:.1em;color:var(--ac);text-transform:uppercase;margin-top:.25rem;display:block;opacity:0;transform:translateY(6px);transition:opacity .3s .06s,transform .3s .06s;}
+.sp-item:hover .sp-ov-m{opacity:1;transform:translateY(0);}
+
+.sp-lbl{padding:.6rem 1rem;border-top:1px solid var(--bd);background:var(--sur);transition:opacity .25s;}
+.sp-item:hover .sp-lbl{opacity:0;}
+.sp-lbl span{font-family:var(--M);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);}
+.sp-item::after{content:'';position:absolute;inset:0;border:1px solid transparent;transition:border-color .25s;pointer-events:none;}
+.sp-item:hover::after{border-color:rgba(51,170,255,.2);}
+
+.sp-hint{padding:.75rem 2.5rem 0;font-family:var(--M);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);display:flex;align-items:center;gap:.5rem;}
+
+/* ════════════════════
+   ABOUT
+════════════════════ */
+#about{padding:6rem 0;border-top:1px solid var(--bd);overflow:hidden;position:relative;}
+.ab-bgnum{
+  position:absolute;right:-0.05em;top:50%;transform:translateY(-50%);
+  font-family:var(--D);font-size:clamp(18rem,38vw,36rem);
+  line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(51,170,255,.03);
+  pointer-events:none;user-select:none;
+}
+.ab-inner{display:grid;grid-template-columns:1fr 1fr;position:relative;z-index:1;}
+.ab-left{padding:0 2.5rem;border-right:1px solid var(--bd);}
+.ab-big{font-family:var(--D);font-size:clamp(4.5rem,11vw,10rem);line-height:.84;color:var(--txt);}
+.ab-big .ac{color:var(--ac);}
+.ab-big em{display:block;color:var(--t3);font-style:normal;}
+.ab-p{font-size:13px;line-height:1.95;font-weight:300;color:var(--t2);margin-top:2rem;max-width:380px;}
+.ab-right{padding:0 2.5rem;}
+.sk{list-style:none;}
+.sk li{
+  display:flex;align-items:center;gap:1rem;padding:1rem 0;
+  border-bottom:1px solid var(--bd);font-size:13px;color:var(--t2);
+  transition:color .2s,padding-left .2s;
+}
+.sk li:first-child{border-top:1px solid var(--bd);}
+.sk li:hover{color:var(--txt);padding-left:.5rem;}
+.sk-n{font-family:var(--M);font-size:9px;letter-spacing:.1em;color:var(--t3);width:1.5rem;flex-shrink:0;}
+.sk-lv{font-family:var(--M);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-left:auto;transition:color .2s;}
+.sk li:hover .sk-lv{color:var(--ac);}
+
+/* ════════════════════
+   CONTACT
+════════════════════ */
+#contact{border-top:1px solid var(--bd);overflow:hidden;position:relative;}
+.ct-bg{
+  font-family:var(--D);font-size:clamp(6rem,18vw,17rem);
+  line-height:.82;color:transparent;
+  -webkit-text-stroke:1px rgba(221,216,204,.04);
+  padding:2rem 0 0 2rem;
+  pointer-events:none;user-select:none;white-space:nowrap;overflow:hidden;
+}
+.ct-inner{
+  padding:1.5rem 2.5rem 4rem;
+  display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:3rem;
+  position:relative;z-index:1;
+}
+.ct-cta{font-family:var(--D);font-size:clamp(3rem,7vw,6.5rem);line-height:.88;color:var(--txt);}
+.ct-cta .ac{color:var(--ac);}
+.ct-cta em{display:block;font-style:normal;color:var(--t3);}
+.ct-links{list-style:none;display:flex;flex-direction:column;gap:1rem;}
+.ct-links a{
+  font-family:var(--M);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--t2);text-decoration:none;display:flex;align-items:center;gap:.7rem;transition:color .2s;
+}
+.ct-links a i{display:inline-block;width:18px;height:1px;background:rgba(221,216,204,.15);transition:all .25s;}
+.ct-links a:hover{color:var(--txt);}
+.ct-links a:hover i{width:32px;background:var(--ac);}
+
+footer{
+  padding:1rem 2.5rem;background:#050505;
+  display:flex;justify-content:space-between;
+  font-family:var(--M);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--t3);border-top:1px solid var(--bd);
+}
+
+/* ════════════════════
+   DETAIL PAGE
+════════════════════ */
+#dp{display:none;position:fixed;inset:0;z-index:300;background:var(--bg);overflow-y:auto;}
+#dp.open{display:block;}
+.dp-nav{
+  position:sticky;top:0;z-index:10;height:44px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);
+}
+.dp-back{
+  font-family:var(--M);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--t2);background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:.5rem;transition:color .2s;
+}
+.dp-back:hover{color:var(--ac);}
+.dp-nav-t{font-family:var(--M);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);}
+
+.dp-hd{
+  padding:3rem 2.5rem 2rem;display:flex;justify-content:space-between;align-items:flex-end;
+  border-bottom:1px solid var(--bd);position:relative;overflow:hidden;
+}
+.dp-tg{
+  position:absolute;right:-0.03em;top:50%;transform:translateY(-50%);
+  font-family:var(--D);font-size:clamp(6rem,15vw,13rem);
+  line-height:.85;color:transparent;
+  -webkit-text-stroke:1px rgba(51,170,255,.05);
+  pointer-events:none;user-select:none;white-space:nowrap;
+}
+.dp-title{font-family:var(--D);font-size:clamp(2.5rem,5.5vw,5rem);line-height:.88;color:var(--txt);position:relative;z-index:1;}
+.dp-title .ac{color:var(--ac);}
+.dp-meta{text-align:right;position:relative;z-index:1;}
+.dp-meta span{display:block;font-family:var(--M);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);line-height:2.4;}
+.dp-meta strong{color:var(--t2);font-weight:400;}
+
+/* 영상 */
+.dp-vid-wrap{position:relative;width:100%;background:#0e0e0e;}
+.dp-vid-wrap.has-vid{aspect-ratio:16/9;}
+.dp-vid-wrap video,.dp-vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;object-fit:cover;}
+.dp-no-vid{
+  padding:3rem;display:flex;align-items:center;gap:1rem;
+  border-bottom:1px solid var(--bd);
+}
+.dp-no-vid span{font-family:var(--M);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);}
+
+/* 이미지 — 풀width, 자연스러운 비율 */
+.dp-imgs{display:flex;flex-direction:column;gap:2px;}
+.dp-img{width:100%;background:#0e0e0e;overflow:hidden;position:relative;}
+.dp-img.ph{aspect-ratio:16/9;}
+.dp-img.ph::after{
+  content:'[ 스크린샷 ]';position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--M);font-size:11px;letter-spacing:.14em;color:var(--t3);pointer-events:none;
+}
+.dp-img-bg{width:100%;height:auto;display:block;background:#0e0e0e;}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
+.rv.on{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <span class="nav-l">HOJOON / 3D-BG</span>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="#works">Work</a></li>
+      <li><a href="#space">Space</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-dot"><div class="ndot"></div>Available</div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="h-media">
+    <div class="h-fb"></div>
+    <iframe
+      src="https://www.youtube.com/embed/pcbIy87UkNY?autoplay=1&mute=1&loop=1&playlist=pcbIy87UkNY&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3"
+      allow="autoplay; fullscreen" allowfullscreen
+      onload="this.classList.add('loaded')">
+    </iframe>
+  </div>
+  <div class="h-ov"></div>
+
+  <!-- 배경 침범 — 더 희미하게 -->
+  <div class="h-ghost-env">ENV</div>
+  <div class="h-ghost-art">ARTIST</div>
+
+  <!-- 잡지 상단 바 -->
+  <div style="position:absolute;top:44px;left:0;right:0;z-index:2;display:flex;justify-content:space-between;padding:.7rem 2.5rem;border-bottom:1px solid rgba(51,170,255,.06);background:rgba(8,8,8,.15);backdrop-filter:blur(4px);">
+    <span style="font-family:var(--M);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(51,170,255,.35);">Portfolio 2025 — 3D Environment Art</span>
+    <div style="display:flex;gap:1.5rem;font-family:var(--M);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);">
+      <span>Medieval</span><span>Fantasy</span><span>UE5</span>
+    </div>
+  </div>
+
+  <div class="h-main">
+    <div class="h-eye">3D Background Artist · Environment</div>
+    <span class="h-role">BACK<br>GROUND<br><span class="ac">ARTIST</span></span>
+    <span class="h-name">— HOJOON</span>
+    <div class="h-divider"></div>
+    <!-- 툴 뱃지 — Hero 하단에 항상 보임 -->
+    <div class="h-bot">
+      <div class="h-tools-badges">
+        <span class="h-badge main">UE5</span>
+        <span class="h-badge main">3DS Max</span>
+        <span class="h-badge main">ZBrush</span>
+        <span class="h-badge main">Substance</span>
+        <span class="h-badge">Marmoset</span>
+        <span class="h-badge">Rizom UV</span>
+        <span class="h-badge">Knald</span>
+        <span class="h-badge">Unity</span>
+      </div>
+      <div class="h-sc">Scroll <div class="scl"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WORKS ═══ -->
+<section id="works">
+  <div class="wk-hd rv">
+    <div class="wk-t">WOR<span class="ac">KS</span></div>
+    <div class="wk-m">9 Projects<br>Click → Detail</div>
+  </div>
+  <div class="grid">
+    <div class="gi c8 rv" onclick="openDetail('game',0)">
+      <div class="gt"><div class="gt-bg p1"></div></div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Featured · Environment · UE5 · 2024</span></div></div>
+      <div class="gi-lbl"><span>01 — Medieval War Pavilion</span></div>
+    </div>
+    <div class="gi c4 rv" onclick="openDetail('game',1)">
+      <div class="gt"><div class="gt-bg p2"></div></div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL GATE</span></span><span class="ov-m">Environment · UE5 · 2024</span></div></div>
+      <div class="gi-lbl"><span>02 — Medieval Gate</span></div>
+    </div>
+    <div class="gi c5 rv" onclick="openDetail('game',2)">
+      <div class="gt"><div class="gt-bg p3"></div></div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Interior · Marmoset · 2023</span></div></div>
+      <div class="gi-lbl"><span>03 — Fire Place</span></div>
+    </div>
+    <div class="gi c7 rv" onclick="openDetail('game',3)">
+      <div class="gt"><div class="gt-bg p4"></div></div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · Marmoset · 2023</span></div></div>
+      <div class="gi-lbl"><span>04 — Old Carriage</span></div>
+    </div>
+    <div class="gi c4 rv" onclick="openDetail('game',4)">
+      <div class="gt"><div class="gt-bg p5"></div></div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH ROCK</span></span><span class="ov-m">Study · ZBrush · 2023</span></div></div>
+      <div class="gi-lbl"><span>05 — ZBrush Rock</span></div>
+    </div>
+    <div class="gi c4 rv" onclick="openDetail('game',5)">
+      <div class="gt"><div class="gt-bg p6"></div></div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">SCI-FI CORRIDOR</span></span><span class="ov-m">Environment · UE5 · 2023</span></div></div>
+      <div class="gi-lbl"><span>06 — Sci-Fi Corridor</span></div>
+    </div>
+    <div class="gi c4 rv" onclick="openDetail('game',6)">
+      <div class="gt"><div class="gt-bg p7"></div></div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · Marmoset · 2023</span></div></div>
+      <div class="gi-lbl"><span>07 — Old Juicer</span></div>
+    </div>
+    <div class="gi c6 rv" onclick="openDetail('game',7)">
+      <div class="gt"><div class="gt-bg p8"></div></div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH STUDY</span></span><span class="ov-m">Study · ZBrush · 2022</span></div></div>
+      <div class="gi-lbl"><span>08 — ZBrush Study</span></div>
+    </div>
+    <div class="gi c6 rv" onclick="openDetail('game',8)">
+      <div class="gt"><div class="gt-bg p9"></div></div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">RETRO COMPUTER</span></span><span class="ov-m">Props · Marmoset · 2022</span></div></div>
+      <div class="gi-lbl"><span>09 — Retro Computer</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SPACE DESIGN ═══ -->
+<section id="space">
+  <div class="sp-hd rv">
+    <div>
+      <span class="sp-tag">Background in Space Design</span>
+      <div class="sp-t">SPACE<br><span class="ac">DESIGN</span></div>
+    </div>
+    <div class="sp-desc">공간 설계 경험이 배경 아트의 기반이 됩니다.<br>인테리어 · 무대 — 실제 공간을 설계한 아티스트.</div>
+  </div>
+  <div class="sp-track rv">
+    <div class="sp-item" onclick="openDetail('space',0)"><div class="sp-thumb"><div class="sp-bg p1"></div></div><div class="sp-ov"><span class="sp-ov-t"><span class="sp-ov-t-inner">PAJU CAFE</span></span><span class="sp-ov-m">Interior · 2023</span></div><div class="sp-lbl"><span>Interior — Paju Cafe</span></div></div>
+    <div class="sp-item" onclick="openDetail('space',1)"><div class="sp-thumb"><div class="sp-bg p2"></div></div><div class="sp-ov"><span class="sp-ov-t"><span class="sp-ov-t-inner">SUWON COEXISTENCE</span></span><span class="sp-ov-m">Interior · 2023</span></div><div class="sp-lbl"><span>Interior — Suwon</span></div></div>
+    <div class="sp-item" onclick="openDetail('space',2)"><div class="sp-thumb"><div class="sp-bg p3"></div></div><div class="sp-ov"><span class="sp-ov-t"><span class="sp-ov-t-inner">ITAEWON MUSIC OFFICE</span></span><span class="sp-ov-m">Interior · 2023</span></div><div class="sp-lbl"><span>Interior — Itaewon</span></div></div>
+    <div class="sp-item" onclick="openDetail('space',3)"><div class="sp-thumb"><div class="sp-bg p4"></div></div><div class="sp-ov"><span class="sp-ov-t"><span class="sp-ov-t-inner">JIPYEONG BREWERY</span></span><span class="sp-ov-m">Interior · 2022</span></div><div class="sp-lbl"><span>Interior — Munjeong</span></div></div>
+    <div class="sp-item" onclick="openDetail('space',4)"><div class="sp-thumb"><div class="sp-bg p5"></div></div><div class="sp-ov"><span class="sp-ov-t"><span class="sp-ov-t-inner">GIMPO FLEX SQUARE</span></span><span class="sp-ov-m">Interior · 2022</span></div><div class="sp-lbl"><span>Interior — Gimpo</span></div></div>
+    <div class="sp-item" onclick="openDetail('space',5)"><div class="sp-thumb"><div class="sp-bg p6"></div></div><div class="sp-ov"><span class="sp-ov-t"><span class="sp-ov-t-inner">LDP — LOOK LOOK</span></span><span class="sp-ov-m">Stage · 2023</span></div><div class="sp-lbl"><span>Stage — LDP Look Look</span></div></div>
+    <div class="sp-item" onclick="openDetail('space',6)"><div class="sp-thumb"><div class="sp-bg p7"></div></div><div class="sp-ov"><span class="sp-ov-t"><span class="sp-ov-t-inner">A KIND OF ALASKA</span></span><span class="sp-ov-m">Stage · 2022</span></div><div class="sp-lbl"><span>Stage — A Kind of Alaska</span></div></div>
+    <div class="sp-item" onclick="openDetail('space',7)"><div class="sp-thumb"><div class="sp-bg p8"></div></div><div class="sp-ov"><span class="sp-ov-t"><span class="sp-ov-t-inner">THE PEACE OF WORLD</span></span><span class="sp-ov-m">Stage · 2022</span></div><div class="sp-lbl"><span>Stage — Peace of World</span></div></div>
+  </div>
+  <div class="sp-hint rv">→ 드래그하여 더 보기</div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="ab-bgnum">01</div>
+  <div class="ab-inner rv">
+    <div class="ab-left">
+      <div class="ab-big">ENV<br><span class="ac">ART</span><br><em>IST</em></div>
+      <p class="ab-p">공간이 가진 이야기를 3D로 구현합니다. Medieval부터 판타지까지, 플레이어가 처음 발을 들였을 때 그 세계를 믿게 만드는 배경을 만드는 것이 목표입니다.</p>
+    </div>
+    <div class="ab-right">
+      <ul class="sk">
+        <li><span class="sk-n">01</span>3DS Max / ZBrush<span class="sk-lv">Main</span></li>
+        <li><span class="sk-n">02</span>Substance Painter / Designer<span class="sk-lv">Main</span></li>
+        <li><span class="sk-n">03</span>Unreal Engine 5<span class="sk-lv">Main</span></li>
+        <li><span class="sk-n">04</span>Marmoset Toolbag<span class="sk-lv">Main</span></li>
+        <li><span class="sk-n">05</span>Rizom UV / Knald<span class="sk-lv">Sub</span></li>
+        <li><span class="sk-n">06</span>Unity / Photoshop<span class="sk-lv">Sub</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="ct-bg rv">CONTACT</div>
+  <div class="ct-inner rv">
+    <div class="ct-cta">LET'S<br><span class="ac">BUILD</span><br><em>WORLDS</em></div>
+    <ul class="ct-links">
+      <li><a href="mailto:hello@hojoon.com"><i></i>hello@hojoon.com</a></li>
+      <li><a href="#"><i></i>ArtStation</a></li>
+      <li><a href="#"><i></i>LinkedIn</a></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Hojoon</span>
+  <span>3D Background Artist — Environment</span>
+</footer>
+
+<!-- ═══ DETAIL PAGE ═══ -->
+<div id="dp">
+  <div class="dp-nav">
+    <button class="dp-back" id="dp-back">← Back</button>
+    <span class="dp-nav-t" id="dp-nav-t"></span>
+  </div>
+  <div class="dp-hd">
+    <div class="dp-tg" id="dp-tg"></div>
+    <div class="dp-title" id="dp-title"></div>
+    <div class="dp-meta" id="dp-meta"></div>
+  </div>
+  <div id="dp-vid" class="dp-no-vid"><span>[ 영상 로딩 ]</span></div>
+  <div class="dp-imgs" id="dp-imgs">
+    <div class="dp-img ph"></div>
+    <div class="dp-img ph"></div>
+    <div class="dp-img ph"></div>
+    <div class="dp-img ph"></div>
+  </div>
+</div>
+
+<script>
+/* ── 데이터 ── */
+const GW=[
+  {t:"MEDIEVAL\nWAR PAVILION",engine:"Unreal Engine 5",tools:"3DS Max · ZBrush · Substance Painter",year:"2024",type:"Environment",hasVideo:true},
+  {t:"MEDIEVAL\nGATE",        engine:"Unreal Engine 5",tools:"3DS Max · ZBrush · Substance Painter",year:"2024",type:"Environment",hasVideo:true},
+  {t:"FIRE\nPLACE",           engine:"Marmoset",       tools:"3DS Max · Substance Painter",          year:"2023",type:"Interior",  hasVideo:false},
+  {t:"OLD\nCARRIAGE",         engine:"Marmoset",       tools:"3DS Max · Substance Painter",          year:"2023",type:"Props",     hasVideo:true},
+  {t:"ZBRUSH\nROCK",          engine:"ZBrush",         tools:"ZBrush · Substance Painter",           year:"2023",type:"Study",     hasVideo:false},
+  {t:"SCI-FI\nCORRIDOR",      engine:"Unreal Engine 5",tools:"3DS Max · Substance Painter",          year:"2023",type:"Environment",hasVideo:true},
+  {t:"OLD\nJUICER",           engine:"Marmoset",       tools:"3DS Max · Substance Painter",          year:"2023",type:"Props",     hasVideo:false},
+  {t:"ZBRUSH\nSTUDY",         engine:"ZBrush",         tools:"ZBrush · Substance Painter",           year:"2022",type:"Study",     hasVideo:false},
+  {t:"RETRO\nCOMPUTER",       engine:"Marmoset",       tools:"3DS Max · Substance Painter",          year:"2022",type:"Props",     hasVideo:false},
+];
+const SW=[
+  {t:"PAJU\nCAFE",           type:"Interior",year:"2023"},
+  {t:"SUWON\nCOEXISTENCE",  type:"Interior",year:"2023"},
+  {t:"ITAEWON\nMUSIC OFFICE",type:"Interior",year:"2023"},
+  {t:"JIPYEONG\nBREWERY",   type:"Interior",year:"2022"},
+  {t:"GIMPO\nFLEX SQUARE",  type:"Interior",year:"2022"},
+  {t:"LDP\nLOOK LOOK",      type:"Stage",   year:"2023"},
+  {t:"A KIND OF\nALASKA",   type:"Stage",   year:"2022"},
+  {t:"THE PEACE\nOF WORLD", type:"Stage",   year:"2022"},
+];
+
+function openDetail(cat,i){
+  history.pushState({cat,i},'','#'+(cat==='game'?'work':'space')+'-'+(i+1));
+  showDetail(cat,i);
+}
+function showDetail(cat,i){
+  const w=cat==='game'?GW[i]:SW[i];
+  const lines=w.t.split('\n');
+  document.getElementById('dp-nav-t').textContent=w.t.replace('\n',' ');
+  document.getElementById('dp-tg').textContent=lines[0];
+  document.getElementById('dp-title').innerHTML=
+    lines.map((l,j)=>j===1?`<span class="ac">${l}</span>`:l).join('<br>');
+  document.getElementById('dp-meta').innerHTML=
+    `<span>Type &nbsp;<strong>${w.type}</strong></span>
+     ${w.engine?`<span>Engine &nbsp;<strong>${w.engine}</strong></span>`:''}
+     ${w.tools?`<span>Tools &nbsp;<strong>${w.tools}</strong></span>`:''}
+     <span>Year &nbsp;<strong>${w.year}</strong></span>`;
+  // 영상
+  const vEl=document.getElementById('dp-vid');
+  if(cat==='game'&&w.hasVideo){
+    vEl.className='dp-vid-wrap has-vid';
+    // ↓ 실제 파일 경로로 교체: videos/작업물명.mp4
+    vEl.innerHTML=`<video autoplay muted loop playsinline><source src="" type="video/mp4"></video>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+        <span style="font-family:var(--M);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(221,216,204,.18);">[ mp4 경로 입력 필요 ]</span>
+      </div>`;
+  }else{
+    vEl.className='dp-no-vid';
+    vEl.innerHTML=`<span>이미지로 확인하세요</span>`;
+  }
+  document.getElementById('dp').classList.add('open');
+  document.getElementById('dp').scrollTop=0;
+}
+function closeDetail(){
+  history.pushState(null,'','#');
+  document.getElementById('dp').classList.remove('open');
+}
+document.getElementById('dp-back').onclick=closeDetail;
+window.addEventListener('popstate',e=>{
+  if(e.state&&e.state.cat!==undefined)showDetail(e.state.cat,e.state.i);
+  else document.getElementById('dp').classList.remove('open');
+});
+window.addEventListener('load',()=>{
+  const m=location.hash.match(/#(work|space)-(\d+)/);
+  if(m)showDetail(m[1]==='work'?'game':'space',parseInt(m[2])-1);
+});
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('s',scrollY>50);
+});
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});
+},{threshold:0.06});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
