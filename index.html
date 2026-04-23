@@ -392,6 +392,21 @@ footer{
 }
 .dp-img-bg{width:100%;height:auto;display:block;background:#0e0e0e;}
 
+/* 홈 버튼 */
+.dp-home{
+  position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  z-index:400;
+  font-family:var(--M);font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--t2);background:rgba(8,8,8,.75);
+  border:1px solid rgba(221,216,204,.1);
+  padding:.75rem 2rem;cursor:pointer;
+  backdrop-filter:blur(8px);
+  transition:color .2s,border-color .2s,background .2s;
+  display:none;
+}
+.dp-home:hover{color:var(--ac);border-color:rgba(51,170,255,.35);background:rgba(8,8,8,.92);}
+#dp.open .dp-home{display:block;}
+
 /* reveal */
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
 .rv.on{opacity:1;transform:none;}
@@ -417,7 +432,7 @@ footer{
   <div class="h-media">
     <div class="h-fb"></div>
     <iframe id="hero-iframe"
-      src="https://www.youtube.com/embed/CQ0DzSbh4ks?autoplay=1&mute=1&loop=1&playlist=CQ0DzSbh4ks&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=5"
+      src="https://www.youtube.com/embed/CQ0DzSbh4ks?autoplay=1&mute=1&loop=1&playlist=CQ0DzSbh4ks&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=3"
       allow="autoplay; fullscreen" allowfullscreen>
     </iframe>
   </div>
@@ -576,6 +591,7 @@ footer{
     <button class="dp-back" id="dp-back">← Back</button>
     <span class="dp-nav-t" id="dp-nav-t"></span>
   </div>
+  <button class="dp-home" onclick="closeDetail()">— Home —</button>
   <div class="dp-hd">
     <div class="dp-tg" id="dp-tg"></div>
     <div class="dp-title" id="dp-title"></div>
@@ -743,11 +759,11 @@ window.addEventListener('load',()=>{
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('s',scrollY>50);
 });
-// Hero 영상 페이드인 — 1.5초 후 부드럽게 등장
+// Hero 영상 페이드인 — 로드되자마자 3초에 걸쳐 등장
 setTimeout(()=>{
   const f=document.getElementById('hero-iframe');
   if(f)f.classList.add('loaded');
-},1500);
+},100);
 const obs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});
 },{threshold:0.06});
