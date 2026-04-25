@@ -142,19 +142,17 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 }
 .wk-m{font-family:var(--M);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);text-align:right;line-height:2;padding-bottom:2.5rem;flex-shrink:0;}
 
-.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;position:relative;z-index:1;}
-.gi{position:relative;overflow:hidden;cursor:pointer;background:#111;}
-.gi.c8{grid-column:span 8;}.gi.c4{grid-column:span 4;}
-.gi.c5{grid-column:span 5;}.gi.c7{grid-column:span 7;}
-.gi.c6{grid-column:span 6;}
-
-/* 전체 16:9 통일 */
-.gi.c8 .gt,.gi.c7 .gt,
-.gi.c4 .gt,.gi.c5 .gt,.gi.c6 .gt{aspect-ratio:16/9;}
-/* fire place — 위쪽 기준 크롭 */
-.gi.fp-top .gt-bg,
-.gi.fp-top .gt-vid{object-position:top center;}
-.gt{overflow:hidden;position:relative;background:#111;line-height:0;}
+/* ── Justified rows 그리드 ── */
+.grid{display:flex;flex-direction:column;gap:2px;position:relative;z-index:1;}
+.g-row{display:flex;gap:2px;}
+.gi{position:relative;overflow:hidden;cursor:pointer;background:#111;flex:1;}
+/* 일반 행 높이 — 시원하게 */
+.g-row:not(.fp-row){height:clamp(380px,48vw,660px);}
+/* fire place + zbrush study 행 — flex 2컬럼, 세로 살리기 */
+.g-row.fp-row{display:flex;gap:2px;height:clamp(500px,58vw,800px);}
+.g-row.fp-row .gi{flex:1;overflow:hidden;}
+.g-row.fp-row .gt{height:100%;line-height:0;}
+.gt{overflow:hidden;position:relative;background:#111;line-height:0;height:100%;}
 
 /* 썸네일 이미지 */
 .gt-bg{
@@ -162,6 +160,8 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
   transition:transform .6s cubic-bezier(.25,.46,.45,.94),filter .4s,opacity .4s;
   position:relative;z-index:1;
 }
+/* fire place 행 — 위쪽 기준 크롭 */
+.fp-row .gt-bg{object-position:top center;}
 
 /* 썸네일 hover 이미지 */
 .gt-vid{
@@ -509,87 +509,82 @@ footer{
     <div class="wk-t">WOR<span class="ac">KS</span></div>
     <div class="wk-m">9 Projects<br>Click → Detail</div>
   </div>
-  <div class="grid">
-    <!-- 01 Medieval War Pavilion — Featured 16:9 풀 -->
-    <div class="gi c8 rv" onclick="openDetail('game',0)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_thumb.png" alt="Medieval War Pavilion" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_hover.png" alt="" loading="lazy">
+  <div class="grid" id="works-grid">
+    <!-- 행 1: 파빌리온 + 게이트 -->
+    <div class="g-row rv">
+      <div class="gi" data-ratio="16/9" onclick="openDetail('game',0)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_thumb.png" alt="Medieval War Pavilion" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_hover.png" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Featured · Environment · UE5</span></div></div>
       </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Featured · Environment · UE5</span></div></div>
-      <div class="gi-lbl"><span>01 — Medieval War Pavilion</span></div>
+      <div class="gi" data-ratio="16/9" onclick="openDetail('game',1)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/medieval_gate/medieval_gate_thumb.png" alt="Medieval Gate" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/medieval_gate/medieval_gate_hover.png" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL GATE</span></span><span class="ov-m">Environment · UE5</span></div></div>
+      </div>
     </div>
-    <!-- 02 Medieval Gate — 세로 강조 -->
-    <div class="gi c4 rv" onclick="openDetail('game',1)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/medieval_gate/medieval_gate_thumb.png" alt="Medieval Gate" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/medieval_gate/medieval_gate_hover.png" alt="" loading="lazy">
+    <!-- 행 2: 캐리지 + 올드쥬이서 + sci-fi -->
+    <div class="g-row rv">
+      <div class="gi" data-ratio="16/9" onclick="openDetail('game',4)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/old_carriage/old_carriage_thumb.png" alt="Old Carriage" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/old_carriage/old_carriage_hover.png" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL GATE</span></span><span class="ov-m">Environment · UE5</span></div></div>
-      <div class="gi-lbl"><span>02 — Medieval Gate</span></div>
+      <div class="gi" data-ratio="1/1" onclick="openDetail('game',5)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/old_juicer/old_juicer_thumb.png" alt="Old Juicer" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/old_juicer/old_juicer_hover.png" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
+      </div>
+      <div class="gi" data-ratio="16/9" onclick="openDetail('game',2)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_thumb.png" alt="Sci-Fi Corridor" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_hover.png" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">SCI-FI CORRIDOR</span></span><span class="ov-m">Environment · UE5</span></div></div>
+      </div>
     </div>
-    <!-- 03 Old Carriage — 가로 넓게 -->
-    <div class="gi c7 rv" onclick="openDetail('game',4)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/old_carriage/old_carriage_thumb.png" alt="Old Carriage" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/old_carriage/old_carriage_hover.png" alt="" loading="lazy">
+    <!-- 행 3: zbrush rock + retro + zbrush study -->
+    <!-- 행 3: zbrush rock + retro computer -->
+    <div class="g-row rv">
+      <div class="gi" data-ratio="1/1" onclick="openDetail('game',6)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_thumb.png" alt="ZBrush Rock" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_hover.png" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH ROCK</span></span><span class="ov-m">Study · ZBrush</span></div></div>
       </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
-      <div class="gi-lbl"><span>03 — Old Carriage</span></div>
+      <div class="gi" data-ratio="1/1" onclick="openDetail('game',7)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/retro_computer/retro_computer_thumb.png" alt="Retro Computer" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/retro_computer/retro_computer_hover.png" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">RETRO COMPUTER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
+      </div>
     </div>
-    <!-- 04 Old Juicer -->
-    <div class="gi c5 rv" onclick="openDetail('game',5)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/old_juicer/old_juicer_thumb.png" alt="Old Juicer" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/old_juicer/old_juicer_hover.png" alt="" loading="lazy">
+    <!-- 행 4: fire place + zbrush study — 세로 살리기 -->
+    <div class="g-row fp-row rv">
+      <div class="gi" onclick="openDetail('game',3)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.png" alt="Fire Place" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.png" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
-      <div class="gi-lbl"><span>04 — Old Juicer</span></div>
-    </div>
-    <!-- 05 Sci-Fi Corridor — 가로 넓게 -->
-    <div class="gi c8 rv" onclick="openDetail('game',2)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_thumb.png" alt="Sci-Fi Corridor" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_hover.png" alt="" loading="lazy">
+      <div class="gi" onclick="openDetail('game',8)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.png" alt="ZBrush Study" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.png" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH STUDY</span></span><span class="ov-m">Study · ZBrush</span></div></div>
       </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">SCI-FI CORRIDOR</span></span><span class="ov-m">Environment · UE5</span></div></div>
-      <div class="gi-lbl"><span>05 — Sci-Fi Corridor</span></div>
-    </div>
-    <!-- 06 Fire Place -->
-    <div class="gi c4 rv fp-top" onclick="openDetail('game',3)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.png" alt="Fire Place" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.png" alt="" loading="lazy">
-      </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
-      <div class="gi-lbl"><span>06 — Fire Place</span></div>
-    </div>
-    <!-- 07 ZBrush Rock -->
-    <div class="gi c4 rv" onclick="openDetail('game',6)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_thumb.png" alt="ZBrush Rock" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_hover.png" alt="" loading="lazy">
-      </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH ROCK</span></span><span class="ov-m">Study · ZBrush</span></div></div>
-      <div class="gi-lbl"><span>07 — ZBrush Rock</span></div>
-    </div>
-    <!-- 08 Retro Computer -->
-    <div class="gi c4 rv" onclick="openDetail('game',7)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/retro_computer/retro_computer_thumb.png" alt="Retro Computer" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/retro_computer/retro_computer_hover.png" alt="" loading="lazy">
-      </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">RETRO COMPUTER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
-      <div class="gi-lbl"><span>08 — Retro Computer</span></div>
-    </div>
-    <!-- 09 ZBrush Study -->
-    <div class="gi c4 rv" onclick="openDetail('game',8)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.png" alt="ZBrush Study" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.png" alt="" loading="lazy">
-      </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH STUDY</span></span><span class="ov-m">Study · ZBrush</span></div></div>
-      <div class="gi-lbl"><span>09 — ZBrush Study</span></div>
     </div>
   </div>
 </section>
@@ -922,32 +917,35 @@ function showDetail(cat,i){
   if(media && media.items){
     imgEl.innerHTML='<div class="dp-img ph" style="min-height:80px;"><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--M);font-size:10px;letter-spacing:.14em;color:var(--t3);">[ 로딩 중... ]</span></div>';
 
-    async function checkSequential(items){
-      const valid=[];
-      for(const item of items){
-        if(item.type==='vid'){
-          // mp4도 HEAD 요청으로 존재 확인
-          try {
-            const r = await fetch(item.src, {method:'HEAD'});
-            if(r.ok) valid.push(item);
-            // 없으면 그냥 skip (멈추지 않음)
-          } catch(e){ /* skip */ }
-          continue;
-        }
-        const tryLoad=(src)=>new Promise(res=>{
+    // 병렬로 전체 체크 — 순차 대기 없음
+    async function checkAll(items){
+      const results = await Promise.all(items.map(item=>{
+        if(item.type==='vid') return Promise.resolve(null); // vid는 일단 제외
+        return new Promise(res=>{
           const img=new Image();
-          img.onload=()=>res(src);
-          img.onerror=()=>res(null);
-          img.src=src;
+          img.onload=()=>res({...item, src:item.src});
+          img.onerror=()=>{
+            // png 실패시 jpg 시도
+            if(item.alt){
+              const img2=new Image();
+              img2.onload=()=>res({...item, src:item.alt});
+              img2.onerror=()=>res(null);
+              img2.src=item.alt;
+            } else res(null);
+          };
+          img.src=item.src;
         });
-        const found=(await tryLoad(item.src))||(await tryLoad(item.alt));
-        if(found) valid.push({...item, src:found});
-        else break;
+      }));
+      // null 제거 후 연속된 것만 (첫 null 이전까지)
+      const valid=[];
+      for(const r of results){
+        if(!r) break;
+        valid.push(r);
       }
       return valid;
     }
 
-    checkSequential(media.items).then(valid=>{
+    checkAll(media.items).then(valid=>{
       if(valid.length===0){
         imgEl.innerHTML=`<div class="dp-img ph"></div><div class="dp-img ph"></div>`;
         return;
@@ -1002,28 +1000,48 @@ window.addEventListener('load',()=>{
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('s',scrollY>50);
 });
-// 썸네일 fallback — thumb.png 없으면 thumb.jpg → _01.png → _01.jpg 순서로 시도
+// 썸네일 fallback — png 실패시 jpg 자동 시도 (thumb/hover/_01 전부 커버)
+function tryFallback(img, src){
+  const jpg = src.replace(/\.png$/i, '.jpg');
+  if(jpg === src){ img.style.display='none'; return; }
+  const t = new Image();
+  t.onload = ()=>{ img.src = jpg; };
+  t.onerror = ()=>{ img.style.display='none'; };
+  t.src = jpg;
+}
 document.querySelectorAll('.gt img.gt-bg, .gt-vid, .sd-bg, .sd-hov').forEach(img=>{
   if(!img.src) return;
-  const orig = img.src;
   img.addEventListener('error', function onErr(){
     img.removeEventListener('error', onErr);
-    if(orig.includes('_thumb.png')){
-      // png 썸네일 없으면 jpg 썸네일 시도
-      const jpgThumb = orig.replace('_thumb.png','_thumb.jpg');
-      const tryJpg = new Image();
-      tryJpg.onload = ()=>{ img.src = jpgThumb; };
-      tryJpg.onerror = ()=>{ img.src = orig.replace('_thumb.png','_01.png'); };
-      tryJpg.src = jpgThumb;
-    } else if(orig.includes('_thumb.jpg')){
-      img.src = orig.replace('_thumb.jpg','_01.jpg');
-    } else {
-      img.style.display='none';
-    }
+    tryFallback(img, img.src);
   });
 });
 
-// Hero 영상 페이드인 — 로드되자마자 3초에 걸쳐 등장
+// Justified rows — 이미지 실제 비율로 flex값 자동 세팅
+function applyRowRatios(){
+  document.querySelectorAll('.g-row:not(.fp-row)').forEach(row=>{
+    const items = row.querySelectorAll('.gi');
+    items.forEach(gi=>{
+      const ratioAttr = gi.dataset.ratio;
+      if(ratioAttr){
+        const [w,h] = ratioAttr.split('/').map(Number);
+        gi.style.flex = String(w/h);
+      }
+      // 이미지 로드 후 실제 비율로 보정
+      const img = gi.querySelector('.gt-bg');
+      if(img){
+        const update = ()=>{
+          if(img.naturalWidth && img.naturalHeight){
+            gi.style.flex = String(img.naturalWidth / img.naturalHeight);
+          }
+        };
+        if(img.complete) update();
+        else img.addEventListener('load', update);
+      }
+    });
+  });
+}
+applyRowRatios();
 setTimeout(()=>{
   const f=document.getElementById('hero-iframe');
   if(f)f.classList.add('loaded');
