@@ -162,16 +162,16 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 /* 썸네일 hover 이미지 */
 .gt-vid{
   position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none;z-index:2;
+  object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none;z-index:1;
   border:none;
 }
 .gi:hover .gt-vid{opacity:1;}
 .gi:hover .gt-bg{opacity:0;transform:scale(1.06);}
 .gi:not(:hover) .gt-bg{transform:scale(1);filter:brightness(1) saturate(1);}
 
-/* hover 오버레이 */
+/* hover 오버레이 — gt-vid 위에 올라오도록 z-index:2 */
 .gi-ov{
-  position:absolute;inset:0;
+  position:absolute;inset:0;z-index:2;
   background:linear-gradient(to top,rgba(8,8,8,.94) 0%,rgba(8,8,8,.02) 45%);
   opacity:0;transition:opacity .28s;
   display:flex;align-items:flex-end;padding:1.25rem;
@@ -887,23 +887,31 @@ function showDetail(cat,i){
     vEl.innerHTML=`<span>이미지로 확인하세요</span>`;
   }
 
-  // 이미지 + 클립 렌더링 (404 자동 필터링)
+  // 이미지 + 클립 렌더링 (순차 체크 — 404 나오면 거기서 멈춤)
   const imgEl=document.getElementById('dp-imgs');
   if(media && media.items){
     imgEl.innerHTML='<div class="dp-img ph" style="min-height:80px;"><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--M);font-size:10px;letter-spacing:.14em;color:var(--t3);">[ 로딩 중... ]</span></div>';
-    // 이미지 존재 여부 확인 후 렌더링
-    const validItems = [];
-    const checks = media.items.map(item => {
-      if(item.type==='vid') return Promise.resolve(item);
-      return new Promise(res=>{
-        const img=new Image();
-        img.onload=()=>res(item);
-        img.onerror=()=>res(null);
-        img.src=item.src;
-      });
-    });
-    Promise.all(checks).then(results=>{
-      const valid=results.filter(Boolean);
+
+    async function checkSequential(items){
+      const valid=[];
+      for(const item of items){
+        if(item.type==='vid'){
+          valid.push(item);
+          continue;
+        }
+        const ok = await new Promise(res=>{
+          const img=new Image();
+          img.onload=()=>res(true);
+          img.onerror=()=>res(false);
+          img.src=item.src;
+        });
+        if(ok) valid.push(item);
+        else break; // 첫 404에서 중단
+      }
+      return valid;
+    }
+
+    checkSequential(media.items).then(valid=>{
       if(valid.length===0){
         imgEl.innerHTML=`<div class="dp-img ph"></div><div class="dp-img ph"></div>`;
         return;
