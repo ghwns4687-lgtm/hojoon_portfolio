@@ -799,10 +799,11 @@ function openDetail(cat,i){
 }
 
 /* ── 이미지 배열 생성 헬퍼 ── */
-function makeImgs(folder, prefix){
+function makeImgs(folder, prefix, max){
   const base = `image/${folder}/${prefix}`;
   const items = [];
-  for(let i=1;i<=99;i++){
+  const limit = max || 30; // max 지정 없으면 30까지만 체크
+  for(let i=1;i<=limit;i++){
     const n = String(i).padStart(2,'0');
     items.push({type:'img', src:`${base}_${n}.png`, alt:`${base}_${n}.jpg`});
   }
@@ -814,10 +815,10 @@ const DETAIL_MEDIA = {
   // ── 3D GRAPHIC ──
   game_0: {
     youtubeId: 'CQ0DzSbh4ks',
-    items: makeImgs('3d_graphic/medieval_war_pavilion','medieval_war_pavilion')
+    items: makeImgs('3d_graphic/medieval_war_pavilion','medieval_war_pavilion', 26)
   },
   game_1: {
-    items: makeImgs('3d_graphic/medieval_gate','medieval_gate')
+    items: makeImgs('3d_graphic/medieval_gate','medieval_gate', 13)
   },
   game_2: {
     items: makeImgs('3d_graphic/sci_fi_corridor','sci_fi_corridor')
