@@ -148,7 +148,7 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 .gi{position:relative;overflow:hidden;cursor:pointer;background:#111;flex:1;}
 /* 일반 행 높이 — 시원하게 */
 .g-row:not(.fp-row){height:clamp(380px,48vw,660px);}
-/* fire place + zbrush study 행 — flex 2컬럼, 세로 살리기 */
+/* fire place + zbrush study 행 */
 .g-row.fp-row{display:flex;gap:2px;height:clamp(500px,58vw,800px);}
 .g-row.fp-row .gi{flex:1;overflow:hidden;}
 .g-row.fp-row .gt{height:100%;line-height:0;}
@@ -160,8 +160,27 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
   transition:transform .6s cubic-bezier(.25,.46,.45,.94),filter .4s,opacity .4s;
   position:relative;z-index:1;
 }
-/* fire place 행 — 위쪽 기준 크롭 */
-.fp-row .gt-bg{object-position:top center;}
+
+/* 마차 — 오른쪽 바퀴 보이게 */
+.gi.pos-carriage .gt-bg,
+.gi.pos-carriage .gt-vid{object-position:right center;}
+
+/* 쥬이서 — 썸네일은 중앙 포커싱 */
+.gi.pos-juicer .gt-bg{object-position:center center;}
+/* 쥬이서 호버 — 원본 비율 전체 표시 */
+.gi.pos-juicer .gt-vid{
+  object-fit:contain;
+  object-position:center center;
+  background:#0e0e0e;
+}
+
+/* 파이어플레이스 — 원본 크기 유지, 빈공간 검정, 포커싱 아래 */
+.gi.pos-fire .gt-bg,
+.gi.pos-fire .gt-vid{
+  object-fit:contain;
+  object-position:center 65%;
+  background:#0e0e0e;
+}
 
 /* 썸네일 hover 이미지 */
 .gt-vid{
@@ -510,7 +529,7 @@ footer{
     <div class="wk-m">9 Projects<br>Click → Detail</div>
   </div>
   <div class="grid" id="works-grid">
-    <!-- 행 1: 파빌리온 + 게이트 -->
+    <!-- 행 1: 파빌리온(넓게) + 게이트 -->
     <div class="g-row rv">
       <div class="gi" data-ratio="16/9" onclick="openDetail('game',0)">
         <div class="gt">
@@ -527,22 +546,25 @@ footer{
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL GATE</span></span><span class="ov-m">Environment · UE5</span></div></div>
       </div>
     </div>
-    <!-- 행 2: 캐리지 + 올드쥬이서 + sci-fi -->
+    <!-- 행 2: 캐리지(넓게) + 쥬이서 -->
     <div class="g-row rv">
-      <div class="gi" data-ratio="16/9" onclick="openDetail('game',4)">
+      <div class="gi pos-carriage" data-ratio="16/9" onclick="openDetail('game',4)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/old_carriage/old_carriage_thumb.png" alt="Old Carriage" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/old_carriage/old_carriage_hover.png" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi" data-ratio="1/1" onclick="openDetail('game',5)">
+      <div class="gi pos-juicer" data-ratio="1/1" onclick="openDetail('game',5)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/old_juicer/old_juicer_thumb.png" alt="Old Juicer" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/old_juicer/old_juicer_hover.png" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
+    </div>
+    <!-- 행 3: sci-fi 풀width -->
+    <div class="g-row rv">
       <div class="gi" data-ratio="16/9" onclick="openDetail('game',2)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_thumb.png" alt="Sci-Fi Corridor" loading="lazy">
@@ -551,8 +573,7 @@ footer{
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">SCI-FI CORRIDOR</span></span><span class="ov-m">Environment · UE5</span></div></div>
       </div>
     </div>
-    <!-- 행 3: zbrush rock + retro + zbrush study -->
-    <!-- 행 3: zbrush rock + retro computer -->
+    <!-- 행 4: zbrush rock + retro -->
     <div class="g-row rv">
       <div class="gi" data-ratio="1/1" onclick="openDetail('game',6)">
         <div class="gt">
@@ -569,9 +590,9 @@ footer{
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">RETRO COMPUTER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
     </div>
-    <!-- 행 4: fire place + zbrush study — 세로 살리기 -->
+    <!-- 행 5: fire place + zbrush study -->
     <div class="g-row fp-row rv">
-      <div class="gi" onclick="openDetail('game',3)">
+      <div class="gi pos-fire" onclick="openDetail('game',3)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.png" alt="Fire Place" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.png" alt="" loading="lazy">
