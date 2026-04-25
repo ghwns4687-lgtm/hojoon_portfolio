@@ -161,16 +161,20 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
   position:relative;z-index:1;
 }
 
-/* 마차 — 온전히 보이게 중앙 */
+/* 마차 — 오른쪽 바퀴 보이게 */
 .gi.pos-carriage .gt-bg,
-.gi.pos-carriage .gt-vid{object-position:center center;}
+.gi.pos-carriage .gt-vid{object-position:right center;}
 
-/* 쥬이서 — 썸네일은 중앙 포커싱 */
-.gi.pos-juicer .gt-bg{object-position:center center;}
+/* 쥬이서 — 썸네일/호버 모두 오브젝트 중심 */
+.gi.pos-juicer .gt-bg{
+  object-fit:contain;
+  object-position:60% center;
+  background:#0e0e0e;
+}
 /* 쥬이서 호버 — 원본 비율 전체 표시 */
 .gi.pos-juicer .gt-vid{
   object-fit:contain;
-  object-position:center center;
+  object-position:60% center;
   background:#0e0e0e;
 }
 
@@ -291,10 +295,10 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
   grid-row:1/3;
 }
 .sd-grid.stage-grid>.sd-item:first-child .sd-thumb{
-  aspect-ratio:unset;
+  aspect-ratio:unset !important;
   height:100%;
 }
-.sd-grid.stage-grid .sd-thumb{aspect-ratio:4/3;}
+.sd-grid.stage-grid .sd-thumb{aspect-ratio:4/3 !important;}
 .sd-thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
 
 @media(max-width:900px){
@@ -550,14 +554,14 @@ footer{
   <div class="grid" id="works-grid">
     <!-- 행 1: 파빌리온 6.5 : 게이트 3.5 -->
     <div class="g-row rv">
-      <div class="gi" style="flex:6.7" onclick="openDetail('game',0)">
+      <div class="gi" style="flex:6.3" onclick="openDetail('game',0)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_thumb.png" alt="Medieval War Pavilion" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_hover.png" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Featured · Environment · UE5</span></div></div>
       </div>
-      <div class="gi" style="flex:3.3" onclick="openDetail('game',1)">
+      <div class="gi" style="flex:3.7" onclick="openDetail('game',1)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/medieval_gate/medieval_gate_thumb.png" alt="Medieval Gate" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/medieval_gate/medieval_gate_hover.png" alt="" loading="lazy">
@@ -567,7 +571,7 @@ footer{
     </div>
     <!-- 행 2: 캐리지 3.5 : 쥬이서 2.5 : zbrush rock 4 -->
     <div class="g-row rv">
-      <div class="gi pos-carriage" style="flex:4.5" onclick="openDetail('game',4)">
+      <div class="gi pos-carriage" style="flex:4.2" onclick="openDetail('game',4)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/old_carriage/old_carriage_thumb.png" alt="Old Carriage" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/old_carriage/old_carriage_hover.png" alt="" loading="lazy">
@@ -581,7 +585,7 @@ footer{
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi pos-zrock" style="flex:3.3" onclick="openDetail('game',6)">
+      <div class="gi pos-zrock" style="flex:3.6" onclick="openDetail('game',6)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_thumb.png" alt="ZBrush Rock" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_hover.png" alt="" loading="lazy">
@@ -608,14 +612,14 @@ footer{
     </div>
     <!-- 행 4: fire place 3 : zbrush study 7 -->
     <div class="g-row fp-row rv">
-      <div class="gi pos-fire" style="flex:3.5" onclick="openDetail('game',3)">
+      <div class="gi pos-fire" style="flex:4" onclick="openDetail('game',3)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.png" alt="Fire Place" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.png" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi" style="flex:6.5" onclick="openDetail('game',8)">
+      <div class="gi" style="flex:6" onclick="openDetail('game',8)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.png" alt="ZBrush Study" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.png" alt="" loading="lazy">
