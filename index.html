@@ -177,13 +177,21 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
   background:#0e0e0e;
 }
 
-/* 게이트 — 오른쪽으로 */
-.gi.pos-gate .gt-bg,
-.gi.pos-gate .gt-vid{object-position:55% center;}
+/* 게이트 — 호버 이미지 키스톤 오른쪽으로 중앙 */
+.gi.pos-gate .gt-bg{object-position:55% center;}
+.gi.pos-gate .gt-vid{object-position:65% center;}
 
-/* 레트로 컴퓨터 — 위쪽 */
+/* 레트로 컴퓨터 — 위쪽 더 */
 .gi.pos-retro .gt-bg,
-.gi.pos-retro .gt-vid{object-position:center 40%;}
+.gi.pos-retro .gt-vid{object-position:center 30%;}
+
+/* zbrush study — 그리드 유지, 이미지 축소 */
+.gi.pos-zstudy .gt-bg,
+.gi.pos-zstudy .gt-vid{
+  object-fit:contain;
+  object-position:center center;
+  background:#0e0e0e;
+}
 
 /* zbrush rock 호버 — 원본 비율 전체 표시 */
 .gi.pos-zrock .gt-vid{
@@ -624,7 +632,7 @@ footer{
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi" style="flex:6" onclick="openDetail('game',8)">
+      <div class="gi pos-zstudy" style="flex:6" onclick="openDetail('game',8)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.png" alt="ZBrush Study" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.png" alt="" loading="lazy">
