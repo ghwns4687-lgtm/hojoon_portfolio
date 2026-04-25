@@ -282,6 +282,18 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
   aspect-ratio:unset;
   height:100%;
 }
+/* 스테이지 — 메인 1개 + 우측 2개 위아래 */
+.sd-grid.stage-grid{
+  grid-template-columns:2fr 1fr;
+}
+.sd-grid.stage-grid>.sd-item:first-child{
+  grid-column:1;
+  grid-row:1/3;
+}
+.sd-grid.stage-grid>.sd-item:first-child .sd-thumb{
+  aspect-ratio:unset;
+  height:100%;
+}
 .sd-thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
 
 @media(max-width:900px){
@@ -697,7 +709,7 @@ footer{
       <div class="sd-t">STA<span class="ac">GE</span></div>
     </div>
   </div>
-  <div class="sd-grid rv">
+  <div class="sd-grid stage-grid rv">
     <div class="sd-item" onclick="openDetail('space',8)">
       <div class="sd-thumb">
         <img class="sd-bg" src="image/stage/ldp_looklook/ldp_looklook_thumb.png" alt="LDP" loading="lazy" onerror="this.src='image/stage/ldp_looklook/ldp_looklook_01.png'">
