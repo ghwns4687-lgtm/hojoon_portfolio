@@ -150,7 +150,7 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 
 .gi.c8 .gt,.gi.c7 .gt{aspect-ratio:16/9;}
 .gi.c4 .gt,.gi.c5 .gt,.gi.c6 .gt{aspect-ratio:4/3;}
-.gt{overflow:hidden;position:relative;}
+.gt{overflow:hidden;position:relative;background:#111;}
 
 /* 썸네일 이미지 */
 .gt-bg{
@@ -234,28 +234,27 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
    INTERIOR / STAGE — 가로 스크롤 공통
 ════════════════════ */
 .sd-section{padding:5rem 0 4rem;border-top:1px solid var(--bd);overflow:hidden;}
-.sd-hd{padding:0 2.5rem 2rem;display:flex;justify-content:space-between;align-items:flex-end;}
+.sd-hd{padding:0 2.5rem 2rem;}
 .sd-tag{font-family:var(--M);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ac);margin-bottom:.5rem;display:block;}
 .sd-t{font-family:var(--D);font-size:clamp(2.5rem,6vw,5.5rem);line-height:.88;color:var(--txt);}
 .sd-t .ac{color:var(--ac);}
-.sd-desc{font-family:var(--M);font-size:10px;letter-spacing:.1em;color:var(--t2);line-height:1.8;text-align:right;max-width:260px;}
 
-.sd-track{
-  display:flex;gap:2px;overflow-x:auto;overflow-y:hidden;
-  padding:0 2.5rem;scrollbar-width:none;-webkit-overflow-scrolling:touch;
-  cursor:grab;
+/* 그리드 — 다닥다닥 붙게 */
+.sd-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:2px;
+  padding:0 2px;
 }
-.sd-track:active{cursor:grabbing;}
-.sd-track::-webkit-scrollbar{display:none;}
+@media(max-width:900px){.sd-grid{grid-template-columns:repeat(2,1fr);}}
 
-.sd-item{flex-shrink:0;width:300px;position:relative;overflow:hidden;cursor:pointer;background:#0e0e0e;}
-.sd-item:first-child{width:400px;}
+.sd-item{position:relative;overflow:hidden;cursor:pointer;background:#0e0e0e;}
 .sd-thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
 .sd-bg{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.25,.46,.45,.94),filter .3s;}
 .sd-item:hover .sd-bg{transform:scale(1.05);filter:brightness(1.06);}
 
 .sd-ov{
-  position:absolute;inset:0;
+  position:absolute;inset:0;z-index:2;
   background:linear-gradient(to top,rgba(8,8,8,.92) 0%,transparent 55%);
   opacity:0;transition:opacity .28s;
   display:flex;align-items:flex-end;padding:1rem;
@@ -272,8 +271,6 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 .sd-lbl span{font-family:var(--M);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);}
 .sd-item::after{content:'';position:absolute;inset:0;border:1px solid transparent;transition:border-color .25s;pointer-events:none;}
 .sd-item:hover::after{border-color:rgba(51,170,255,.2);}
-
-.sd-hint{padding:.75rem 2.5rem 0;font-family:var(--M);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);display:flex;align-items:center;gap:.5rem;}
 
 /* ════════════════════
    ABOUT
@@ -575,9 +572,8 @@ footer{
       <span class="sd-tag">Background in Space Design</span>
       <div class="sd-t">INTE<span class="ac">RIOR</span></div>
     </div>
-    <div class="sd-desc">공간 설계 경험이 배경 아트의 기반이 됩니다.<br>실제 공간을 설계한 아티스트의 시선.</div>
   </div>
-  <div class="sd-track rv" id="interior-track">
+  <div class="sd-grid rv">
     <div class="sd-item" onclick="openDetail('space',0)">
       <div class="sd-thumb"><img class="sd-bg" src="image/interior/paju_cafe/paju_cafe_thumb.png" alt="Paju Cafe" loading="lazy" onerror="this.src='image/interior/paju_cafe/paju_cafe_01.png'"></div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">PAJU CAFE</span></span><span class="sd-ov-m">Interior Design</span></div></div>
@@ -619,7 +615,6 @@ footer{
       <div class="sd-lbl"><span>Interior — Yeoju</span></div>
     </div>
   </div>
-  <div class="sd-hint rv">← 드래그하여 더 보기 →</div>
 </section>
 
 <!-- ═══ STAGE ═══ -->
@@ -629,9 +624,8 @@ footer{
       <span class="sd-tag">Background in Space Design</span>
       <div class="sd-t">STA<span class="ac">GE</span></div>
     </div>
-    <div class="sd-desc">무대 공간의 구성과 조명, 동선 설계 경험.<br>공연 예술을 위한 3차원 공간 디자인.</div>
   </div>
-  <div class="sd-track rv" id="stage-track">
+  <div class="sd-grid rv">
     <div class="sd-item" onclick="openDetail('space',8)">
       <div class="sd-thumb"><img class="sd-bg" src="image/stage/ldp_looklook/ldp_looklook_thumb.png" alt="LDP" loading="lazy" onerror="this.src='image/stage/ldp_looklook/ldp_looklook_01.png'"></div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">LDP — LOOK LOOK</span></span><span class="sd-ov-m">Stage Design</span></div></div>
@@ -648,7 +642,6 @@ footer{
       <div class="sd-lbl"><span>Stage — Peace of World</span></div>
     </div>
   </div>
-  <div class="sd-hint rv">← 드래그하여 더 보기 →</div>
 </section>
 
 <!-- ═══ ABOUT ═══ -->
@@ -966,43 +959,17 @@ window.addEventListener('load',()=>{
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('s',scrollY>50);
 });
-// 썸네일 fallback — thumb.png 없으면 _01.png 시도
-document.querySelectorAll('.gt img.gt-bg, .sd-bg').forEach(img=>{
+// 썸네일 fallback — thumb.png 없으면 _01.png, hover.png 없으면 숨김
+document.querySelectorAll('.gt img.gt-bg, .gt-vid, .sd-bg').forEach(img=>{
   if(!img.src) return;
   const orig = img.src;
   img.addEventListener('error', function onErr(){
     img.removeEventListener('error', onErr);
     if(orig.includes('_thumb.png')){
-      const fb = orig.replace('_thumb.png','_01.png');
-      img.src = fb;
+      img.src = orig.replace('_thumb.png','_01.png');
     } else {
       img.style.display='none';
     }
-  });
-});
-
-// 드래그 스크롤 — 모든 .sd-track에 적용
-document.querySelectorAll('.sd-track').forEach(track=>{
-  let isDown=false, startX, scrollLeft, moved=false;
-  track.addEventListener('mousedown',e=>{
-    isDown=true; moved=false;
-    startX=e.pageX-track.offsetLeft;
-    scrollLeft=track.scrollLeft;
-    track.style.cursor='grabbing';
-  });
-  track.addEventListener('mouseleave',()=>{isDown=false;track.style.cursor='grab';});
-  track.addEventListener('mouseup',()=>{isDown=false;track.style.cursor='grab';});
-  track.addEventListener('mousemove',e=>{
-    if(!isDown)return;
-    e.preventDefault();
-    const x=e.pageX-track.offsetLeft;
-    const walk=(x-startX)*1.2;
-    if(Math.abs(walk)>5)moved=true;
-    track.scrollLeft=scrollLeft-walk;
-  });
-  // 드래그 중 클릭 방지
-  track.querySelectorAll('.sd-item').forEach(item=>{
-    item.addEventListener('click',e=>{if(moved)e.stopImmediatePropagation();});
   });
 });
 
