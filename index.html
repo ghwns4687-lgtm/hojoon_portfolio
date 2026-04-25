@@ -143,18 +143,17 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 .wk-m{font-family:var(--M);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);text-align:right;line-height:2;padding-bottom:2.5rem;flex-shrink:0;}
 
 .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;position:relative;z-index:1;}
-.gi{position:relative;overflow:hidden;cursor:pointer;background:#0e0e0e;}
+.gi{position:relative;overflow:hidden;cursor:pointer;background:#111;}
 .gi.c8{grid-column:span 8;}.gi.c4{grid-column:span 4;}
 .gi.c5{grid-column:span 5;}.gi.c7{grid-column:span 7;}
 .gi.c6{grid-column:span 6;}
 
-.gi.c8 .gt,.gi.c7 .gt{aspect-ratio:16/9;}
-.gi.c4 .gt,.gi.c5 .gt,.gi.c6 .gt{aspect-ratio:4/3;}
-.gt{overflow:hidden;position:relative;background:#111;}
+/* aspect-ratio 고정 제거 — 이미지 자체 비율에 맞게 */
+.gt{overflow:hidden;position:relative;background:#111;line-height:0;}
 
-/* 썸네일 이미지 */
+/* 썸네일 이미지 — 비율 자동 */
 .gt-bg{
-  width:100%;height:100%;object-fit:cover;display:block;
+  width:100%;height:auto;display:block;
   transition:transform .6s cubic-bezier(.25,.46,.45,.94),filter .4s,opacity .4s;
   position:relative;z-index:1;
 }
@@ -239,14 +238,30 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 .sd-t{font-family:var(--D);font-size:clamp(2.5rem,6vw,5.5rem);line-height:.88;color:var(--txt);}
 .sd-t .ac{color:var(--ac);}
 
-/* 그리드 — 다닥다닥 붙게 */
+/* 인테리어/무대 레이아웃 */
 .sd-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:2fr repeat(3,1fr);
+  grid-template-rows:auto auto;
   gap:2px;
-  padding:0 2px;
 }
-@media(max-width:900px){.sd-grid{grid-template-columns:repeat(2,1fr);}}
+/* 첫 번째 아이템 — 2행 걸쳐서 크게 */
+.sd-grid .sd-item:first-child{
+  grid-row:span 2;
+}
+/* 첫 번째 썸네일은 높이 꽉 채움 */
+.sd-grid .sd-item:first-child .sd-thumb{
+  aspect-ratio:unset;
+  height:100%;
+}
+/* 나머지 썸네일 비율 */
+.sd-item .sd-thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
+
+@media(max-width:900px){
+  .sd-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
+  .sd-grid .sd-item:first-child{grid-row:span 1;}
+  .sd-grid .sd-item:first-child .sd-thumb{height:auto;aspect-ratio:4/3;}
+}
 
 .sd-item{position:relative;overflow:hidden;cursor:pointer;background:#0e0e0e;}
 .sd-thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
@@ -736,14 +751,14 @@ function openDetail(cat,i){
   showDetail(cat,i);
 }
 
-/* ── 이미지 배열 생성 헬퍼 (장수 제한 없음) ── */
+/* ── 이미지 배열 생성 헬퍼 (png + jpg 모두 시도) ── */
 function makeImgs(folder, prefix){
-  // 01부터 순서대로 시도, 없으면 거기서 자동 종료
   const base = `image/${folder}/${prefix}`;
   const items = [];
   for(let i=1;i<=99;i++){
     const n = String(i).padStart(2,'0');
-    items.push({type:'img', src:`${base}_${n}.png`});
+    // png 우선, jpg도 포함
+    items.push({type:'img', src:`${base}_${n}.png`, srcJpg:`${base}_${n}.jpg`});
   }
   return items;
 }
@@ -892,14 +907,17 @@ function showDetail(cat,i){
           valid.push(item);
           continue;
         }
-        const ok = await new Promise(res=>{
+        // png 먼저, 없으면 jpg 시도
+        const tryLoad = (src) => new Promise(res=>{
           const img=new Image();
-          img.onload=()=>res(true);
-          img.onerror=()=>res(false);
-          img.src=item.src;
+          img.onload=()=>res(src);
+          img.onerror=()=>res(null);
+          img.src=src;
         });
-        if(ok) valid.push(item);
-        else break; // 첫 404에서 중단
+        let found = await tryLoad(item.src);
+        if(!found && item.srcJpg) found = await tryLoad(item.srcJpg);
+        if(found) valid.push({...item, src: found});
+        else break;
       }
       return valid;
     }
@@ -959,14 +977,21 @@ window.addEventListener('load',()=>{
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('s',scrollY>50);
 });
-// 썸네일 fallback — thumb.png 없으면 _01.png, hover.png 없으면 숨김
+// 썸네일 fallback — thumb.png 없으면 thumb.jpg → _01.png → _01.jpg 순서로 시도
 document.querySelectorAll('.gt img.gt-bg, .gt-vid, .sd-bg').forEach(img=>{
   if(!img.src) return;
   const orig = img.src;
   img.addEventListener('error', function onErr(){
     img.removeEventListener('error', onErr);
     if(orig.includes('_thumb.png')){
-      img.src = orig.replace('_thumb.png','_01.png');
+      // png 썸네일 없으면 jpg 썸네일 시도
+      const jpgThumb = orig.replace('_thumb.png','_thumb.jpg');
+      const tryJpg = new Image();
+      tryJpg.onload = ()=>{ img.src = jpgThumb; };
+      tryJpg.onerror = ()=>{ img.src = orig.replace('_thumb.png','_01.png'); };
+      tryJpg.src = jpgThumb;
+    } else if(orig.includes('_thumb.jpg')){
+      img.src = orig.replace('_thumb.jpg','_01.jpg');
     } else {
       img.style.display='none';
     }
