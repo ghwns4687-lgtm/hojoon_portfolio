@@ -525,8 +525,8 @@ footer{
     <!-- 03 Old Carriage — 가로 넓게 -->
     <div class="gi c7 rv" onclick="openDetail('game',4)">
       <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/old_carrige/old_carrige_thumb.png" alt="Old Carriage" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/old_carrige/old_carrige_hover.png" alt="" loading="lazy">
+        <img class="gt-bg" src="image/3d_graphic/old_carriage/old_carriage_thumb.png" alt="Old Carriage" loading="lazy">
+        <img class="gt-vid" src="image/3d_graphic/old_carriage/old_carriage_hover.png" alt="" loading="lazy">
       </div>
       <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       <div class="gi-lbl"><span>03 — Old Carriage</span></div>
@@ -808,35 +808,7 @@ const DETAIL_MEDIA = {
   // ── 3D GRAPHIC ──
   game_0: {
     youtubeId: 'CQ0DzSbh4ks',
-    items: [
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_01.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_02.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_03.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_04.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_05.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_06.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_07.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_08.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_09.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_10.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_11.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_12.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_13.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_14.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_15.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_16.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_17.png'},
-      {type:'vid', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_clip_01.mp4'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_18.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_19.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_20.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_21.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_22.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_23.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_24.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_25.png'},
-      {type:'img', src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_26.png'},
-    ]
+    items: makeImgs('3d_graphic/medieval_war_pavilion','medieval_war_pavilion')
   },
   game_1: {
     items: makeImgs('3d_graphic/medieval_gate','medieval_gate')
@@ -848,7 +820,7 @@ const DETAIL_MEDIA = {
     items: makeImgs('3d_graphic/fire_place','fire_place')
   },
   game_4: {
-    items: makeImgs('3d_graphic/old_carrige','old_carrige')
+    items: makeImgs('3d_graphic/old_carriage','old_carriage')
   },
   game_5: {
     items: makeImgs('3d_graphic/old_juicer','old_juicer')
@@ -943,7 +915,15 @@ function showDetail(cat,i){
     async function checkSequential(items){
       const valid=[];
       for(const item of items){
-        if(item.type==='vid'){ valid.push(item); continue; }
+        if(item.type==='vid'){
+          // mp4도 HEAD 요청으로 존재 확인
+          try {
+            const r = await fetch(item.src, {method:'HEAD'});
+            if(r.ok) valid.push(item);
+            // 없으면 그냥 skip (멈추지 않음)
+          } catch(e){ /* skip */ }
+          continue;
+        }
         const tryLoad=(src)=>new Promise(res=>{
           const img=new Image();
           img.onload=()=>res(src);
