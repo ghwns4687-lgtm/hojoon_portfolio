@@ -148,10 +148,12 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 .gi.c5{grid-column:span 5;}.gi.c7{grid-column:span 7;}
 .gi.c6{grid-column:span 6;}
 
-.gi.c8 .gt,.gi.c7 .gt{aspect-ratio:16/9;}
-.gi.c4 .gt,.gi.c5 .gt,.gi.c6 .gt{aspect-ratio:4/3;}
-/* 게이트 — 세로형 tall */
-.gi.c4.gi-tall .gt{aspect-ratio:3/4;}
+/* 전체 16:9 통일 */
+.gi.c8 .gt,.gi.c7 .gt,
+.gi.c4 .gt,.gi.c5 .gt,.gi.c6 .gt{aspect-ratio:16/9;}
+/* fire place — 위쪽 기준 크롭 */
+.gi.fp-top .gt-bg,
+.gi.fp-top .gt-vid{object-position:top center;}
 .gt{overflow:hidden;position:relative;background:#111;line-height:0;}
 
 /* 썸네일 이미지 */
@@ -422,6 +424,10 @@ footer{
 }
 .dp-img-bg{width:100%;height:auto;display:block;background:#0e0e0e;}
 
+/* 무대 디자인 — 원본 크기 유지, 확대 없음, 중앙 정렬 */
+.dp-imgs.natural .dp-img{background:none;display:flex;justify-content:center;align-items:center;}
+.dp-imgs.natural .dp-img-bg{width:auto;max-width:100%;height:auto;}
+
 /* 홈 버튼 */
 .dp-home{
   position:fixed;top:0;left:50%;transform:translateX(-50%);
@@ -514,7 +520,7 @@ footer{
       <div class="gi-lbl"><span>01 — Medieval War Pavilion</span></div>
     </div>
     <!-- 02 Medieval Gate — 세로 강조 -->
-    <div class="gi c4 rv gi-tall" onclick="openDetail('game',1)">
+    <div class="gi c4 rv" onclick="openDetail('game',1)">
       <div class="gt">
         <img class="gt-bg" src="image/3d_graphic/medieval_gate/medieval_gate_thumb.png" alt="Medieval Gate" loading="lazy">
         <img class="gt-vid" src="image/3d_graphic/medieval_gate/medieval_gate_hover.png" alt="" loading="lazy">
@@ -550,7 +556,7 @@ footer{
       <div class="gi-lbl"><span>05 — Sci-Fi Corridor</span></div>
     </div>
     <!-- 06 Fire Place -->
-    <div class="gi c4 rv" onclick="openDetail('game',3)">
+    <div class="gi c4 rv fp-top" onclick="openDetail('game',3)">
       <div class="gt">
         <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.png" alt="Fire Place" loading="lazy">
         <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.png" alt="" loading="lazy">
@@ -909,6 +915,9 @@ function showDetail(cat,i){
 
   // 이미지 + 클립 렌더링 (순차 체크 — 404 나오면 거기서 멈춤)
   const imgEl=document.getElementById('dp-imgs');
+  // stage(space_8~10) 는 원본 크기 유지
+  const isStage = cat==='space' && i>=8;
+  imgEl.className = 'dp-imgs' + (isStage ? ' natural' : '');
   if(media && media.items){
     imgEl.innerHTML='<div class="dp-img ph" style="min-height:80px;"><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--M);font-size:10px;letter-spacing:.14em;color:var(--t3);">[ 로딩 중... ]</span></div>';
 
