@@ -148,12 +148,15 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 .gi.c5{grid-column:span 5;}.gi.c7{grid-column:span 7;}
 .gi.c6{grid-column:span 6;}
 
-/* aspect-ratio 고정 제거 — 이미지 자체 비율에 맞게 */
+.gi.c8 .gt,.gi.c7 .gt{aspect-ratio:16/9;}
+.gi.c4 .gt,.gi.c5 .gt,.gi.c6 .gt{aspect-ratio:4/3;}
+/* 게이트 — 세로형 tall */
+.gi.c4.gi-tall .gt{aspect-ratio:3/4;}
 .gt{overflow:hidden;position:relative;background:#111;line-height:0;}
 
-/* 썸네일 이미지 — 비율 자동 */
+/* 썸네일 이미지 */
 .gt-bg{
-  width:100%;height:auto;display:block;
+  width:100%;height:100%;object-fit:cover;display:block;
   transition:transform .6s cubic-bezier(.25,.46,.45,.94),filter .4s,opacity .4s;
   position:relative;z-index:1;
 }
@@ -241,32 +244,38 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 /* 인테리어/무대 레이아웃 */
 .sd-grid{
   display:grid;
-  grid-template-columns:2fr repeat(3,1fr);
-  grid-template-rows:auto auto;
+  grid-template-columns:2fr 1fr 1fr 1fr 1fr;
   gap:2px;
 }
-/* 첫 번째 아이템 — 2행 걸쳐서 크게 */
-.sd-grid .sd-item:first-child{
-  grid-row:span 2;
+.sd-grid>.sd-item:first-child{
+  grid-column:1;
+  grid-row:1/3;
 }
-/* 첫 번째 썸네일은 높이 꽉 채움 */
-.sd-grid .sd-item:first-child .sd-thumb{
+.sd-grid>.sd-item:first-child .sd-thumb{
   aspect-ratio:unset;
   height:100%;
 }
-/* 나머지 썸네일 비율 */
-.sd-item .sd-thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
+.sd-thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
 
 @media(max-width:900px){
-  .sd-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
-  .sd-grid .sd-item:first-child{grid-row:span 1;}
-  .sd-grid .sd-item:first-child .sd-thumb{height:auto;aspect-ratio:4/3;}
+  .sd-grid{grid-template-columns:1fr 1fr;}
+  .sd-grid>.sd-item:first-child{grid-column:auto;grid-row:auto;}
+  .sd-grid>.sd-item:first-child .sd-thumb{height:auto;aspect-ratio:4/3;}
 }
 
 .sd-item{position:relative;overflow:hidden;cursor:pointer;background:#0e0e0e;}
 .sd-thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
-.sd-bg{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.25,.46,.45,.94),filter .3s;}
-.sd-item:hover .sd-bg{transform:scale(1.05);filter:brightness(1.06);}
+.sd-bg{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s cubic-bezier(.25,.46,.45,.94),opacity .4s;
+  position:relative;z-index:1;}
+
+/* hover 이미지 — gt-vid 방식과 동일 */
+.sd-hov{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none;z-index:1;
+}
+.sd-item:hover .sd-hov{opacity:1;}
+.sd-item:hover .sd-bg{opacity:0;transform:scale(1.06);}
 
 .sd-ov{
   position:absolute;inset:0;z-index:2;
@@ -281,10 +290,10 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 .sd-ov-m{font-family:var(--M);font-size:9px;letter-spacing:.1em;color:var(--ac);text-transform:uppercase;margin-top:.25rem;display:block;opacity:0;transform:translateY(6px);transition:opacity .3s .06s,transform .3s .06s;}
 .sd-item:hover .sd-ov-m{opacity:1;transform:translateY(0);}
 
-.sd-lbl{padding:.6rem 1rem;border-top:1px solid var(--bd);background:var(--sur);transition:opacity .25s;}
-.sd-item:hover .sd-lbl{opacity:0;}
+/* 라벨 — 평상시 숨김 */
+.sd-lbl{padding:.6rem 1rem;border-top:1px solid var(--bd);background:var(--sur);opacity:0;transition:opacity .25s;}
 .sd-lbl span{font-family:var(--M);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);}
-.sd-item::after{content:'';position:absolute;inset:0;border:1px solid transparent;transition:border-color .25s;pointer-events:none;}
+.sd-item::after{content:'';position:absolute;inset:0;border:1px solid transparent;transition:border-color .25s;pointer-events:none;z-index:3;}
 .sd-item:hover::after{border-color:rgba(51,170,255,.2);}
 
 /* ════════════════════
@@ -440,9 +449,8 @@ footer{
   <span class="nav-l">HOJOON / 3D-BG</span>
   <div class="nav-r">
     <ul class="nav-links">
-      <li><a href="#works">Work</a></li>
-      <li><a href="#interior">Interior</a></li>
-      <li><a href="#stage">Stage</a></li>
+      <li><a href="#works">3D Works</a></li>
+      <li><a href="#interior">Space Design</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -496,7 +504,7 @@ footer{
     <div class="wk-m">9 Projects<br>Click → Detail</div>
   </div>
   <div class="grid">
-    <!-- 01 Medieval War Pavilion — Featured, 큰 칸 -->
+    <!-- 01 Medieval War Pavilion — Featured 16:9 풀 -->
     <div class="gi c8 rv" onclick="openDetail('game',0)">
       <div class="gt">
         <img class="gt-bg" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_thumb.png" alt="Medieval War Pavilion" loading="lazy">
@@ -505,8 +513,8 @@ footer{
       <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Featured · Environment · UE5</span></div></div>
       <div class="gi-lbl"><span>01 — Medieval War Pavilion</span></div>
     </div>
-    <!-- 02 Medieval Gate -->
-    <div class="gi c4 rv" onclick="openDetail('game',1)">
+    <!-- 02 Medieval Gate — 세로 강조 -->
+    <div class="gi c4 rv gi-tall" onclick="openDetail('game',1)">
       <div class="gt">
         <img class="gt-bg" src="image/3d_graphic/medieval_gate/medieval_gate_thumb.png" alt="Medieval Gate" loading="lazy">
         <img class="gt-vid" src="image/3d_graphic/medieval_gate/medieval_gate_hover.png" alt="" loading="lazy">
@@ -514,41 +522,41 @@ footer{
       <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL GATE</span></span><span class="ov-m">Environment · UE5</span></div></div>
       <div class="gi-lbl"><span>02 — Medieval Gate</span></div>
     </div>
-    <!-- 03 Sci-Fi Corridor -->
-    <div class="gi c5 rv" onclick="openDetail('game',2)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_thumb.png" alt="Sci-Fi Corridor" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_hover.png" alt="" loading="lazy">
-      </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">SCI-FI CORRIDOR</span></span><span class="ov-m">Environment · UE5</span></div></div>
-      <div class="gi-lbl"><span>03 — Sci-Fi Corridor</span></div>
-    </div>
-    <!-- 04 Fire Place -->
-    <div class="gi c7 rv" onclick="openDetail('game',3)">
-      <div class="gt">
-        <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.png" alt="Fire Place" loading="lazy">
-        <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.png" alt="" loading="lazy">
-      </div>
-      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Interior · Marmoset</span></div></div>
-      <div class="gi-lbl"><span>04 — Fire Place</span></div>
-    </div>
-    <!-- 05 Old Carriage -->
-    <div class="gi c4 rv" onclick="openDetail('game',4)">
+    <!-- 03 Old Carriage — 가로 넓게 -->
+    <div class="gi c7 rv" onclick="openDetail('game',4)">
       <div class="gt">
         <img class="gt-bg" src="image/3d_graphic/old_carrige/old_carrige_thumb.png" alt="Old Carriage" loading="lazy">
         <img class="gt-vid" src="image/3d_graphic/old_carrige/old_carrige_hover.png" alt="" loading="lazy">
       </div>
       <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
-      <div class="gi-lbl"><span>05 — Old Carriage</span></div>
+      <div class="gi-lbl"><span>03 — Old Carriage</span></div>
     </div>
-    <!-- 06 Old Juicer -->
-    <div class="gi c4 rv" onclick="openDetail('game',5)">
+    <!-- 04 Old Juicer -->
+    <div class="gi c5 rv" onclick="openDetail('game',5)">
       <div class="gt">
         <img class="gt-bg" src="image/3d_graphic/old_juicer/old_juicer_thumb.png" alt="Old Juicer" loading="lazy">
         <img class="gt-vid" src="image/3d_graphic/old_juicer/old_juicer_hover.png" alt="" loading="lazy">
       </div>
       <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
-      <div class="gi-lbl"><span>06 — Old Juicer</span></div>
+      <div class="gi-lbl"><span>04 — Old Juicer</span></div>
+    </div>
+    <!-- 05 Sci-Fi Corridor — 가로 넓게 -->
+    <div class="gi c8 rv" onclick="openDetail('game',2)">
+      <div class="gt">
+        <img class="gt-bg" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_thumb.png" alt="Sci-Fi Corridor" loading="lazy">
+        <img class="gt-vid" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_hover.png" alt="" loading="lazy">
+      </div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">SCI-FI CORRIDOR</span></span><span class="ov-m">Environment · UE5</span></div></div>
+      <div class="gi-lbl"><span>05 — Sci-Fi Corridor</span></div>
+    </div>
+    <!-- 06 Fire Place -->
+    <div class="gi c4 rv" onclick="openDetail('game',3)">
+      <div class="gt">
+        <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.png" alt="Fire Place" loading="lazy">
+        <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.png" alt="" loading="lazy">
+      </div>
+      <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
+      <div class="gi-lbl"><span>06 — Fire Place</span></div>
     </div>
     <!-- 07 ZBrush Rock -->
     <div class="gi c4 rv" onclick="openDetail('game',6)">
@@ -560,7 +568,7 @@ footer{
       <div class="gi-lbl"><span>07 — ZBrush Rock</span></div>
     </div>
     <!-- 08 Retro Computer -->
-    <div class="gi c6 rv" onclick="openDetail('game',7)">
+    <div class="gi c4 rv" onclick="openDetail('game',7)">
       <div class="gt">
         <img class="gt-bg" src="image/3d_graphic/retro_computer/retro_computer_thumb.png" alt="Retro Computer" loading="lazy">
         <img class="gt-vid" src="image/3d_graphic/retro_computer/retro_computer_hover.png" alt="" loading="lazy">
@@ -569,7 +577,7 @@ footer{
       <div class="gi-lbl"><span>08 — Retro Computer</span></div>
     </div>
     <!-- 09 ZBrush Study -->
-    <div class="gi c6 rv" onclick="openDetail('game',8)">
+    <div class="gi c4 rv" onclick="openDetail('game',8)">
       <div class="gt">
         <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.png" alt="ZBrush Study" loading="lazy">
         <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.png" alt="" loading="lazy">
@@ -590,42 +598,66 @@ footer{
   </div>
   <div class="sd-grid rv">
     <div class="sd-item" onclick="openDetail('space',0)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/interior/paju_cafe/paju_cafe_thumb.png" alt="Paju Cafe" loading="lazy" onerror="this.src='image/interior/paju_cafe/paju_cafe_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/interior/paju_cafe/paju_cafe_thumb.png" alt="Paju Cafe" loading="lazy" onerror="this.src='image/interior/paju_cafe/paju_cafe_01.png'">
+        <img class="sd-hov" src="image/interior/paju_cafe/paju_cafe_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">PAJU CAFE</span></span><span class="sd-ov-m">Interior Design</span></div></div>
       <div class="sd-lbl"><span>Interior — Paju Cafe</span></div>
     </div>
     <div class="sd-item" onclick="openDetail('space',1)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/interior/suwon_coexistenc_space/suwon_coexistenc_space_thumb.png" alt="Suwon" loading="lazy" onerror="this.src='image/interior/suwon_coexistenc_space/suwon_coexistenc_space_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/interior/suwon_coexistenc_space/suwon_coexistenc_space_thumb.png" alt="Suwon" loading="lazy" onerror="this.src='image/interior/suwon_coexistenc_space/suwon_coexistenc_space_01.png'">
+        <img class="sd-hov" src="image/interior/suwon_coexistenc_space/suwon_coexistenc_space_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">SUWON COEXISTENCE</span></span><span class="sd-ov-m">Interior Design</span></div></div>
       <div class="sd-lbl"><span>Interior — Suwon</span></div>
     </div>
     <div class="sd-item" onclick="openDetail('space',2)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/interior/itaewon_private_music_office/itaewon_private_music_office_thumb.png" alt="Itaewon" loading="lazy" onerror="this.src='image/interior/itaewon_private_music_office/itaewon_private_music_office_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/interior/itaewon_private_music_office/itaewon_private_music_office_thumb.png" alt="Itaewon" loading="lazy" onerror="this.src='image/interior/itaewon_private_music_office/itaewon_private_music_office_01.png'">
+        <img class="sd-hov" src="image/interior/itaewon_private_music_office/itaewon_private_music_office_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">ITAEWON MUSIC OFFICE</span></span><span class="sd-ov-m">Interior Design</span></div></div>
       <div class="sd-lbl"><span>Interior — Itaewon</span></div>
     </div>
     <div class="sd-item" onclick="openDetail('space',3)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/interior/munjeong_dong_jipyeong_brewery/munjeong_dong_jipyeong_brewery_thumb.png" alt="Jipyeong" loading="lazy" onerror="this.src='image/interior/munjeong_dong_jipyeong_brewery/munjeong_dong_jipyeong_brewery_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/interior/munjeong_dong_jipyeong_brewery/munjeong_dong_jipyeong_brewery_thumb.png" alt="Jipyeong" loading="lazy" onerror="this.src='image/interior/munjeong_dong_jipyeong_brewery/munjeong_dong_jipyeong_brewery_01.png'">
+        <img class="sd-hov" src="image/interior/munjeong_dong_jipyeong_brewery/munjeong_dong_jipyeong_brewery_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">JIPYEONG BREWERY</span></span><span class="sd-ov-m">Interior Design</span></div></div>
       <div class="sd-lbl"><span>Interior — Munjeong</span></div>
     </div>
     <div class="sd-item" onclick="openDetail('space',4)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/interior/gimpo_flex_square/gimpo_flex_square_thumb.png" alt="Gimpo" loading="lazy" onerror="this.src='image/interior/gimpo_flex_square/gimpo_flex_square_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/interior/gimpo_flex_square/gimpo_flex_square_thumb.png" alt="Gimpo" loading="lazy" onerror="this.src='image/interior/gimpo_flex_square/gimpo_flex_square_01.png'">
+        <img class="sd-hov" src="image/interior/gimpo_flex_square/gimpo_flex_square_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">GIMPO FLEX SQUARE</span></span><span class="sd-ov-m">Interior Design</span></div></div>
       <div class="sd-lbl"><span>Interior — Gimpo</span></div>
     </div>
     <div class="sd-item" onclick="openDetail('space',5)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/interior/paju_shinsegae_premium_outlets_rawrow/paju_shinsegae_premium_outlets_rawrow_thumb.png" alt="Shinsegae" loading="lazy" onerror="this.src='image/interior/paju_shinsegae_premium_outlets_rawrow/paju_shinsegae_premium_outlets_rawrow_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/interior/paju_shinsegae_premium_outlets_rawrow/paju_shinsegae_premium_outlets_rawrow_thumb.png" alt="Shinsegae" loading="lazy" onerror="this.src='image/interior/paju_shinsegae_premium_outlets_rawrow/paju_shinsegae_premium_outlets_rawrow_01.png'">
+        <img class="sd-hov" src="image/interior/paju_shinsegae_premium_outlets_rawrow/paju_shinsegae_premium_outlets_rawrow_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">PAJU SHINSEGAE RAWROW</span></span><span class="sd-ov-m">Interior Design</span></div></div>
       <div class="sd-lbl"><span>Interior — Paju Shinsegae</span></div>
     </div>
     <div class="sd-item" onclick="openDetail('space',6)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/interior/google/google_thumb.png" alt="Google" loading="lazy" onerror="this.src='image/interior/google/google_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/interior/google/google_thumb.png" alt="Google" loading="lazy" onerror="this.src='image/interior/google/google_01.png'">
+        <img class="sd-hov" src="image/interior/google/google_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">GOOGLE OFFICE</span></span><span class="sd-ov-m">Interior Design</span></div></div>
       <div class="sd-lbl"><span>Interior — Google</span></div>
     </div>
     <div class="sd-item" onclick="openDetail('space',7)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/interior/yeoju_cafe/yeoju_cafe_thumb.png" alt="Yeoju" loading="lazy" onerror="this.src='image/interior/yeoju_cafe/yeoju_cafe_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/interior/yeoju_cafe/yeoju_cafe_thumb.png" alt="Yeoju" loading="lazy" onerror="this.src='image/interior/yeoju_cafe/yeoju_cafe_01.png'">
+        <img class="sd-hov" src="image/interior/yeoju_cafe/yeoju_cafe_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">YEOJU CAFE</span></span><span class="sd-ov-m">Interior Design</span></div></div>
       <div class="sd-lbl"><span>Interior — Yeoju</span></div>
     </div>
@@ -642,17 +674,26 @@ footer{
   </div>
   <div class="sd-grid rv">
     <div class="sd-item" onclick="openDetail('space',8)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/stage/ldp_looklook/ldp_looklook_thumb.png" alt="LDP" loading="lazy" onerror="this.src='image/stage/ldp_looklook/ldp_looklook_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/stage/ldp_looklook/ldp_looklook_thumb.png" alt="LDP" loading="lazy" onerror="this.src='image/stage/ldp_looklook/ldp_looklook_01.png'">
+        <img class="sd-hov" src="image/stage/ldp_looklook/ldp_looklook_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">LDP — LOOK LOOK</span></span><span class="sd-ov-m">Stage Design</span></div></div>
       <div class="sd-lbl"><span>Stage — LDP Look Look</span></div>
     </div>
     <div class="sd-item" onclick="openDetail('space',9)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/stage/a_kind_of_alaska/a_kind_of_alaska_thumb.png" alt="Alaska" loading="lazy" onerror="this.src='image/stage/a_kind_of_alaska/a_kind_of_alaska_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/stage/a_kind_of_alaska/a_kind_of_alaska_thumb.png" alt="Alaska" loading="lazy" onerror="this.src='image/stage/a_kind_of_alaska/a_kind_of_alaska_01.png'">
+        <img class="sd-hov" src="image/stage/a_kind_of_alaska/a_kind_of_alaska_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">A KIND OF ALASKA</span></span><span class="sd-ov-m">Stage Design</span></div></div>
       <div class="sd-lbl"><span>Stage — A Kind of Alaska</span></div>
     </div>
     <div class="sd-item" onclick="openDetail('space',10)">
-      <div class="sd-thumb"><img class="sd-bg" src="image/stage/the_peace_of_world/the_peace_of_world_thumb.png" alt="Peace" loading="lazy" onerror="this.src='image/stage/the_peace_of_world/the_peace_of_world_01.png'"></div>
+      <div class="sd-thumb">
+        <img class="sd-bg" src="image/stage/the_peace_of_world/the_peace_of_world_thumb.png" alt="Peace" loading="lazy" onerror="this.src='image/stage/the_peace_of_world/the_peace_of_world_01.png'">
+        <img class="sd-hov" src="image/stage/the_peace_of_world/the_peace_of_world_hover.png" alt="" loading="lazy">
+      </div>
       <div class="sd-ov"><div><span class="sd-ov-t"><span class="sd-ov-t-inner">THE PEACE OF WORLD</span></span><span class="sd-ov-m">Stage Design</span></div></div>
       <div class="sd-lbl"><span>Stage — Peace of World</span></div>
     </div>
@@ -751,14 +792,13 @@ function openDetail(cat,i){
   showDetail(cat,i);
 }
 
-/* ── 이미지 배열 생성 헬퍼 (png + jpg 모두 시도) ── */
+/* ── 이미지 배열 생성 헬퍼 ── */
 function makeImgs(folder, prefix){
   const base = `image/${folder}/${prefix}`;
   const items = [];
   for(let i=1;i<=99;i++){
     const n = String(i).padStart(2,'0');
-    // png 우선, jpg도 포함
-    items.push({type:'img', src:`${base}_${n}.png`, srcJpg:`${base}_${n}.jpg`});
+    items.push({type:'img', src:`${base}_${n}.png`, alt:`${base}_${n}.jpg`});
   }
   return items;
 }
@@ -903,20 +943,15 @@ function showDetail(cat,i){
     async function checkSequential(items){
       const valid=[];
       for(const item of items){
-        if(item.type==='vid'){
-          valid.push(item);
-          continue;
-        }
-        // png 먼저, 없으면 jpg 시도
-        const tryLoad = (src) => new Promise(res=>{
+        if(item.type==='vid'){ valid.push(item); continue; }
+        const tryLoad=(src)=>new Promise(res=>{
           const img=new Image();
           img.onload=()=>res(src);
           img.onerror=()=>res(null);
           img.src=src;
         });
-        let found = await tryLoad(item.src);
-        if(!found && item.srcJpg) found = await tryLoad(item.srcJpg);
-        if(found) valid.push({...item, src: found});
+        const found=(await tryLoad(item.src))||(await tryLoad(item.alt));
+        if(found) valid.push({...item, src:found});
         else break;
       }
       return valid;
@@ -978,7 +1013,7 @@ window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('s',scrollY>50);
 });
 // 썸네일 fallback — thumb.png 없으면 thumb.jpg → _01.png → _01.jpg 순서로 시도
-document.querySelectorAll('.gt img.gt-bg, .gt-vid, .sd-bg').forEach(img=>{
+document.querySelectorAll('.gt img.gt-bg, .gt-vid, .sd-bg, .sd-hov').forEach(img=>{
   if(!img.src) return;
   const orig = img.src;
   img.addEventListener('error', function onErr(){
