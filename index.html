@@ -1782,80 +1782,36 @@ setTimeout(()=>{
   if(f)f.classList.add('loaded');
 },100);
 
-/* ── Hero 영상 순환 ── */
+/* ── Hero 영상 순환 — 하드코딩 타이머 ── */
 (function(){
   const videos=[
-    {id:'CQ0DzSbh4ks', start:12, dur:120000}, // 파빌리온 — 영상 끝나면 넘김, dur은 fallback
-    {id:'acCnJlKUkEs', start:0,  dur:120000}, // 게이트
-    {id:'furwa3ICGpw', start:0,  dur:120000}, // 마차
-    {id:'VaIKmb5KU5w', start:0,  dur:120000}, // 지브러쉬 락
-    {id:'d6nyNFcwCzI', start:0,  dur:120000}, // 쥬이서
-    {id:'_RORN5Y1ov8', start:0,  dur:120000}, // 레트로
+    {id:'CQ0DzSbh4ks', start:12, dur:83},  // 파빌리온 (95초 - 12초)
+    {id:'acCnJlKUkEs', start:0,  dur:41},  // 게이트
+    {id:'furwa3ICGpw', start:0,  dur:58},  // 마차
+    {id:'VaIKmb5KU5w', start:0,  dur:33},  // 지브러쉬 락
+    {id:'d6nyNFcwCzI', start:0,  dur:36},  // 쥬이서
+    {id:'_RORN5Y1ov8', start:0,  dur:39},  // 레트로
   ];
   let cur=0;
-  let fallbackTimer=null;
-  let player=null;
+  let timer=null;
 
   function buildSrc(v){
-    return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}&enablejsapi=1&origin=${encodeURIComponent(location.origin||'*')}`;
+    return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}`;
   }
 
   function goNext(){
-    clearTimeout(fallbackTimer);
     cur=(cur+1)%videos.length;
     const f=document.getElementById('hero-iframe');
     if(!f) return;
     f.classList.remove('loaded');
-    // player 재생성
-    if(player){try{player.destroy();}catch(e){} player=null;}
     f.src=buildSrc(videos[cur]);
-    setTimeout(()=>{
-      f.classList.add('loaded');
-      initPlayer();
-    }, 800);
-    // fallback — API 안 잡히면 dur ms 후 강제 넘김
-    fallbackTimer=setTimeout(goNext, videos[cur].dur);
+    setTimeout(()=>f.classList.add('loaded'), 800);
+    clearTimeout(timer);
+    timer=setTimeout(goNext, videos[cur].dur*1000);
   }
 
-  function initPlayer(){
-    const f=document.getElementById('hero-iframe');
-    if(!f||!window.YT||!window.YT.Player) return;
-    try{
-      player=new window.YT.Player('hero-iframe',{
-        events:{
-          onStateChange:function(e){
-            if(e.data===0){ // ended
-              clearTimeout(fallbackTimer);
-              goNext();
-            }
-            if(e.data===1){ // playing — fallback 리셋
-              clearTimeout(fallbackTimer);
-              try{
-                const dur=player.getDuration()*1000;
-                const startOffset=(videos[cur].start||0)*1000;
-                const remaining=dur-startOffset;
-                if(remaining>0) fallbackTimer=setTimeout(goNext, remaining+1000);
-              }catch(err){
-                fallbackTimer=setTimeout(goNext, videos[cur].dur);
-              }
-            }
-          }
-        }
-      });
-    }catch(err){}
-  }
-
-  window.onYouTubeIframeAPIReady=function(){ initPlayer(); };
-
-  if(!document.getElementById('yt-api-script')){
-    const s=document.createElement('script');
-    s.id='yt-api-script';
-    s.src='https://www.youtube.com/iframe_api';
-    document.head.appendChild(s);
-  }
-
-  // 첫 fallback — API 로드 안되면 dur 후 강제 넘김
-  fallbackTimer=setTimeout(goNext, videos[cur].dur);
+  // 첫 영상 타이머 시작
+  timer=setTimeout(goNext, videos[cur].dur*1000);
 })();
 
 /* ── Detail 패럴랙스 ── */
