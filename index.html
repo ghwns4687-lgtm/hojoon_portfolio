@@ -580,7 +580,38 @@ footer{
 }
 #lb-hint.hide{opacity:0;}
 /* 이미지 커서만 */
-.dp-img-bg{cursor:zoom-in;}
+.dp-img-bg{cursor:none;}
+.dp-img{cursor:none;}
+
+/* 라이트박스 안 커서 숨김 */
+#lb-canvas{cursor:none;}
+#lb-canvas.dragging{cursor:none;}
+
+/* ── 커스텀 커서 ── */
+#custom-cursor{
+  position:fixed;z-index:9999;
+  pointer-events:none;
+  display:flex;align-items:center;gap:6px;
+  transform:translate(-50%,-50%);
+  opacity:0;transition:opacity .2s;
+  mix-blend-mode:difference;
+}
+#custom-cursor.visible{opacity:1;}
+#custom-cursor .cur-cross{
+  position:relative;width:16px;height:16px;flex-shrink:0;
+}
+#custom-cursor .cur-cross::before,
+#custom-cursor .cur-cross::after{
+  content:'';position:absolute;background:#fff;
+  transition:all .2s;
+}
+#custom-cursor .cur-cross::before{width:1px;height:100%;left:50%;top:0;}
+#custom-cursor .cur-cross::after{width:100%;height:1px;top:50%;left:0;}
+#custom-cursor .cur-text{
+  font-family:var(--M);font-size:9px;letter-spacing:.22em;
+  text-transform:uppercase;color:#fff;white-space:nowrap;
+  transition:opacity .2s;
+}
 /* reveal */
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
 .rv.on{opacity:1;transform:none;}
@@ -1567,6 +1598,9 @@ function closeLb(){
   lb.classList.remove('open');
   document.body.style.overflow='';
   _lbScale=1;_lbTx=0;_lbTy=0;
+  // 커서 숨기기
+  const cur=document.getElementById('custom-cursor');
+  if(cur){cur.classList.remove('visible');}
 }
 
 // 이벤트 — DOMContentLoaded 보장
@@ -1634,6 +1668,71 @@ window.addEventListener('load',function(){
       }
     });
   }
+
+  // ── 커스텀 커서 ──
+  const cur=document.getElementById('custom-cursor');
+  const curText=cur?cur.querySelector('.cur-text'):null;
+  let curActive=false;
+
+  function moveCursor(e){
+    if(!cur) return;
+    cur.style.left=e.clientX+'px';
+    cur.style.top=e.clientY+'px';
+  }
+  document.addEventListener('mousemove',moveCursor);
+
+  // 커서 텍스트 업데이트 — 라이트박스 줌 상태 반영
+  function updateLbCursor(){
+    if(!curText) return;
+    if(_lbScale>1){
+      curText.textContent='Drag';
+    } else {
+      curText.textContent='Scroll to Zoom';
+    }
+  }
+
+  // 라이트박스 canvas 위에서 커서
+  if(canvas){
+    canvas.addEventListener('mouseenter',function(){
+      if(!cur) return;
+      updateLbCursor();
+      cur.classList.add('visible');
+      curActive=true;
+    });
+    canvas.addEventListener('mouseleave',function(){
+      if(!cur) return;
+      cur.classList.remove('visible');
+      curActive=false;
+    });
+    canvas.addEventListener('mousemove',function(){
+      updateLbCursor();
+    });
+  }
+
+  // dp-imgs 안 이미지 위에서 커서
+  document.addEventListener('mouseover',function(e){
+    if(!cur) return;
+    // 라이트박스 열려있으면 스킵 (canvas 이벤트가 처리)
+    if(lb && lb.classList.contains('open')) return;
+    const img=e.target.closest('#dp-imgs .dp-img-bg, #dp-imgs .dp-img');
+    if(img){
+      if(!curActive){
+        curText.textContent='Expand';
+        cur.classList.add('visible');
+        curActive=true;
+      }
+    } else {
+      if(curActive){
+        cur.classList.remove('visible');
+        curActive=false;
+      }
+    }
+  });
+  document.addEventListener('mouseleave',function(){
+    if(!cur) return;
+    cur.classList.remove('visible');
+    curActive=false;
+  });
 });
 
 
@@ -1663,6 +1762,12 @@ const obs=new IntersectionObserver(es=>{
 },{threshold:0.06});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 </script>
+<!-- ═══ CUSTOM CURSOR ═══ -->
+<div id="custom-cursor">
+  <div class="cur-cross"></div>
+  <span class="cur-text">Expand</span>
+</div>
+
 <!-- ═══ LIGHTBOX ═══ -->
 <div id="lb">
   <button id="lb-close" onclick="closeLb()">✕ &nbsp;ESC</button>
