@@ -579,11 +579,11 @@ footer{
   color:var(--t3);pointer-events:none;transition:opacity .5s;
 }
 #lb-hint.hide{opacity:0;}
-/* 이미지 커서만 */
-.dp-img-bg{cursor:none;}
-.dp-img{cursor:none;}
+/* Detail 이미지 — 시스템 돋보기 커서 */
+.dp-img-bg{cursor:zoom-in;}
+.dp-img{cursor:zoom-in;}
 
-/* 라이트박스 안 커서 숨김 */
+/* 라이트박스 안 커서 숨김 — 커스텀 커서 사용 */
 #lb-canvas{cursor:none;}
 #lb-canvas.dragging{cursor:none;}
 
@@ -594,7 +594,7 @@ footer{
   display:flex;align-items:center;gap:6px;
   transform:translate(-50%,-50%);
   opacity:0;transition:opacity .2s;
-  mix-blend-mode:difference;
+  
 }
 #custom-cursor.visible{opacity:1;}
 #custom-cursor .cur-cross{
@@ -1709,25 +1709,6 @@ window.addEventListener('load',function(){
     });
   }
 
-  // dp-imgs 안 이미지 위에서 커서
-  document.addEventListener('mouseover',function(e){
-    if(!cur) return;
-    // 라이트박스 열려있으면 스킵 (canvas 이벤트가 처리)
-    if(lb && lb.classList.contains('open')) return;
-    const img=e.target.closest('#dp-imgs .dp-img-bg, #dp-imgs .dp-img');
-    if(img){
-      if(!curActive){
-        curText.textContent='Expand';
-        cur.classList.add('visible');
-        curActive=true;
-      }
-    } else {
-      if(curActive){
-        cur.classList.remove('visible');
-        curActive=false;
-      }
-    }
-  });
   document.addEventListener('mouseleave',function(){
     if(!cur) return;
     cur.classList.remove('visible');
