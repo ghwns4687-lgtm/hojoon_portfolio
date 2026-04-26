@@ -545,9 +545,33 @@ footer{
 .dp-home::before,.dp-home::after{content:'';width:14px;height:1px;background:var(--ac);transition:width .2s;}
 .dp-home:hover::before,.dp-home:hover::after{width:22px;}
 
+/* ── LIGHTBOX ── */
+#lb{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(8,8,8,.96);
+  align-items:center;justify-content:center;
+  cursor:zoom-out;
+}
+#lb.open{display:flex;}
+#lb-img{
+  max-width:92vw;max-height:92vh;
+  object-fit:contain;display:block;
+  transform:scale(.92);opacity:0;
+  transition:transform .3s cubic-bezier(.25,.46,.45,.94),opacity .3s ease;
+  cursor:default;
+}
+#lb.open #lb-img{transform:scale(1);opacity:1;}
+#lb-close{
+  position:absolute;top:1.2rem;right:1.5rem;
+  font-family:var(--M);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--t2);background:none;border:none;cursor:pointer;
+  transition:color .2s;
+}
+#lb-close:hover{color:var(--ac);}
 /* reveal */
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
 .rv.on{opacity:1;transform:none;}
+
 </style>
 </head>
 <body>
@@ -1047,6 +1071,7 @@ const DETAIL_MEDIA = {
     ]
   },
   game_1: {
+    youtubeId: 'acCnJlKUkEs',
     items: [
       {type:'img',src:'image/3d_graphic/medieval_gate/medieval_gate_01.png'},
       {type:'img',src:'image/3d_graphic/medieval_gate/medieval_gate_02.png'},
@@ -1094,6 +1119,7 @@ const DETAIL_MEDIA = {
     ]
   },
   game_4: {
+    youtubeId: 'furwa3ICGpw',
     items: [
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_01.png'},
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_02.png'},
@@ -1121,6 +1147,7 @@ const DETAIL_MEDIA = {
     ]
   },
   game_5: {
+    youtubeId: 'd6nyNFcwCzI',
     items: [
       {type:'img',src:'image/3d_graphic/old_juicer/old_juicer_01.png'},
       {type:'img',src:'image/3d_graphic/old_juicer/old_juicer_02.png'},
@@ -1137,6 +1164,7 @@ const DETAIL_MEDIA = {
     ]
   },
   game_6: {
+    youtubeId: 'VaIKmb5KU5w',
     items: [
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_01.png'},
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_02.png'},
@@ -1154,6 +1182,7 @@ const DETAIL_MEDIA = {
     ]
   },
   game_7: {
+    youtubeId: '_RORN5Y1ov8',
     items: [
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_01.png'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_02.png'},
@@ -1473,6 +1502,29 @@ document.querySelectorAll('.gt img.gt-bg, .gt-vid, .sd-bg, .sd-hov').forEach(img
   });
 });
 
+/* ── Lightbox ── */
+function openLb(src){
+  const lb=document.getElementById('lb');
+  const img=document.getElementById('lb-img');
+  img.src=src;
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLb(){
+  const lb=document.getElementById('lb');
+  lb.classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeLb();
+});
+
+// dp-imgs 이미지 클릭 → 라이트박스 (동적으로 추가되는 이미지라 이벤트 위임)
+document.getElementById('dp-imgs').addEventListener('click',e=>{
+  const img=e.target.closest('.dp-img-bg');
+  if(img && img.tagName==='IMG') openLb(img.src);
+});
+
 setTimeout(()=>{
   const f=document.getElementById('hero-iframe');
   if(f)f.classList.add('loaded');
@@ -1499,5 +1551,11 @@ const obs=new IntersectionObserver(es=>{
 },{threshold:0.06});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 </script>
+<!-- ═══ LIGHTBOX ═══ -->
+<div id="lb" onclick="closeLb()">
+  <button id="lb-close" onclick="closeLb()">✕ &nbsp;Close</button>
+  <img id="lb-img" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
 </body>
 </html>
