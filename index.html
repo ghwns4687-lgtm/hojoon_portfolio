@@ -282,7 +282,7 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
    INTERIOR / STAGE — 가로 스크롤 공통
 ════════════════════ */
 .sd-section{padding:5rem 0 4rem;border-top:1px solid var(--bd);overflow:hidden;}
-.sd-hd{padding:0 2.5rem 2rem;}
+.sd-hd{padding:2rem 2.5rem 0;}
 .sd-tag{font-family:var(--M);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ac);margin-bottom:.5rem;display:block;}
 .sd-t{font-family:var(--D);font-size:clamp(2.5rem,6vw,5.5rem);line-height:.88;color:var(--txt);}
 .sd-t .ac{color:var(--ac);}
@@ -443,9 +443,9 @@ footer{
   min-height:340px;
 }
 .dp-hd{
-  position:absolute;bottom:0;left:0;right:0;z-index:4;
-  padding:0 2.5rem 2rem;
-  background:linear-gradient(to bottom,transparent 0%,rgba(8,8,8,.55) 40%,rgba(8,8,8,.98) 100%);
+  position:absolute;top:0;left:0;right:0;z-index:4;
+  padding:2rem 2.5rem 0;
+  background:linear-gradient(to bottom,rgba(8,8,8,.7) 0%,rgba(8,8,8,.3) 40%,transparent 100%);
 }
 /* 배경 고스트 타이포 */
 .dp-tg{
@@ -483,6 +483,22 @@ footer{
 /* 영상 없을 때 — hero 높이 최소 유지 */
 .dp-no-vid{position:absolute;inset:0;padding:0;border:none;background:var(--bg);}
 .dp-no-vid span{display:none;}
+
+/* 영상 없는 프로젝트 — 일반 헤더 모드 */
+.dp-hero.no-vid{
+  aspect-ratio:unset;min-height:unset;
+  background:var(--bg);
+}
+.dp-hero.no-vid .dp-hd{
+  position:relative;top:unset;left:unset;right:unset;
+  padding:3.5rem 2.5rem 2rem;
+  background:none;
+  border-bottom:1px solid var(--bd);
+}
+.dp-hero.no-vid .dp-tg{
+  bottom:-.1em;
+}
+.dp-hero.no-vid .dp-no-vid{display:none;}
 
 /* 칩태그 */
 .dp-desc-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem;}
@@ -1429,10 +1445,17 @@ function showDetail(cat,i){
 
   // 영상 — YouTube 최상단 자동재생
   const vEl=document.getElementById('dp-vid');
+  const heroEl=vEl.closest('.dp-hero');
   const mediaKey = `${cat}_${i}`;
   const media = DETAIL_MEDIA[mediaKey];
+  const hasVid = media && media.youtubeId;
 
-  if(media && media.youtubeId){
+  // Hero 모드 / 일반 헤더 모드 전환
+  if(heroEl){
+    heroEl.classList.toggle('no-vid', !hasVid);
+  }
+
+  if(hasVid){
     vEl.className='dp-vid-wrap has-vid';
     vEl.innerHTML=`
       <iframe
@@ -1533,8 +1556,11 @@ function closeDetail(){
 }
 document.getElementById('dp-back').onclick=closeDetail;
 window.addEventListener('popstate',e=>{
-  if(e.state&&e.state.cat!==undefined)showDetail(e.state.cat,e.state.i);
-  else document.getElementById('dp').classList.remove('open');
+  if(e.state&&e.state.cat!==undefined) showDetail(e.state.cat,e.state.i);
+  else {
+    document.getElementById('dp').classList.remove('open');
+    document.body.style.overflow='';
+  }
 });
 window.addEventListener('load',()=>{
   const m=location.hash.match(/#(work|space)-(\d+)/);
