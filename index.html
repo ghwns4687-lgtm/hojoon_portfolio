@@ -550,27 +550,59 @@ footer{
   display:none;position:fixed;inset:0;z-index:500;
   background:rgba(8,8,8,.96);
   align-items:center;justify-content:center;
-  cursor:zoom-out;
+  overflow:hidden;
 }
 #lb.open{display:flex;}
+#lb-canvas{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:grab;
+}
+#lb-canvas.dragging{cursor:grabbing;}
 #lb-img{
   max-width:92vw;max-height:92vh;
   object-fit:contain;display:block;
   transform:scale(.92);opacity:0;
   transition:transform .3s cubic-bezier(.25,.46,.45,.94),opacity .3s ease;
-  cursor:default;
+  pointer-events:none;user-select:none;-webkit-user-drag:none;
 }
 #lb.open #lb-img{transform:scale(1);opacity:1;}
 #lb-close{
-  position:absolute;top:1.2rem;right:1.5rem;
+  position:fixed;top:1.2rem;right:1.5rem;z-index:10;
   font-family:var(--M);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--t2);background:none;border:none;cursor:pointer;
-  transition:color .2s;
+  color:var(--t2);background:none;border:none;cursor:pointer;transition:color .2s;
 }
 #lb-close:hover{color:var(--ac);}
+#lb-hint{
+  position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%);
+  font-family:var(--M);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--t3);pointer-events:none;transition:opacity .5s;
+}
+#lb-hint.hide{opacity:0;}
+/* 이미지 호버 오버레이 */
+.dp-img{position:relative;}
+.dp-img-overlay{
+  position:absolute;inset:0;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(8,8,8,0);transition:background .25s;pointer-events:none;
+}
+.dp-img:hover .dp-img-overlay{background:rgba(8,8,8,.3);}
+.dp-img-zoom-icon{
+  opacity:0;transform:scale(.85);
+  transition:opacity .25s,transform .25s;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+}
+.dp-img:hover .dp-img-zoom-icon{opacity:1;transform:scale(1);}
+.dp-img-zoom-icon svg{width:28px;height:28px;stroke:rgba(221,216,204,.8);stroke-width:1.2;fill:none;}
+.dp-img-zoom-icon span{
+  font-family:var(--M);font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(221,216,204,.6);
+}
+.dp-img-bg{cursor:zoom-in;}
 /* reveal */
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
 .rv.on{opacity:1;transform:none;}
+
 
 </style>
 </head>
@@ -1502,28 +1534,130 @@ document.querySelectorAll('.gt img.gt-bg, .gt-vid, .sd-bg, .sd-hov').forEach(img
   });
 });
 
-/* ── Lightbox ── */
-function openLb(src){
+/* ── Lightbox — zoom + drag ── */
+(function(){
+  let scale=1, tx=0, ty=0;
+  let dragging=false, startX=0, startY=0;
+  const MIN=1, MAX=5;
   const lb=document.getElementById('lb');
+  const canvas=document.getElementById('lb-canvas');
   const img=document.getElementById('lb-img');
-  img.src=src;
-  lb.classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeLb(){
-  const lb=document.getElementById('lb');
-  lb.classList.remove('open');
-  document.body.style.overflow='';
-}
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape') closeLb();
-});
+  const hint=document.getElementById('lb-hint');
+  if(!lb||!canvas||!img) return;
+  let hintTimer=null;
 
-// dp-imgs 이미지 클릭 → 라이트박스 (동적으로 추가되는 이미지라 이벤트 위임)
-document.getElementById('dp-imgs').addEventListener('click',e=>{
-  const img=e.target.closest('.dp-img-bg');
-  if(img && img.tagName==='IMG') openLb(img.src);
-});
+  function applyTransform(animate){
+    if(animate) img.style.transition='transform .15s ease';
+    else img.style.transition='none';
+    img.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;
+  }
+
+  function clampPan(){
+    // 줌 안 된 상태면 이동 제한
+    if(scale<=1){tx=0;ty=0;return;}
+    const maxX=(img.offsetWidth*(scale-1))/2;
+    const maxY=(img.offsetHeight*(scale-1))/2;
+    tx=Math.min(maxX,Math.max(-maxX,tx));
+    ty=Math.min(maxY,Math.max(-maxY,ty));
+  }
+
+  function showHint(){
+    hint.classList.remove('hide');
+    clearTimeout(hintTimer);
+    hintTimer=setTimeout(()=>hint.classList.add('hide'),2500);
+  }
+
+  window.openLb=function(src){
+    scale=1;tx=0;ty=0;
+    img.src=src;
+    img.style.transition='transform .3s cubic-bezier(.25,.46,.45,.94),opacity .3s ease';
+    img.style.transform='scale(.92)';
+    img.style.opacity='0';
+    lb.classList.add('open');
+    document.body.style.overflow='hidden';
+    requestAnimationFrame(()=>{
+      img.style.transform='translate(0,0) scale(1)';
+      img.style.opacity='1';
+    });
+    showHint();
+  };
+
+  window.closeLb=function(){
+    lb.classList.remove('open');
+    document.body.style.overflow='';
+    scale=1;tx=0;ty=0;
+  };
+
+  // ESC
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();});
+
+  // 배경 클릭 닫기
+  lb.addEventListener('click',e=>{
+    if(e.target===lb||e.target===canvas) closeLb();
+  });
+
+  // 스크롤 줌
+  canvas.addEventListener('wheel',e=>{
+    e.preventDefault();
+    const delta=e.deltaY>0?-0.15:0.15;
+    scale=Math.min(MAX,Math.max(MIN,scale+delta));
+    clampPan();
+    applyTransform(false);
+    if(scale>1) showHint();
+  },{passive:false});
+
+  // 드래그 팬
+  canvas.addEventListener('mousedown',e=>{
+    if(scale<=1) return;
+    dragging=true;
+    startX=e.clientX-tx;
+    startY=e.clientY-ty;
+    canvas.classList.add('dragging');
+  });
+  window.addEventListener('mousemove',e=>{
+    if(!dragging) return;
+    tx=e.clientX-startX;
+    ty=e.clientY-startY;
+    clampPan();
+    applyTransform(false);
+  });
+  window.addEventListener('mouseup',()=>{
+    dragging=false;
+    canvas.classList.remove('dragging');
+  });
+
+  // 더블클릭 리셋
+  canvas.addEventListener('dblclick',e=>{
+    if(e.target===canvas||e.target===lb) return;
+    if(scale>1){scale=1;tx=0;ty=0;}
+    else{scale=2.5;}
+    applyTransform(true);
+  });
+})();
+
+// dp-imgs 이미지 클릭 → 라이트박스 + 호버 오버레이 주입
+const dpImgsEl = document.getElementById('dp-imgs');
+if(dpImgsEl){
+  dpImgsEl.addEventListener('click',e=>{
+    const img=e.target.closest('.dp-img-bg');
+    if(img&&img.tagName==='IMG') openLb(img.src);
+  });
+
+  // 이미지 렌더 후 호버 오버레이 추가
+  function injectOverlays(){
+    document.querySelectorAll('#dp-imgs .dp-img').forEach(wrap=>{
+      if(wrap.querySelector('.dp-img-overlay')) return;
+      const ov=document.createElement('div');
+      ov.className='dp-img-overlay';
+      ov.innerHTML=`<div class="dp-img-zoom-icon">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        <span>View</span>
+      </div>`;
+      wrap.appendChild(ov);
+    });
+  }
+  new MutationObserver(injectOverlays).observe(dpImgsEl,{childList:true,subtree:true});
+}
 
 setTimeout(()=>{
   const f=document.getElementById('hero-iframe');
@@ -1552,9 +1686,12 @@ const obs=new IntersectionObserver(es=>{
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 </script>
 <!-- ═══ LIGHTBOX ═══ -->
-<div id="lb" onclick="closeLb()">
-  <button id="lb-close" onclick="closeLb()">✕ &nbsp;Close</button>
-  <img id="lb-img" src="" alt="" onclick="event.stopPropagation()">
+<div id="lb">
+  <button id="lb-close" onclick="closeLb()">✕ &nbsp;ESC</button>
+  <div id="lb-canvas">
+    <img id="lb-img" src="" alt="">
+  </div>
+  <div id="lb-hint">Scroll to zoom &nbsp;·&nbsp; Drag to pan</div>
 </div>
 
 </body>
