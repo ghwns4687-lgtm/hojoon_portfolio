@@ -480,7 +480,7 @@ footer{
 
 /* 이미지 — 풀width, 자연스러운 비율 */
 .dp-imgs{display:flex;flex-direction:column;gap:6rem;padding:4rem 2.5rem 8rem;}
-.dp-img{width:100%;background:#0e0e0e;overflow:hidden;position:relative;}
+.dp-img{width:100%;background:var(--bg);overflow:hidden;position:relative;}
 .dp-img.ph{aspect-ratio:16/9;}
 .dp-img.ph::after{
   content:'[ 스크린샷 ]';position:absolute;inset:0;
@@ -488,7 +488,7 @@ footer{
   font-family:var(--M);font-size:11px;letter-spacing:.14em;color:var(--t3);pointer-events:none;
 }
 /* 패럴랙스 */
-.dp-img{width:100%;background:#0e0e0e;overflow:hidden;position:relative;}
+.dp-img{width:100%;background:var(--bg);overflow:hidden;position:relative;}
 .dp-img-bg{
   width:100%;height:auto;display:block;background:#0e0e0e;
   will-change:transform;transition:transform .1s linear;
