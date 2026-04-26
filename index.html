@@ -1517,116 +1517,125 @@ document.querySelectorAll('.gt img.gt-bg, .gt-vid, .sd-bg, .sd-hov').forEach(img
 });
 
 /* ── Lightbox — zoom + drag ── */
-(function(){
-  let scale=1, tx=0, ty=0;
-  let dragging=false, startX=0, startY=0;
-  const MIN=1, MAX=5;
+let _lbScale=1, _lbTx=0, _lbTy=0;
+let _lbDragging=false, _lbSx=0, _lbSy=0;
+const LB_MIN=1, LB_MAX=5;
+
+function _lbApply(anim){
+  const img=document.getElementById('lb-img');
+  if(!img) return;
+  img.style.transition=anim?'transform .15s ease':'none';
+  img.style.transform=`translate(${_lbTx}px,${_lbTy}px) scale(${_lbScale})`;
+}
+function _lbClamp(){
+  if(_lbScale<=1){_lbTx=0;_lbTy=0;return;}
+  const img=document.getElementById('lb-img');
+  if(!img) return;
+  const mx=(img.offsetWidth*(_lbScale-1))/2;
+  const my=(img.offsetHeight*(_lbScale-1))/2;
+  _lbTx=Math.min(mx,Math.max(-mx,_lbTx));
+  _lbTy=Math.min(my,Math.max(-my,_lbTy));
+}
+function _lbShowHint(){
+  const h=document.getElementById('lb-hint');
+  if(!h) return;
+  h.classList.remove('hide');
+  clearTimeout(window._lbHintTimer);
+  window._lbHintTimer=setTimeout(()=>h.classList.add('hide'),2500);
+}
+
+function openLb(src){
+  const lb=document.getElementById('lb');
+  const img=document.getElementById('lb-img');
+  if(!lb||!img) return;
+  _lbScale=1;_lbTx=0;_lbTy=0;
+  img.src=src;
+  img.style.transition='transform .3s cubic-bezier(.25,.46,.45,.94),opacity .3s ease';
+  img.style.transform='scale(.92)';
+  img.style.opacity='0';
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+  requestAnimationFrame(()=>{
+    img.style.transform='translate(0,0) scale(1)';
+    img.style.opacity='1';
+  });
+  _lbShowHint();
+}
+function closeLb(){
+  const lb=document.getElementById('lb');
+  if(!lb) return;
+  lb.classList.remove('open');
+  document.body.style.overflow='';
+  _lbScale=1;_lbTx=0;_lbTy=0;
+}
+
+// 이벤트 — DOMContentLoaded 보장
+window.addEventListener('load',function(){
   const lb=document.getElementById('lb');
   const canvas=document.getElementById('lb-canvas');
   const img=document.getElementById('lb-img');
-  const hint=document.getElementById('lb-hint');
   if(!lb||!canvas||!img) return;
-  let hintTimer=null;
-
-  function applyTransform(animate){
-    if(animate) img.style.transition='transform .15s ease';
-    else img.style.transition='none';
-    img.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;
-  }
-
-  function clampPan(){
-    // 줌 안 된 상태면 이동 제한
-    if(scale<=1){tx=0;ty=0;return;}
-    const maxX=(img.offsetWidth*(scale-1))/2;
-    const maxY=(img.offsetHeight*(scale-1))/2;
-    tx=Math.min(maxX,Math.max(-maxX,tx));
-    ty=Math.min(maxY,Math.max(-maxY,ty));
-  }
-
-  function showHint(){
-    hint.classList.remove('hide');
-    clearTimeout(hintTimer);
-    hintTimer=setTimeout(()=>hint.classList.add('hide'),2500);
-  }
-
-  window.openLb=function(src){
-    scale=1;tx=0;ty=0;
-    img.src=src;
-    img.style.transition='transform .3s cubic-bezier(.25,.46,.45,.94),opacity .3s ease';
-    img.style.transform='scale(.92)';
-    img.style.opacity='0';
-    lb.classList.add('open');
-    document.body.style.overflow='hidden';
-    requestAnimationFrame(()=>{
-      img.style.transform='translate(0,0) scale(1)';
-      img.style.opacity='1';
-    });
-    showHint();
-  };
-
-  window.closeLb=function(){
-    lb.classList.remove('open');
-    document.body.style.overflow='';
-    scale=1;tx=0;ty=0;
-  };
-
-  // ESC
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();});
 
   // 배경 클릭 닫기
-  lb.addEventListener('click',e=>{
+  lb.addEventListener('click',function(e){
     if(e.target===lb||e.target===canvas) closeLb();
   });
 
   // 스크롤 줌
-  canvas.addEventListener('wheel',e=>{
+  canvas.addEventListener('wheel',function(e){
     e.preventDefault();
-    const delta=e.deltaY>0?-0.15:0.15;
-    scale=Math.min(MAX,Math.max(MIN,scale+delta));
-    clampPan();
-    applyTransform(false);
-    if(scale>1) showHint();
+    const d=e.deltaY>0?-0.18:0.18;
+    _lbScale=Math.min(LB_MAX,Math.max(LB_MIN,_lbScale+d));
+    _lbClamp();_lbApply(false);
+    if(_lbScale>1) _lbShowHint();
   },{passive:false});
 
-  // 드래그 팬
-  canvas.addEventListener('mousedown',e=>{
-    if(scale<=1) return;
-    dragging=true;
-    startX=e.clientX-tx;
-    startY=e.clientY-ty;
+  // 드래그
+  canvas.addEventListener('mousedown',function(e){
+    if(_lbScale<=1) return;
+    _lbDragging=true;
+    _lbSx=e.clientX-_lbTx;_lbSy=e.clientY-_lbTy;
     canvas.classList.add('dragging');
   });
-  window.addEventListener('mousemove',e=>{
-    if(!dragging) return;
-    tx=e.clientX-startX;
-    ty=e.clientY-startY;
-    clampPan();
-    applyTransform(false);
+  window.addEventListener('mousemove',function(e){
+    if(!_lbDragging) return;
+    _lbTx=e.clientX-_lbSx;_lbTy=e.clientY-_lbSy;
+    _lbClamp();_lbApply(false);
   });
-  window.addEventListener('mouseup',()=>{
-    dragging=false;
+  window.addEventListener('mouseup',function(){
+    _lbDragging=false;
     canvas.classList.remove('dragging');
   });
 
-  // 더블클릭 리셋
-  canvas.addEventListener('dblclick',e=>{
+  // 더블클릭 토글
+  canvas.addEventListener('dblclick',function(e){
     if(e.target===canvas||e.target===lb) return;
-    if(scale>1){scale=1;tx=0;ty=0;}
-    else{scale=2.5;}
-    applyTransform(true);
+    _lbScale=_lbScale>1?1:2.5;
+    _lbTx=0;_lbTy=0;
+    _lbApply(true);
   });
-})();
 
-// dp-imgs 이미지 클릭 → 라이트박스
-const dpImgsEl = document.getElementById('dp-imgs');
-if(dpImgsEl){
-  dpImgsEl.addEventListener('click',e=>{
-    const img = e.target.tagName==='IMG'
-      ? e.target
-      : e.target.querySelector('img.dp-img-bg');
-    if(img && img.classList.contains('dp-img-bg')) openLb(img.src);
+  // ESC
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape') closeLb();
   });
-}
+
+  // 이미지 클릭 → 라이트박스
+  const dpImgsEl=document.getElementById('dp-imgs');
+  if(dpImgsEl){
+    dpImgsEl.addEventListener('click',function(e){
+      let target=e.target;
+      while(target && target!==dpImgsEl){
+        if(target.tagName==='IMG' && target.classList.contains('dp-img-bg')){
+          openLb(target.src);
+          return;
+        }
+        target=target.parentElement;
+      }
+    });
+  }
+});
+
 
 setTimeout(()=>{
   const f=document.getElementById('hero-iframe');
