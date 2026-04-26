@@ -448,9 +448,22 @@ footer{
 }
 .dp-title{font-family:var(--D);font-size:clamp(2.5rem,5.5vw,5rem);line-height:.88;color:var(--txt);position:relative;z-index:1;}
 .dp-title .ac{color:var(--ac);}
-.dp-meta{text-align:right;position:relative;z-index:1;}
-.dp-meta span{display:block;font-family:var(--M);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);line-height:2.4;}
-.dp-meta strong{color:var(--t2);font-weight:400;}
+/* 우측 상단 — 타입 크게 */
+.dp-meta{text-align:right;position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;}
+.dp-meta-type{
+  font-family:var(--D);font-size:clamp(2rem,4.5vw,4rem);
+  line-height:.88;letter-spacing:.04em;
+  color:transparent;-webkit-text-stroke:1px rgba(51,170,255,.35);
+  text-transform:uppercase;
+}
+
+/* 칩태그 */
+.dp-desc-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem;}
+.dp-desc-chip{
+  font-family:var(--M);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:.4rem .9rem;border:1px solid rgba(221,216,204,.1);color:var(--t2);
+}
+.dp-desc-chip.highlight{border-color:rgba(51,170,255,.28);color:rgba(51,170,255,.85);}
 
 /* 영상 */
 .dp-vid-wrap{position:relative;width:100%;background:#0e0e0e;}
@@ -462,10 +475,7 @@ footer{
   height:35%;z-index:3;pointer-events:none;
   background:linear-gradient(to bottom,transparent 0%,var(--bg) 100%);
 }
-.dp-no-vid{
-  padding:3rem;display:flex;align-items:center;gap:1rem;
-  border-bottom:1px solid var(--bd);
-}
+.dp-no-vid{padding:0;border:none;}
 .dp-no-vid span{font-family:var(--M);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);}
 
 /* 이미지 — 풀width, 자연스러운 비율 */
@@ -477,11 +487,47 @@ footer{
   display:flex;align-items:center;justify-content:center;
   font-family:var(--M);font-size:11px;letter-spacing:.14em;color:var(--t3);pointer-events:none;
 }
-.dp-img-bg{width:100%;height:auto;display:block;background:#0e0e0e;}
+/* 패럴랙스 */
+.dp-img{width:100%;background:#0e0e0e;overflow:hidden;position:relative;}
+.dp-img-bg{
+  width:100%;height:auto;display:block;background:#0e0e0e;
+  will-change:transform;transition:transform .1s linear;
+}
 
 /* 무대 디자인 — 원본 크기 유지, 확대 없음, 중앙 정렬 */
 .dp-imgs.natural .dp-img{background:none;display:flex;justify-content:center;align-items:center;}
 .dp-imgs.natural .dp-img-bg{width:auto;max-width:100%;height:auto;}
+
+/* ── DETAIL DESC ── */
+.dp-desc{
+  padding:3rem 2.5rem 0;
+  display:grid;grid-template-columns:1fr 1fr;gap:3rem;
+  border-top:1px solid var(--bd);
+}
+.dp-desc-overview{grid-column:1;}
+.dp-desc-breakdown{grid-column:2;}
+.dp-desc-label{
+  font-family:var(--M);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ac);margin-bottom:1rem;display:block;
+}
+.dp-desc-text{
+  font-size:13px;line-height:2;font-weight:300;color:var(--t2);
+}
+.dp-stat-row{
+  display:flex;flex-direction:column;gap:0;margin-top:0;
+}
+.dp-stat{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.85rem 0;border-bottom:1px solid var(--bd);
+  font-family:var(--M);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+}
+.dp-stat:first-child{border-top:1px solid var(--bd);}
+.dp-stat-k{color:var(--t3);}
+.dp-stat-v{color:var(--t2);}
+@media(max-width:700px){
+  .dp-desc{grid-template-columns:1fr;}
+  .dp-desc-breakdown{grid-column:1;}
+}
 
 /* 홈 버튼 */
 .dp-home{
@@ -758,16 +804,16 @@ footer{
   <div class="ab-inner rv">
     <div class="ab-left">
       <div class="ab-big">ENV<br><span class="ac">ART</span><br><em>IST</em></div>
-      <p class="ab-p">공간이 가진 이야기를 3D로 구현합니다. Medieval부터 판타지까지, 플레이어가 처음 발을 들였을 때 그 세계를 믿게 만드는 배경을 만드는 것이 목표입니다.</p>
+      <p class="ab-p">3DS Max · ZBrush · Substance Painter · UE5로 이어지는 풀 파이프라인을 단독으로 소화합니다.<br><br>포트폴리오의 각 작업물은 <strong style="color:var(--txt);font-weight:400;">재질 다양성</strong>을 의도적으로 설계했습니다 — 패브릭, 석재, 금속, 유리, 플라스틱, 유기물. 하나의 씬 안에서 소재가 가진 물리적 특성과 노화 방식을 라이팅과 함께 설득력 있게 표현하는 것이 핵심 역량입니다.<br><br>게임 배경 / 레벨 / 프랍 포지션을 목표로 합니다.</p>
     </div>
     <div class="ab-right">
       <ul class="sk">
-        <li><span class="sk-n">01</span>3DS Max / ZBrush<span class="sk-lv">Main</span></li>
-        <li><span class="sk-n">02</span>Substance Painter / Designer<span class="sk-lv">Main</span></li>
-        <li><span class="sk-n">03</span>Unreal Engine 5<span class="sk-lv">Main</span></li>
-        <li><span class="sk-n">04</span>Marmoset Toolbag<span class="sk-lv">Main</span></li>
-        <li><span class="sk-n">05</span>Rizom UV / Knald<span class="sk-lv">Sub</span></li>
-        <li><span class="sk-n">06</span>Unity / Photoshop<span class="sk-lv">Sub</span></li>
+        <li><span class="sk-n">01</span>3DS Max · ZBrush<span class="sk-lv">Primary</span></li>
+        <li><span class="sk-n">02</span>Substance Painter · Designer<span class="sk-lv">Primary</span></li>
+        <li><span class="sk-n">03</span>Unreal Engine 5<span class="sk-lv">Primary</span></li>
+        <li><span class="sk-n">04</span>Marmoset Toolbag<span class="sk-lv">Primary</span></li>
+        <li><span class="sk-n">05</span>Rizom UV · Knald<span class="sk-lv">Sub</span></li>
+        <li><span class="sk-n">06</span>Unity · Photoshop<span class="sk-lv">Sub</span></li>
       </ul>
     </div>
   </div>
@@ -804,6 +850,17 @@ footer{
     <div class="dp-meta" id="dp-meta"></div>
   </div>
   <div id="dp-vid" class="dp-no-vid"><span>[ 영상 로딩 ]</span></div>
+  <div class="dp-desc" id="dp-desc">
+    <div class="dp-desc-overview">
+      <span class="dp-desc-label">Overview</span>
+      <p class="dp-desc-text" id="dp-desc-overview-text"></p>
+      <div class="dp-desc-chips" id="dp-desc-chips"></div>
+    </div>
+    <div class="dp-desc-breakdown">
+      <span class="dp-desc-label">Breakdown</span>
+      <div class="dp-stat-row" id="dp-stat-row"></div>
+    </div>
+  </div>
   <div class="dp-imgs" id="dp-imgs">
     <div class="dp-img ph"></div>
     <div class="dp-img ph"></div>
@@ -815,15 +872,114 @@ footer{
 <script>
 /* ── 데이터 ── */
 const GW=[
-  {t:"MEDIEVAL\nWAR PAVILION",engine:"Unreal Engine 5",tools:"3DS Max · ZBrush · Substance Painter",year:"2024",type:"Environment",hasVideo:true},
-  {t:"MEDIEVAL\nGATE",        engine:"Unreal Engine 5",tools:"3DS Max · ZBrush · Substance Painter",year:"2024",type:"Environment",hasVideo:false},
-  {t:"SCI-FI\nCORRIDOR",      engine:"Unreal Engine 5",tools:"3DS Max · Substance Painter",          year:"2023",type:"Environment",hasVideo:false},
-  {t:"FIRE\nPLACE",           engine:"Marmoset",       tools:"3DS Max · Substance Painter",          year:"2023",type:"Interior",  hasVideo:false},
-  {t:"OLD\nCARRIAGE",         engine:"Marmoset",       tools:"3DS Max · Substance Painter",          year:"2023",type:"Props",     hasVideo:false},
-  {t:"OLD\nJUICER",           engine:"Marmoset",       tools:"3DS Max · Substance Painter",          year:"2023",type:"Props",     hasVideo:false},
-  {t:"ZBRUSH\nROCK",          engine:"ZBrush",         tools:"ZBrush · Substance Painter",           year:"2023",type:"Study",     hasVideo:false},
-  {t:"RETRO\nCOMPUTER",       engine:"Marmoset",       tools:"3DS Max · Substance Painter",          year:"2022",type:"Props",     hasVideo:false},
-  {t:"ZBRUSH\nSTUDY",         engine:"ZBrush",         tools:"ZBrush · Substance Painter",           year:"2022",type:"Study",     hasVideo:false},
+  {
+    t:"MEDIEVAL\nWAR PAVILION",
+    engine:"Unreal Engine 5",tools:"3DS Max · ZBrush · Substance Painter",year:"2024",type:"Environment",hasVideo:true,
+    overview:`핀터레스트 원화를 레퍼런스로 중세 군사 야영지를 UE5로 구현했습니다. 천막·로프·목재·금속이 혼재하는 복합 재질 씬을 목표로, 패브릭과 같이 표현하기 까다로운 소재의 물성을 라이팅 안에서 설득력 있게 읽히게 만드는 데 집중했습니다. 모델링부터 UE5 라이팅까지 전 과정 단독 작업입니다.`,
+    chips:[{t:"Fabric · Rope",h:true},{t:"Wood",h:false},{t:"Metal",h:false},{t:"UE5 Lumen",h:true},{t:"Hi-poly Bake",h:false}],
+    stats:[
+      {k:"Role",v:"Solo — Full Pipeline"},
+      {k:"Scope",v:"Modeling · Hi-poly · UV · Texturing · Lighting"},
+      {k:"Focus",v:"재질 다양성 · 패브릭 표현"},
+      {k:"Pipeline",v:"3DS Max → ZBrush → Substance → UE5"},
+    ]
+  },
+  {
+    t:"MEDIEVAL\nGATE",
+    engine:"Unreal Engine 5",tools:"3DS Max · ZBrush · Substance Painter",year:"2024",type:"Environment",hasVideo:false,
+    overview:`Pavilion과 같은 시리즈의 성문 구조물입니다. 유기적인 석재 표면과 단조 금속 장식의 재질 대비를 Substance Painter에서 세밀하게 제어했고, UE5 대기 조명을 활용해 구조물의 무게감과 스케일을 강조했습니다.`,
+    chips:[{t:"Stone",h:true},{t:"Forged Metal",h:true},{t:"UE5 Atmosphere",h:false},{t:"Hi-poly Bake",h:false}],
+    stats:[
+      {k:"Role",v:"Solo — Full Pipeline"},
+      {k:"Scope",v:"Modeling · Hi-poly · UV · Texturing · Lighting"},
+      {k:"Focus",v:"석재 · 금속 재질 대비"},
+      {k:"Pipeline",v:"3DS Max → ZBrush → Substance → UE5"},
+    ]
+  },
+  {
+    t:"SCI-FI\nCORRIDOR",
+    engine:"Unreal Engine 5",tools:"3DS Max · Substance Painter",year:"2023",type:"Environment",hasVideo:false,
+    overview:`반사율이 높은 매끄러운 패널과 거친 산업용 금속을 같은 공간 안에 배치해 재질 대비를 극대화한 SF 복도 씬입니다. UE5 Lumen의 이미시브 라이팅을 활용해 각 소재가 조명 역할을 동시에 수행하도록 연출했습니다.`,
+    chips:[{t:"Metal",h:true},{t:"Plastic Panel",h:false},{t:"Emissive",h:true},{t:"UE5 Lumen",h:false}],
+    stats:[
+      {k:"Role",v:"Solo — Full Pipeline"},
+      {k:"Scope",v:"Modeling · UV · Texturing · Lighting · Composition"},
+      {k:"Focus",v:"이미시브 · 반사 재질 대비"},
+      {k:"Pipeline",v:"3DS Max → Substance → UE5"},
+    ]
+  },
+  {
+    t:"FIRE\nPLACE",
+    engine:"Marmoset Toolbag",tools:"3DS Max · Substance Painter",year:"2023",type:"Props",hasVideo:false,
+    overview:`단일 오브젝트 안에서 재질의 '시간'을 읽히게 만드는 것이 핵심 목표였습니다. 그을음, 열균열, 금속 산화를 Substance Painter에서 레이어 단위로 쌓아 벽난로가 오랫동안 사용된 흔적을 표면에 담았습니다.`,
+    chips:[{t:"Stone",h:true},{t:"Soot · Wear",h:true},{t:"Oxidized Metal",h:false}],
+    stats:[
+      {k:"Role",v:"Solo — Full Pipeline"},
+      {k:"Scope",v:"Modeling · UV · Texturing · Presentation"},
+      {k:"Focus",v:"표면 노화 · 웨더링"},
+      {k:"Pipeline",v:"3DS Max → Substance → Marmoset"},
+    ]
+  },
+  {
+    t:"OLD\nCARRIAGE",
+    engine:"Marmoset Toolbag",tools:"3DS Max · Substance Painter",year:"2023",type:"Props",hasVideo:false,
+    overview:`목재·가죽·금속이 결합된 복합 재질 프랍입니다. 소재별로 다른 노화 논리를 적용했고, UV 세트와 텍스처 레이어를 명확히 분리해 각 재질의 마모 패턴을 독립적으로 제어했습니다.`,
+    chips:[{t:"Wood",h:true},{t:"Leather",h:true},{t:"Metal Fittings",h:false}],
+    stats:[
+      {k:"Role",v:"Solo — Full Pipeline"},
+      {k:"Scope",v:"Modeling · UV · Texturing · Presentation"},
+      {k:"Focus",v:"복합 재질 · 소재별 노화"},
+      {k:"Pipeline",v:"3DS Max → Substance → Marmoset"},
+    ]
+  },
+  {
+    t:"OLD\nJUICER",
+    engine:"Marmoset Toolbag",tools:"3DS Max · Substance Painter",year:"2023",type:"Props",hasVideo:false,
+    overview:`금속 도금과 유리가 결합된 빈티지 착즙기입니다. 페인트 벗겨짐과 유리 굴절·반사라는 물성이 전혀 다른 두 소재를 Marmoset 라이팅 안에서 정확하게 표현하는 것이 주요 과제였습니다.`,
+    chips:[{t:"Metal",h:true},{t:"Glass",h:true},{t:"Paint Wear",h:false}],
+    stats:[
+      {k:"Role",v:"Solo — Full Pipeline"},
+      {k:"Scope",v:"Modeling · UV · Texturing · Presentation"},
+      {k:"Focus",v:"금속 · 유리 재질 렌더링"},
+      {k:"Pipeline",v:"3DS Max → Substance → Marmoset"},
+    ]
+  },
+  {
+    t:"ZBRUSH\nROCK",
+    engine:"ZBrush",tools:"ZBrush · Substance Painter",year:"2023",type:"Study",hasVideo:false,
+    overview:`암석의 층리, 균열, 이끼 부착 등 마이크로 디테일을 ZBrush 브러시로 레이어링한 오가닉 스컬프팅 스터디입니다. Substance에서 AO 기반으로 마감해 노말맵 의존도를 낮추면서도 깊이감을 확보했습니다.`,
+    chips:[{t:"Organic",h:true},{t:"Rock Sculpt",h:false},{t:"ZBrush",h:true}],
+    stats:[
+      {k:"Role",v:"Solo — Study"},
+      {k:"Scope",v:"Sculpting · Bake · Texturing"},
+      {k:"Focus",v:"오가닉 표면 디테일"},
+      {k:"Pipeline",v:"ZBrush → Substance"},
+    ]
+  },
+  {
+    t:"RETRO\nCOMPUTER",
+    engine:"Marmoset Toolbag",tools:"3DS Max · Substance Painter",year:"2022",type:"Props",hasVideo:false,
+    overview:`80년대 레트로 컴퓨터 하드 서페이스 프랍입니다. 플라스틱 사출 광택, UV 황변, 키보드 각인 마모를 Substance에서 재현했으며, 정확한 로우폴리 토폴로지와 노말 베이크 품질에 집중한 작업입니다.`,
+    chips:[{t:"Plastic",h:true},{t:"Yellowing",h:true},{t:"Hard Surface",h:false}],
+    stats:[
+      {k:"Role",v:"Solo — Full Pipeline"},
+      {k:"Scope",v:"Modeling · UV · Bake · Texturing · Presentation"},
+      {k:"Focus",v:"플라스틱 재질 · 하드 서페이스"},
+      {k:"Pipeline",v:"3DS Max → Substance → Marmoset"},
+    ]
+  },
+  {
+    t:"ZBRUSH\nSTUDY",
+    engine:"ZBrush",tools:"ZBrush · Substance Painter",year:"2022",type:"Study",hasVideo:false,
+    overview:`오가닉 형태의 볼륨 배분, 흐름, 표면 디테일 레이어링을 집중 연습한 ZBrush 스터디입니다. 이 작업에서 다진 역량이 이후 환경 아트의 바위·목재·지형 표현에 직접 연결됩니다.`,
+    chips:[{t:"Organic",h:true},{t:"Form Study",h:false},{t:"ZBrush",h:true}],
+    stats:[
+      {k:"Role",v:"Solo — Study"},
+      {k:"Scope",v:"Sculpting · Form · Surface Detail"},
+      {k:"Focus",v:"볼륨 · 오가닉 흐름"},
+      {k:"Pipeline",v:"ZBrush → Substance"},
+    ]
+  },
 ];
 const SW=[
   {t:"PAJU\nCAFE",                    type:"Interior",year:"2023"},
@@ -1171,10 +1327,20 @@ function showDetail(cat,i){
   document.getElementById('dp-title').innerHTML=
     lines.map((l,j)=>j===1?`<span class="ac">${l}</span>`:l).join('<br>');
   document.getElementById('dp-meta').innerHTML=
-    `<span>Type &nbsp;<strong>${w.type}</strong></span>
-     ${w.engine?`<span>Engine &nbsp;<strong>${w.engine}</strong></span>`:''}
-     ${w.tools?`<span>Tools &nbsp;<strong>${w.tools}</strong></span>`:''}
-     <span>Year &nbsp;<strong>${w.year}</strong></span>`;
+    `<span class="dp-meta-type">${w.type}</span>`;
+
+  // ── DESC 블록 ──
+  const descEl = document.getElementById('dp-desc');
+  if(w.overview){
+    descEl.style.display='grid';
+    document.getElementById('dp-desc-overview-text').innerHTML = w.overview.split('\n\n').map(p=>`<span style="display:block;margin-bottom:1em;">${p}</span>`).join('');
+    document.getElementById('dp-desc-chips').innerHTML =
+      (w.chips||[]).map(c=>`<span class="dp-desc-chip${c.h?' highlight':''}">${c.t}</span>`).join('');
+    document.getElementById('dp-stat-row').innerHTML =
+      (w.stats||[]).map(s=>`<div class="dp-stat"><span class="dp-stat-k">${s.k}</span><span class="dp-stat-v">${s.v}</span></div>`).join('');
+  } else {
+    descEl.style.display='none';
+  }
 
   // 영상 — YouTube 최상단 자동재생
   const vEl=document.getElementById('dp-vid');
@@ -1196,7 +1362,7 @@ function showDetail(cat,i){
     vEl.innerHTML=`<video autoplay muted loop playsinline><source src="" type="video/mp4"></video>`;
   } else {
     vEl.className='dp-no-vid';
-    vEl.innerHTML=`<span>이미지로 확인하세요</span>`;
+    vEl.innerHTML='';
   }
 
   // 이미지 + 클립 렌더링 (순차 체크 — 404 나오면 거기서 멈춤)
@@ -1311,6 +1477,23 @@ setTimeout(()=>{
   const f=document.getElementById('hero-iframe');
   if(f)f.classList.add('loaded');
 },100);
+
+/* ── Detail 패럴랙스 ── */
+const dpEl=document.getElementById('dp');
+function runParallax(){
+  const imgs=dpEl.querySelectorAll('.dp-img-bg');
+  const scrollTop=dpEl.scrollTop;
+  imgs.forEach((img,idx)=>{
+    const rect=img.closest('.dp-img').getBoundingClientRect();
+    const dpRect=dpEl.getBoundingClientRect();
+    const relY=rect.top-dpRect.top;
+    const offset=relY*0.06;
+    img.style.transform=`translateY(${offset}px)`;
+  });
+}
+dpEl.addEventListener('scroll',()=>{
+  requestAnimationFrame(runParallax);
+},{ passive:true });
 const obs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});
 },{threshold:0.06});
