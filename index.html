@@ -1685,7 +1685,7 @@ window.addEventListener('load',function(){
   function updateLbCursor(){
     if(!curText) return;
     if(_lbScale>1){
-      curText.textContent='Drag';
+      curText.textContent='Wheel Drag';
     } else {
       curText.textContent='Scroll to Zoom';
     }
@@ -1774,7 +1774,7 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
   <div id="lb-canvas">
     <img id="lb-img" src="" alt="">
   </div>
-  <div id="lb-hint">Scroll to zoom &nbsp;·&nbsp; Drag to pan</div>
+  <div id="lb-hint">Scroll to zoom &nbsp;·&nbsp; Wheel drag to pan</div>
 </div>
 
 </body>
