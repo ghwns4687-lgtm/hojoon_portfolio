@@ -663,7 +663,7 @@ footer{
   <div class="h-media">
     <div class="h-fb"></div>
     <iframe id="hero-iframe"
-      src="https://www.youtube.com/embed/CQ0DzSbh4ks?autoplay=1&mute=1&loop=1&playlist=CQ0DzSbh4ks,acCnJlKUkEs,furwa3ICGpw,VaIKmb5KU5w,d6nyNFcwCzI,_RORN5Y1ov8&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=12"
+      src="https://www.youtube.com/embed/CQ0DzSbh4ks?autoplay=1&mute=1&loop=1&playlist=CQ0DzSbh4ks&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=12&enablejsapi=1"
       allow="autoplay; fullscreen" allowfullscreen>
     </iframe>
   </div>
@@ -1290,9 +1290,9 @@ const DETAIL_MEDIA = {
   },
   game_8: {
     items: [
-      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_01.png'},
+      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_01.png',constrain:true},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_02.png'},
-      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_03.png'},
+      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_03.png',constrain:true},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_04.png'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_05.png'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_06.png'},
@@ -1462,7 +1462,7 @@ function showDetail(cat,i){
         src="https://www.youtube.com/embed/${media.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${media.youtubeId}&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&showinfo=0"
         allow="autoplay; fullscreen" allowfullscreen>
       </iframe>
-      <div style="position:absolute;inset:0;z-index:2;pointer-events:none;"></div>`;
+      <div style="position:absolute;inset:0;z-index:2;cursor:default;"></div>`;
   } else if(cat==='game'&&w.hasVideo){
     vEl.className='dp-vid-wrap has-vid';
     vEl.innerHTML=`<video autoplay muted loop playsinline><source src="" type="video/mp4"></video>`;
@@ -1514,7 +1514,8 @@ function showDetail(cat,i){
       }
       imgEl.innerHTML=valid.map(item=>{
         if(item.type==='img'){
-          return `<div class="dp-img"><img class="dp-img-bg" src="${item.src}" alt="" loading="lazy"></div>`;
+          const style=item.constrain?'style="max-width:75%;margin:0 auto;display:block;"':'';
+          return `<div class="dp-img"${item.constrain?' style="display:flex;justify-content:center;background:var(--bg);"':''}><img class="dp-img-bg" src="${item.src}" alt="" loading="lazy" ${style}></div>`;
         } else {
           return `<div class="dp-img">
             <video style="width:100%;height:auto;display:block;background:#0e0e0e;"
@@ -1780,6 +1781,63 @@ setTimeout(()=>{
   const f=document.getElementById('hero-iframe');
   if(f)f.classList.add('loaded');
 },100);
+
+/* ── Hero 영상 순환 — YouTube API 종료 감지 ── */
+(function(){
+  const videos=[
+    {id:'CQ0DzSbh4ks', start:12},
+    {id:'acCnJlKUkEs', start:0},
+    {id:'furwa3ICGpw', start:0},
+    {id:'VaIKmb5KU5w', start:0},
+    {id:'d6nyNFcwCzI', start:0},
+    {id:'_RORN5Y1ov8', start:0},
+  ];
+  let cur=0;
+  let player=null;
+
+  function buildSrc(v){
+    return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}&enablejsapi=1`;
+  }
+
+  function loadNext(){
+    cur=(cur+1)%videos.length;
+    const f=document.getElementById('hero-iframe');
+    if(!f) return;
+    f.classList.remove('loaded');
+    f.src=buildSrc(videos[cur]);
+    setTimeout(()=>f.classList.add('loaded'),800);
+    // player 교체 후 재등록
+    if(player) try{ player.destroy(); }catch(e){}
+    player=null;
+    setTimeout(initPlayer, 1200);
+  }
+
+  function initPlayer(){
+    const f=document.getElementById('hero-iframe');
+    if(!f||!window.YT||!YT.Player) return;
+    try{
+      player=new YT.Player('hero-iframe',{
+        events:{
+          onStateChange:function(e){
+            // 0 = ended
+            if(e.data===0) loadNext();
+          }
+        }
+      });
+    }catch(err){}
+  }
+
+  // YouTube API 로드
+  window.onYouTubeIframeAPIReady=function(){
+    initPlayer();
+  };
+  if(!document.getElementById('yt-api-script')){
+    const s=document.createElement('script');
+    s.id='yt-api-script';
+    s.src='https://www.youtube.com/iframe_api';
+    document.head.appendChild(s);
+  }
+})();
 
 /* ── Detail 패럴랙스 ── */
 const dpEl=document.getElementById('dp');
