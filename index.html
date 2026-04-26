@@ -435,35 +435,54 @@ footer{
 .dp-back:hover{color:var(--ac);}
 .dp-nav-t{font-family:var(--M);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);}
 
+/* ── Hero 스타일 영상+제목 래퍼 ── */
+.dp-hero{
+  position:relative;width:100%;
+  aspect-ratio:16/9;
+  background:#0a0a0a;overflow:hidden;
+  min-height:340px;
+}
 .dp-hd{
-  padding:3rem 2.5rem 2.5rem;
-  position:relative;overflow:hidden;
-  border-bottom:none;
+  position:absolute;bottom:0;left:0;right:0;z-index:4;
+  padding:0 2.5rem 2rem;
+  background:linear-gradient(to bottom,transparent 0%,rgba(8,8,8,.55) 40%,rgba(8,8,8,.98) 100%);
 }
-/* 배경 고스트 타이포 — 훨씬 희미하게 */
+/* 배경 고스트 타이포 */
 .dp-tg{
-  position:absolute;right:-0.05em;bottom:-0.15em;
-  font-family:var(--D);font-size:clamp(8rem,18vw,17rem);
+  position:absolute;right:-0.03em;bottom:-.1em;z-index:0;
+  font-family:var(--D);font-size:clamp(6rem,14vw,13rem);
   line-height:.85;color:transparent;
-  -webkit-text-stroke:1px rgba(51,170,255,.04);
+  -webkit-text-stroke:1px rgba(51,170,255,.05);
   pointer-events:none;user-select:none;white-space:nowrap;
-  z-index:0;
 }
-/* 태그라인 — 제목 위 작게 */
+/* 태그라인 */
 .dp-tag{
   font-family:var(--M);font-size:9px;letter-spacing:.24em;text-transform:uppercase;
   color:var(--ac);display:flex;align-items:center;gap:.6rem;
-  margin-bottom:.75rem;position:relative;z-index:1;
+  margin-bottom:.6rem;position:relative;z-index:1;
 }
 .dp-tag::before{content:'';width:18px;height:1px;background:var(--ac);}
 .dp-title{
-  font-family:var(--D);font-size:clamp(3.5rem,7vw,6.5rem);
+  font-family:var(--D);font-size:clamp(2.8rem,6vw,5.5rem);
   line-height:.86;color:var(--txt);
   position:relative;z-index:1;
 }
 .dp-title .ac{color:var(--ac);}
-/* 우측 메타 제거 */
 .dp-meta{display:none;}
+
+/* 영상 — hero 안에서 풀사이즈 */
+.dp-vid-wrap{position:absolute;inset:0;width:100%;height:100%;background:#0a0a0a;z-index:1;}
+.dp-vid-wrap.has-vid{aspect-ratio:unset;}
+.dp-vid-wrap video,.dp-vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;object-fit:cover;}
+.dp-vid-wrap.has-vid::after{
+  content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:
+    linear-gradient(to bottom,rgba(8,8,8,.3) 0%,transparent 30%,transparent 50%,rgba(8,8,8,.7) 80%,rgba(8,8,8,1) 100%),
+    linear-gradient(to right,rgba(8,8,8,.4) 0%,transparent 60%);
+}
+/* 영상 없을 때 — hero 높이 최소 유지 */
+.dp-no-vid{position:absolute;inset:0;padding:0;border:none;background:var(--bg);}
+.dp-no-vid span{display:none;}
 
 /* 칩태그 */
 .dp-desc-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem;}
@@ -472,19 +491,6 @@ footer{
   padding:.4rem .9rem;border:1px solid rgba(221,216,204,.1);color:var(--t2);
 }
 .dp-desc-chip.highlight{border-color:rgba(51,170,255,.28);color:rgba(51,170,255,.85);}
-
-/* 영상 */
-.dp-vid-wrap{position:relative;width:100%;background:#0e0e0e;}
-.dp-vid-wrap.has-vid{aspect-ratio:16/9;}
-.dp-vid-wrap video,.dp-vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;object-fit:cover;}
-/* 영상 하단 그라데이션 */
-.dp-vid-wrap.has-vid::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;
-  height:35%;z-index:3;pointer-events:none;
-  background:linear-gradient(to bottom,transparent 0%,var(--bg) 100%);
-}
-.dp-no-vid{padding:0;border:none;}
-.dp-no-vid span{font-family:var(--M);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);}
 
 /* 이미지 — 풀width, 자연스러운 비율 */
 .dp-imgs{display:flex;flex-direction:column;gap:6rem;padding:4rem 2.5rem 8rem;}
@@ -915,13 +921,15 @@ footer{
     <span class="dp-nav-t" id="dp-nav-t"></span>
   </div>
   <button class="dp-home" onclick="closeDetail()">Home</button>
-  <div class="dp-hd">
-    <div class="dp-tg" id="dp-tg"></div>
-    <div class="dp-tag" id="dp-tag"></div>
-    <div class="dp-title" id="dp-title"></div>
-    <div class="dp-meta" id="dp-meta"></div>
+  <div class="dp-hero">
+    <div id="dp-vid" class="dp-no-vid"></div>
+    <div class="dp-hd">
+      <div class="dp-tg" id="dp-tg"></div>
+      <div class="dp-tag" id="dp-tag"></div>
+      <div class="dp-title" id="dp-title"></div>
+      <div class="dp-meta" id="dp-meta"></div>
+    </div>
   </div>
-  <div id="dp-vid" class="dp-no-vid"><span>[ 영상 로딩 ]</span></div>
   <div class="dp-desc" id="dp-desc">
     <div class="dp-desc-overview">
       <span class="dp-desc-label">Overview</span>
