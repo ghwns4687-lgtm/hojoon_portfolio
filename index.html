@@ -534,54 +534,116 @@ footer{
 /* ── DETAIL 사이드바 레이아웃 ── */
 .dp-body{
   display:flex;
-  height:calc(100vh - 120px);
+  min-height:calc(100vh - 120px);
   flex-shrink:0;
-  overflow:hidden;
 }
-/* 메인 영역 — 선택된 이미지 크게 */
+/* 메인 영역 — 이미지 세로 스크롤 */
 .dp-main{
-  flex:1;overflow-y:auto;
+  flex:1;
   background:var(--bg);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
+  display:flex;flex-direction:column;
+  align-items:center;
+  padding:2rem 0 4rem;
+  gap:1.5rem;
 }
 .dp-main-img{
-  max-width:100%;max-height:100%;
+  max-width:100%;height:auto;
   object-fit:contain;display:block;
   cursor:zoom-in;
 }
 .dp-main-vid{
   width:100%;aspect-ratio:16/9;
-  position:relative;
+  position:relative;flex-shrink:0;
 }
 .dp-main-vid iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
 .dp-main-vid .dp-vid-cover{position:absolute;inset:0;z-index:2;cursor:default;}
 
-/* 우측 사이드바 */
+/* 우측 사이드바 — 두 영역 분리 */
 .dp-sidebar{
   width:200px;flex-shrink:0;
-  overflow-y:auto;
-  background:rgba(8,8,8,.95);
+  position:sticky;top:44px;
+  height:calc(100vh - 44px);
+  background:rgba(6,6,6,.98);
   border-left:1px solid var(--bd);
-  padding:.5rem;
-  display:flex;flex-direction:column;gap:.4rem;
+  display:flex;flex-direction:column;
+  overflow:hidden;
 }
+/* 상단 고정 — 텍스트 정보 */
+.dp-sb-info{
+  flex-shrink:0;
+  padding:1.2rem 1rem 1rem;
+  border-bottom:1px solid var(--bd);
+}
+.dp-sb-info-label{
+  font-family:var(--M);font-size:8px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ac);display:flex;align-items:center;gap:.4rem;margin-bottom:.8rem;
+}
+.dp-sb-info-label::before{content:'';width:10px;height:1px;background:var(--ac);}
+.dp-sb-stat{
+  display:flex;flex-direction:column;gap:0;
+}
+.dp-sb-stat-row{
+  display:flex;flex-direction:column;
+  padding:.45rem 0;
+  border-bottom:1px solid rgba(221,216,204,.05);
+}
+.dp-sb-stat-row:last-child{border-bottom:none;}
+.dp-sb-stat-k{
+  font-family:var(--M);font-size:7px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--t3);margin-bottom:.2rem;
+}
+.dp-sb-stat-v{
+  font-family:var(--M);font-size:9px;letter-spacing:.04em;
+  color:var(--t2);line-height:1.4;
+}
+
+/* 하단 스크롤 — 썸네일 */
+.dp-sb-thumbs{
+  flex:1;overflow-y:auto;
+  padding:.6rem;
+  display:flex;flex-direction:column;gap:.4rem;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(51,170,255,.2) transparent;
+}
+.dp-sb-thumbs::-webkit-scrollbar{width:2px;}
+.dp-sb-thumbs::-webkit-scrollbar-track{background:transparent;}
+.dp-sb-thumbs::-webkit-scrollbar-thumb{background:rgba(51,170,255,.2);}
+
 .dp-sb-item{
   width:100%;aspect-ratio:16/9;
   overflow:hidden;cursor:pointer;
-  position:relative;border:1px solid transparent;
-  transition:border-color .2s;flex-shrink:0;
+  position:relative;
+  border:1px solid rgba(221,216,204,.06);
+  transition:border-color .2s, opacity .2s;
+  flex-shrink:0;
+  opacity:.45;
 }
-.dp-sb-item.active{border-color:var(--ac);}
-.dp-sb-item:hover{border-color:rgba(221,216,204,.3);}
+.dp-sb-item.active{
+  border-color:var(--ac);
+  opacity:1;
+  box-shadow:0 0 0 1px var(--ac);
+}
+.dp-sb-item:hover{border-color:rgba(221,216,204,.25);opacity:.75;}
 .dp-sb-item img,.dp-sb-item video{
   width:100%;height:100%;object-fit:cover;display:block;
 }
-.dp-sb-play{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  background:rgba(8,8,8,.4);pointer-events:none;
+
+/* 좌우 프로젝트 이동 화살표 */
+.dp-nav-arrow{
+  position:fixed;top:50%;z-index:350;
+  transform:translateY(-50%);
+  background:rgba(8,8,8,.7);border:1px solid var(--bd);
+  color:var(--t2);font-family:var(--M);font-size:9px;letter-spacing:.15em;
+  padding:1.2rem .7rem;cursor:pointer;
+  transition:border-color .2s,color .2s,background .2s;
+  writing-mode:vertical-rl;
+  display:flex;flex-direction:column;align-items:center;gap:.6rem;
 }
-.dp-sb-play svg{width:24px;height:24px;fill:rgba(255,255,255,.8);}
+.dp-nav-arrow:hover{border-color:var(--ac);color:var(--ac);background:rgba(8,8,8,.95);}
+.dp-nav-arrow.prev{left:0;border-left:none;}
+.dp-nav-arrow.next{right:200px;border-right:none;}
+.dp-nav-arrow svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0;}
+
 .dp-img-bg{
   width:100%;height:auto;display:block;background:#0e0e0e;
   will-change:transform;transition:transform .1s linear;
@@ -702,6 +764,7 @@ footer{
 /* reveal */
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
 .rv.on{opacity:1;transform:none;}
+
 
 
 </style>
@@ -825,21 +888,40 @@ footer{
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">RETRO COMPUTER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
     </div>
-    <!-- 행 4: fire place 3 : zbrush study 7 -->
+    <!-- 행 4: fire place + zbrush study 좌측, 우측 디자인 요소 -->
     <div class="g-row fp-row rv">
-      <div class="gi pos-fire" style="flex:4" onclick="openDetail('game',3)">
+      <div class="gi pos-fire" style="flex:3" onclick="openDetail('game',3)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.png" alt="Fire Place" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.png" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi pos-zstudy" style="flex:6" onclick="openDetail('game',8)">
+      <div class="gi pos-zstudy" style="flex:4" onclick="openDetail('game',8)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.png" alt="ZBrush Study" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.png" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH STUDY</span></span><span class="ov-m">Study · ZBrush</span></div></div>
+      </div>
+      <!-- 우측 디자인 요소 -->
+      <div class="g-row-deco" style="flex:3;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#050505;">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+          <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="width:80%;opacity:.12;">
+            <circle cx="150" cy="150" r="120" stroke="rgba(51,170,255,.8)" stroke-width=".5" fill="none"/>
+            <circle cx="150" cy="150" r="90" stroke="rgba(51,170,255,.5)" stroke-width=".5" fill="none"/>
+            <circle cx="150" cy="150" r="60" stroke="rgba(51,170,255,.3)" stroke-width=".5" fill="none"/>
+            <line x1="30" y1="150" x2="270" y2="150" stroke="rgba(51,170,255,.3)" stroke-width=".5"/>
+            <line x1="150" y1="30" x2="150" y2="270" stroke="rgba(51,170,255,.3)" stroke-width=".5"/>
+            <line x1="65" y1="65" x2="235" y2="235" stroke="rgba(51,170,255,.15)" stroke-width=".5"/>
+            <line x1="235" y1="65" x2="65" y2="235" stroke="rgba(51,170,255,.15)" stroke-width=".5"/>
+            <circle cx="150" cy="150" r="3" fill="rgba(51,170,255,.6)"/>
+          </svg>
+        </div>
+        <div style="position:relative;z-index:1;text-align:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.2rem,2.5vw,2rem);letter-spacing:.2em;color:rgba(51,170,255,.2);line-height:1.2;">MATERIAL<br>STUDY</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.2em;color:rgba(221,216,204,.15);margin-top:.8rem;text-transform:uppercase;">ZBrush · Organic</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1009,21 +1091,24 @@ footer{
       <div class="dp-meta" id="dp-meta"></div>
     </div>
   </div>
+  <button class="dp-nav-arrow prev" id="dp-prev" onclick="navigateProject(-1)">
+    <svg viewBox="0 0 12 12"><polyline points="8,2 4,6 8,10"/></svg>
+    <span>PREV</span>
+  </button>
+  <button class="dp-nav-arrow next" id="dp-next" onclick="navigateProject(1)">
+    <span>NEXT</span>
+    <svg viewBox="0 0 12 12"><polyline points="4,2 8,6 4,10"/></svg>
+  </button>
   <div class="dp-body">
     <div class="dp-main" id="dp-main">
       <img class="dp-main-img" id="dp-main-img" src="" alt="">
     </div>
-    <div class="dp-sidebar" id="dp-sidebar"></div>
-  </div>
-  <div class="dp-desc" id="dp-desc" style="display:none;">
-    <div class="dp-desc-overview">
-      <span class="dp-desc-label">Overview</span>
-      <p class="dp-desc-text" id="dp-desc-overview-text"></p>
-      <div class="dp-desc-chips" id="dp-desc-chips"></div>
-    </div>
-    <div class="dp-desc-breakdown">
-      <span class="dp-desc-label">Breakdown</span>
-      <div class="dp-stat-row" id="dp-stat-row"></div>
+    <div class="dp-sidebar" id="dp-sidebar">
+      <div class="dp-sb-info" id="dp-sb-info">
+        <div class="dp-sb-info-label">Info</div>
+        <div class="dp-sb-stat" id="dp-sb-stat"></div>
+      </div>
+      <div class="dp-sb-thumbs" id="dp-sb-thumbs"></div>
     </div>
   </div>
     <div class="dp-img ph"></div>
@@ -1541,63 +1626,94 @@ function showDetail(cat,i){
 
   // 사이드바 + 메인 뷰어 렌더링
   const sidebarEl=document.getElementById('dp-sidebar');
+  const thumbsEl=document.getElementById('dp-sb-thumbs');
+  const statEl=document.getElementById('dp-sb-stat');
   const mainEl=document.getElementById('dp-main');
-  const mainImg=document.getElementById('dp-main-img');
 
-  function setMainItem(item, isFirst){
+  // 사이드바 상단 — 스탯 정보
+  if(w && w.stats){
+    statEl.innerHTML=w.stats.map(s=>`
+      <div class="dp-sb-stat-row">
+        <span class="dp-sb-stat-k">${s.k}</span>
+        <span class="dp-sb-stat-v">${s.v}</span>
+      </div>`).join('');
+  }
+
+  let currentCat=cat, currentIdx=i;
+
+  function navigateProject(dir){
+    const totalGame=9, totalSpace=11;
+    let newCat=currentCat, newIdx=currentIdx+dir;
+    const total=newCat==='game'?totalGame:totalSpace;
+    if(newIdx<0) newIdx=total-1;
+    if(newIdx>=total) newIdx=0;
+    openDetail(newCat==='game'?'work':'space', newIdx);
+  }
+
+  function setMainItems(items){
     mainEl.innerHTML='';
-    if(item.isVid){
-      // YouTube 영상
+    items.forEach((item, idx)=>{
       const wrap=document.createElement('div');
-      wrap.className='dp-main-vid';
-      wrap.innerHTML=`<iframe src="https://www.youtube.com/embed/${item.ytId}?autoplay=1&mute=1&loop=1&playlist=${item.ytId}&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3" allow="autoplay;fullscreen" allowfullscreen></iframe><div class="dp-vid-cover"></div>`;
+      wrap.dataset.idx=idx;
+      wrap.style.cssText='width:100%;display:flex;justify-content:center;';
+      if(item.isLocalVid){
+        const v=document.createElement('video');
+        v.style.cssText='max-width:100%;height:auto;display:block;';
+        v.autoplay=true;v.muted=true;v.loop=true;v.playsInline=true;
+        v.innerHTML=`<source src="${item.src}" type="video/mp4">`;
+        wrap.appendChild(v);
+      } else {
+        const img=document.createElement('img');
+        img.className='dp-main-img';
+        img.src=item.src;img.alt='';
+        if(item.constrain) img.style.cssText='max-width:75%;height:auto;';
+        img.onclick=()=>openLb(item.src);
+        wrap.appendChild(img);
+      }
       mainEl.appendChild(wrap);
-    } else if(item.isLocalVid){
-      const v=document.createElement('video');
-      v.style.cssText='max-width:100%;max-height:100%;object-fit:contain;display:block;';
-      v.autoplay=true;v.muted=true;v.loop=true;v.playsInline=true;
-      v.innerHTML=`<source src="${item.src}" type="video/mp4">`;
-      mainEl.appendChild(v);
-    } else {
-      const img=document.createElement('img');
-      img.className='dp-main-img';
-      img.src=item.src;
-      img.alt='';
-      if(item.constrain) img.style.cssText='max-width:75%;max-height:100%;object-fit:contain;';
-      img.onclick=()=>openLb(item.src);
-      mainEl.appendChild(img);
-    }
+    });
+
+      const dpEl=document.getElementById('dp');
+      dpEl.addEventListener('scroll', function onScroll(){
+        if(!document.getElementById('dp').classList.contains('open')){
+          dpEl.removeEventListener('scroll', onScroll);
+          return;
+        }
+        const wraps=mainEl.querySelectorAll('[data-idx]');
+        let activeIdx=0;
+        wraps.forEach(wrap=>{
+          const rect=wrap.getBoundingClientRect();
+          if(rect.top <= window.innerHeight*0.5) activeIdx=parseInt(wrap.dataset.idx);
+        });
+        document.querySelectorAll('.dp-sb-item').forEach((el,i)=>{
+          el.classList.toggle('active', i===activeIdx);
+          if(i===activeIdx) el.scrollIntoView({block:'nearest',behavior:'smooth'});
+        });
+      },{passive:true});
   }
 
   function buildSidebar(items){
-    sidebarEl.innerHTML='';
+    thumbsEl.innerHTML='';
     items.forEach((item, idx)=>{
       const div=document.createElement('div');
       div.className='dp-sb-item'+(idx===0?' active':'');
-      if(item.isVid){
-        div.innerHTML=`<img src="https://img.youtube.com/vi/${item.ytId}/mqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover;">
-          <div class="dp-sb-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`;
-      } else if(item.isLocalVid){
-        div.innerHTML=`<video muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;"><source src="${item.src}" type="video/mp4"></video>
-          <div class="dp-sb-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`;
-      } else {
-        div.innerHTML=`<img src="${item.src}" alt="" style="width:100%;height:100%;object-fit:cover;">`;
-      }
+      div.innerHTML=`<img src="${item.src}" alt="" style="width:100%;height:100%;object-fit:cover;">`;
       div.onclick=()=>{
+        const target=mainEl.querySelector(`[data-idx="${idx}"]`);
+        if(target){
+          const dpEl=document.getElementById('dp');
+          const targetTop=target.getBoundingClientRect().top + dpEl.scrollTop - 80;
+          dpEl.scrollTo({top:targetTop, behavior:'smooth'});
+        }
         document.querySelectorAll('.dp-sb-item').forEach(el=>el.classList.remove('active'));
         div.classList.add('active');
-        setMainItem(item, false);
       };
-      sidebarEl.appendChild(div);
+      thumbsEl.appendChild(div);
     });
   }
 
   if(media && media.items){
-    // YouTube 영상 아이템 추가
-    const allItems=[];
-    if(hasVid) allItems.push({isVid:true, ytId:media.youtubeId});
-
-    // 이미지 체크 후 사이드바 구성
+    // 이미지만 사이드바에 (YouTube 제외)
     async function checkAll(items){
       const results=await Promise.all(items.map(item=>{
         if(item.type==='vid') return Promise.resolve({isLocalVid:true, src:item.src});
@@ -1621,26 +1737,14 @@ function showDetail(cat,i){
     }
 
     checkAll(media.items).then(valid=>{
-      const finalItems=[...allItems, ...valid];
-      if(finalItems.length===0) return;
-      buildSidebar(finalItems);
-      setMainItem(finalItems[0], true);
-      // desc 블록 표시
-      const descEl=document.getElementById('dp-desc');
-      if(w.overview){
-        descEl.style.display='grid';
-        document.getElementById('dp-desc-overview-text').innerHTML=w.overview.split('\n\n').map(p=>`<span style="display:block;margin-bottom:1em;">${p}</span>`).join('');
-        document.getElementById('dp-desc-chips').innerHTML=(w.chips||[]).map(c=>`<span class="dp-desc-chip${c.h?' highlight':''}">${c.t}</span>`).join('');
-        document.getElementById('dp-stat-row').innerHTML=(w.stats||[]).map(s=>`<div class="dp-stat"><span class="dp-stat-k">${s.k}</span><span class="dp-stat-v">${s.v}</span></div>`).join('');
-      }
+      if(valid.length===0) return;
+      buildSidebar(valid);
+      setMainItems(valid);
     });
   } else {
-    // 미디어 데이터 없을 때
-    if(hasVid){
-      const items=[{isVid:true, ytId:media.youtubeId}];
-      buildSidebar(items);
-      setMainItem(items[0], true);
-    }
+    // 미디어 없을 때 빈 상태
+    sidebarEl.innerHTML='';
+    mainEl.innerHTML='';
   }
 
   document.getElementById('dp').classList.add('open');
