@@ -162,9 +162,9 @@ nav.s .nav-links a{color:rgba(221,216,204,.75);}
 .gi{position:relative;overflow:hidden;cursor:pointer;background:#111;flex:1;}
 /* 일반 행 높이 — 줄여서 한눈에 */
 .g-row:not(.fp-row){height:clamp(220px,28vw,380px);}
-/* fire place + zbrush study 행 */
-.g-row.fp-row{display:flex;gap:10px;height:clamp(260px,32vw,420px);}
-.g-row.fp-row .gi{flex:1;overflow:hidden;}
+/* fire place + zbrush study 행 — 세로 비율 길게 */
+.g-row.fp-row{display:flex;gap:2px;height:clamp(320px,40vw,520px);justify-content:flex-start;}
+.g-row.fp-row .gi{overflow:hidden;flex:none;}
 .g-row.fp-row .gt{height:100%;line-height:0;}
 .gt{overflow:hidden;position:relative;background:#111;line-height:0;height:100%;}
 
@@ -761,6 +761,13 @@ footer{
   text-transform:uppercase;color:#fff;white-space:nowrap;
   transition:opacity .15s;
 }
+/* ── 전역 스크롤바 ── */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(51,170,255,.18);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(51,170,255,.4);}
+html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
+
 /* reveal */
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
 .rv.on{opacity:1;transform:none;}
@@ -824,12 +831,113 @@ footer{
 </section>
 
 <!-- ═══ WORKS ═══ -->
-<section id="works">
+<section id="works" style="position:relative;overflow:hidden;">
+  <!-- 배경 데코 — 섹션 전체에 깔리는 와이어프레임 지형 -->
+  <div style="position:absolute;right:0;top:0;bottom:0;width:38%;pointer-events:none;z-index:0;opacity:1;">
+    <svg style="width:100%;height:100%;" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="terrainGlow" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="rgba(51,170,255,.06)"/>
+          <stop offset="100%" stop-color="rgba(51,170,255,0)"/>
+        </radialGradient>
+        <!-- 좌측 페이드 마스크 -->
+        <linearGradient id="fadeLeft" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="black"/>
+          <stop offset="60%" stop-color="black" stop-opacity="0"/>
+        </linearGradient>
+        <mask id="leftFade">
+          <rect width="400" height="800" fill="white"/>
+          <rect width="400" height="800" fill="url(#fadeLeft)"/>
+        </mask>
+      </defs>
+
+      <g mask="url(#leftFade)">
+        <!-- 배경 glow -->
+        <rect width="400" height="800" fill="url(#terrainGlow)"/>
+
+        <!-- 와이어프레임 지형 메시 — 수평선들 -->
+        <g stroke="rgba(51,170,255,.12)" stroke-width=".6" fill="none">
+          <!-- 지형 윤곽선들 — 등고선 느낌 -->
+          <path d="M400,150 Q320,140 260,160 Q200,180 160,155 Q120,130 80,145 Q40,160 0,150"/>
+          <path d="M400,220 Q350,200 280,225 Q220,245 170,215 Q130,195 80,210 Q40,225 0,218"/>
+          <path d="M400,290 Q360,275 300,295 Q240,315 185,280 Q140,255 90,272 Q45,288 0,282"/>
+          <path d="M400,360 Q370,348 310,368 Q255,385 195,350 Q150,325 95,342 Q48,357 0,350"/>
+          <path d="M400,430 Q375,420 315,440 Q258,458 200,425 Q155,402 100,418 Q52,433 0,426"/>
+          <path d="M400,500 Q378,490 320,510 Q262,528 205,496 Q158,472 104,490 Q55,506 0,500"/>
+          <path d="M400,570 Q380,560 324,580 Q268,598 210,566 Q162,542 108,560 Q58,576 0,570"/>
+          <path d="M400,640 Q382,630 328,650 Q272,668 215,636 Q167,612 112,630 Q62,646 0,640"/>
+
+          <!-- 수직 연결선들 — 메시 격자 -->
+          <line x1="80" y1="0" x2="80" y2="800" stroke-dasharray="2,12" stroke="rgba(51,170,255,.06)"/>
+          <line x1="160" y1="0" x2="160" y2="800" stroke-dasharray="2,12" stroke="rgba(51,170,255,.05)"/>
+          <line x1="240" y1="0" x2="240" y2="800" stroke-dasharray="2,12" stroke="rgba(51,170,255,.04)"/>
+          <line x1="320" y1="0" x2="320" y2="800" stroke-dasharray="2,12" stroke="rgba(51,170,255,.04)"/>
+
+          <!-- 교차점 마커들 -->
+          <circle cx="260" cy="160" r="2" fill="rgba(51,170,255,.2)" stroke="none"/>
+          <circle cx="280" cy="225" r="1.5" fill="rgba(51,170,255,.15)" stroke="none"/>
+          <circle cx="300" cy="295" r="2" fill="rgba(51,170,255,.2)" stroke="none"/>
+          <circle cx="310" cy="368" r="1.5" fill="rgba(51,170,255,.12)" stroke="none"/>
+          <circle cx="320" cy="440" r="2" fill="rgba(51,170,255,.18)" stroke="none"/>
+          <circle cx="160" cy="215" r="1.5" fill="rgba(51,170,255,.15)" stroke="none"/>
+          <circle cx="185" cy="280" r="2" fill="rgba(51,170,255,.2)" stroke="none"/>
+
+          <!-- 4번째 행 우측 빈 공간 — 더 선명한 요소들 -->
+          <!-- 레이어드 프레임 -->
+          <rect x="60" y="560" width="240" height="180" stroke="rgba(221,216,204,.1)" stroke-width=".8" fill="none"/>
+          <rect x="80" y="580" width="200" height="140" stroke="rgba(51,170,255,.12)" stroke-width=".6" fill="none"/>
+          <!-- 코너 마커 -->
+          <line x1="60" y1="560" x2="90" y2="560" stroke="rgba(51,170,255,.4)" stroke-width="1"/>
+          <line x1="60" y1="560" x2="60" y2="590" stroke="rgba(51,170,255,.4)" stroke-width="1"/>
+          <line x1="300" y1="740" x2="270" y2="740" stroke="rgba(51,170,255,.3)" stroke-width=".8"/>
+          <line x1="300" y1="740" x2="300" y2="710" stroke="rgba(51,170,255,.3)" stroke-width=".8"/>
+          <!-- 중앙 십자 -->
+          <line x1="155" y1="645" x2="175" y2="645" stroke="rgba(51,170,255,.25)" stroke-width=".7"/>
+          <line x1="165" y1="635" x2="165" y2="655" stroke="rgba(51,170,255,.25)" stroke-width=".7"/>
+          <!-- 별형 -->
+          <g transform="translate(270,620)" opacity=".5">
+            <line x1="0" y1="-10" x2="0" y2="10" stroke="rgba(221,216,204,.6)" stroke-width=".8"/>
+            <line x1="-10" y1="0" x2="10" y2="0" stroke="rgba(221,216,204,.6)" stroke-width=".8"/>
+            <line x1="-7" y1="-7" x2="7" y2="7" stroke="rgba(221,216,204,.3)" stroke-width=".5"/>
+            <line x1="7" y1="-7" x2="-7" y2="7" stroke="rgba(221,216,204,.3)" stroke-width=".5"/>
+          </g>
+          <!-- 텍스트 -->
+          <text x="84" y="630" font-family="'IBM Plex Mono',monospace" font-size="7" fill="rgba(51,170,255,.3)" letter-spacing="2">ENV · ART</text>
+          <text x="84" y="648" font-family="'IBM Plex Mono',monospace" font-size="6" fill="rgba(221,216,204,.12)" letter-spacing="1.5">PROPS · LEVEL DESIGN</text>
+        </g>
+
+        <!-- 레이어드 프레임 — 우상단 -->
+        <rect x="280" y="30" width="110" height="110" stroke="rgba(221,216,204,.06)" stroke-width=".7" fill="none"/>
+        <rect x="295" y="45" width="80" height="80" stroke="rgba(51,170,255,.08)" stroke-width=".5" fill="none"/>
+        <!-- 코너 마커 -->
+        <line x1="280" y1="30" x2="300" y2="30" stroke="rgba(51,170,255,.3)" stroke-width=".8"/>
+        <line x1="280" y1="30" x2="280" y2="50" stroke="rgba(51,170,255,.3)" stroke-width=".8"/>
+        <line x1="390" y1="140" x2="370" y2="140" stroke="rgba(51,170,255,.2)" stroke-width=".7"/>
+        <line x1="390" y1="140" x2="390" y2="120" stroke="rgba(51,170,255,.2)" stroke-width=".7"/>
+
+        <!-- 별형 -->
+        <g transform="translate(390,400)" opacity=".35">
+          <line x1="0" y1="-9" x2="0" y2="9" stroke="rgba(221,216,204,.7)" stroke-width=".8"/>
+          <line x1="-9" y1="0" x2="9" y2="0" stroke="rgba(221,216,204,.7)" stroke-width=".8"/>
+          <line x1="-6" y1="-6" x2="6" y2="6" stroke="rgba(221,216,204,.4)" stroke-width=".5"/>
+          <line x1="6" y1="-6" x2="-6" y2="6" stroke="rgba(221,216,204,.4)" stroke-width=".5"/>
+        </g>
+        <g transform="translate(100,700)" opacity=".2">
+          <line x1="0" y1="-6" x2="0" y2="6" stroke="rgba(51,170,255,.8)" stroke-width=".7"/>
+          <line x1="-6" y1="0" x2="6" y2="0" stroke="rgba(51,170,255,.8)" stroke-width=".7"/>
+        </g>
+
+        <!-- 텍스트 — 세로 회전, 연하게 -->
+        <text x="390" y="400" font-family="'IBM Plex Mono',monospace" font-size="7" fill="rgba(51,170,255,.2)" letter-spacing="2" text-anchor="middle" transform="rotate(-90,390,500)">ENVIRONMENT · PROPS · LEVEL</text>
+        <text x="50" y="760" font-family="'IBM Plex Mono',monospace" font-size="6.5" fill="rgba(221,216,204,.08)" letter-spacing="1.5">3DS MAX · ZBRUSH · SUBSTANCE · UE5</text>
+      </g>
+    </svg>
+  </div>
   <div class="wk-hd rv">
     <div class="wk-t">WOR<span class="ac">KS</span></div>
     <div class="wk-m">9 Projects<br>Click → Detail</div>
   </div>
-  <div class="grid" id="works-grid">
+  <div class="grid" id="works-grid" style="position:relative;z-index:1;">
     <!-- 행 1: 파빌리온 6.5 : 게이트 3.5 -->
     <div class="g-row rv">
       <div class="gi" style="flex:6.3" onclick="openDetail('game',0)">
@@ -888,40 +996,21 @@ footer{
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">RETRO COMPUTER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
     </div>
-    <!-- 행 4: fire place + zbrush study 좌측, 우측 디자인 요소 -->
+    <!-- 행 4: fire place + zbrush study -->
     <div class="g-row fp-row rv">
-      <div class="gi pos-fire" style="flex:3" onclick="openDetail('game',3)">
+      <div class="gi pos-fire" style="width:22%;min-width:0;" onclick="openDetail('game',3)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.png" alt="Fire Place" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.png" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi pos-zstudy" style="flex:4" onclick="openDetail('game',8)">
+      <div class="gi pos-zstudy" style="width:28%;min-width:0;" onclick="openDetail('game',8)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.png" alt="ZBrush Study" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.png" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH STUDY</span></span><span class="ov-m">Study · ZBrush</span></div></div>
-      </div>
-      <!-- 우측 디자인 요소 -->
-      <div class="g-row-deco" style="flex:3;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#050505;">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-          <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="width:80%;opacity:.12;">
-            <circle cx="150" cy="150" r="120" stroke="rgba(51,170,255,.8)" stroke-width=".5" fill="none"/>
-            <circle cx="150" cy="150" r="90" stroke="rgba(51,170,255,.5)" stroke-width=".5" fill="none"/>
-            <circle cx="150" cy="150" r="60" stroke="rgba(51,170,255,.3)" stroke-width=".5" fill="none"/>
-            <line x1="30" y1="150" x2="270" y2="150" stroke="rgba(51,170,255,.3)" stroke-width=".5"/>
-            <line x1="150" y1="30" x2="150" y2="270" stroke="rgba(51,170,255,.3)" stroke-width=".5"/>
-            <line x1="65" y1="65" x2="235" y2="235" stroke="rgba(51,170,255,.15)" stroke-width=".5"/>
-            <line x1="235" y1="65" x2="65" y2="235" stroke="rgba(51,170,255,.15)" stroke-width=".5"/>
-            <circle cx="150" cy="150" r="3" fill="rgba(51,170,255,.6)"/>
-          </svg>
-        </div>
-        <div style="position:relative;z-index:1;text-align:center;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.2rem,2.5vw,2rem);letter-spacing:.2em;color:rgba(51,170,255,.2);line-height:1.2;">MATERIAL<br>STUDY</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.2em;color:rgba(221,216,204,.15);margin-top:.8rem;text-transform:uppercase;">ZBrush · Organic</div>
-        </div>
       </div>
     </div>
   </div>
@@ -1573,6 +1662,16 @@ const DETAIL_MEDIA = {
   },
 };
 
+function navigateProject(dir){
+  const totalGame=9, totalSpace=11;
+  const cat=window._dpCat||'game';
+  let newIdx=(window._dpIdx||0)+dir;
+  const total=cat==='game'?totalGame:totalSpace;
+  if(newIdx<0) newIdx=total-1;
+  if(newIdx>=total) newIdx=0;
+  openDetail(cat==='game'?'work':'space', newIdx);
+}
+
 function showDetail(cat,i){
   const w=cat==='game'?GW[i]:SW[i];
   const lines=w.t.split('\n');
@@ -1582,19 +1681,6 @@ function showDetail(cat,i){
     lines.map((l,j)=>j===1?`<span class="ac">${l}</span>`:l).join('<br>');
   document.getElementById('dp-meta').innerHTML='';
   document.getElementById('dp-tag').textContent=`${w.type}`;
-
-  // ── DESC 블록 ──
-  const descEl = document.getElementById('dp-desc');
-  if(w.overview){
-    descEl.style.display='grid';
-    document.getElementById('dp-desc-overview-text').innerHTML = w.overview.split('\n\n').map(p=>`<span style="display:block;margin-bottom:1em;">${p}</span>`).join('');
-    document.getElementById('dp-desc-chips').innerHTML =
-      (w.chips||[]).map(c=>`<span class="dp-desc-chip${c.h?' highlight':''}">${c.t}</span>`).join('');
-    document.getElementById('dp-stat-row').innerHTML =
-      (w.stats||[]).map(s=>`<div class="dp-stat"><span class="dp-stat-k">${s.k}</span><span class="dp-stat-v">${s.v}</span></div>`).join('');
-  } else {
-    descEl.style.display='none';
-  }
 
   // 영상 — YouTube 최상단 자동재생
   const vEl=document.getElementById('dp-vid');
@@ -1640,15 +1726,7 @@ function showDetail(cat,i){
   }
 
   let currentCat=cat, currentIdx=i;
-
-  function navigateProject(dir){
-    const totalGame=9, totalSpace=11;
-    let newCat=currentCat, newIdx=currentIdx+dir;
-    const total=newCat==='game'?totalGame:totalSpace;
-    if(newIdx<0) newIdx=total-1;
-    if(newIdx>=total) newIdx=0;
-    openDetail(newCat==='game'?'work':'space', newIdx);
-  }
+  window._dpCat=cat; window._dpIdx=i;
 
   function setMainItems(items){
     mainEl.innerHTML='';
