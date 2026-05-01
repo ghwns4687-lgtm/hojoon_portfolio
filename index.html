@@ -1804,14 +1804,21 @@ setTimeout(()=>{
     return a;
   }
 
-  // 파빌리온 첫 시작 고정, 나머지 랜덤
+  // 전체 랜덤 셔플 — 첫 영상도 랜덤
   function buildQueue(){
-    const rest=shuffle(videos.slice(1));
-    queue=[videos[0],...rest];
+    queue=shuffle(videos);
   }
 
   let cur=0;
   buildQueue();
+
+  function buildSrc(v){
+    return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}`;
+  }
+
+  // 첫 영상 iframe에 세팅
+  const heroF=document.getElementById('hero-iframe');
+  if(heroF) heroF.src=buildSrc(queue[0]);
 
   function buildSrc(v){
     return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}`;
