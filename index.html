@@ -157,13 +157,13 @@ nav.s .nav-links a{color:rgba(221,216,204,.75);}
 .wk-m{font-family:var(--M);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);text-align:right;line-height:2;padding-bottom:2.5rem;flex-shrink:0;}
 
 /* ── Justified rows 그리드 ── */
-.grid{display:flex;flex-direction:column;gap:2px;position:relative;z-index:1;}
-.g-row{display:flex;gap:2px;}
+.grid{display:flex;flex-direction:column;gap:10px;position:relative;z-index:1;}
+.g-row{display:flex;gap:10px;}
 .gi{position:relative;overflow:hidden;cursor:pointer;background:#111;flex:1;}
-/* 일반 행 높이 — 시원하게 */
-.g-row:not(.fp-row){height:clamp(380px,48vw,660px);}
+/* 일반 행 높이 — 줄여서 한눈에 */
+.g-row:not(.fp-row){height:clamp(220px,28vw,380px);}
 /* fire place + zbrush study 행 */
-.g-row.fp-row{display:flex;gap:2px;height:clamp(500px,58vw,800px);}
+.g-row.fp-row{display:flex;gap:10px;height:clamp(260px,32vw,420px);}
 .g-row.fp-row .gi{flex:1;overflow:hidden;}
 .g-row.fp-row .gt{height:100%;line-height:0;}
 .gt{overflow:hidden;position:relative;background:#111;line-height:0;height:100%;}
@@ -434,8 +434,8 @@ footer{
 /* ════════════════════
    DETAIL PAGE
 ════════════════════ */
-#dp{display:none;position:fixed;inset:0;z-index:300;background:var(--bg);overflow-y:auto;}
-#dp.open{display:block;}
+#dp{display:none;position:fixed;inset:0;z-index:300;background:var(--bg);overflow-y:auto;flex-direction:column;}
+#dp.open{display:flex;}
 .dp-nav{
   position:sticky;top:0;z-index:10;height:44px;
   display:flex;align-items:center;justify-content:space-between;
@@ -531,8 +531,57 @@ footer{
   display:flex;align-items:center;justify-content:center;
   font-family:var(--M);font-size:11px;letter-spacing:.14em;color:var(--t3);pointer-events:none;
 }
-/* 패럴랙스 */
-.dp-img{width:100%;background:var(--bg);overflow:hidden;position:relative;}
+/* ── DETAIL 사이드바 레이아웃 ── */
+.dp-body{
+  display:flex;
+  height:calc(100vh - 120px);
+  flex-shrink:0;
+  overflow:hidden;
+}
+/* 메인 영역 — 선택된 이미지 크게 */
+.dp-main{
+  flex:1;overflow-y:auto;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.dp-main-img{
+  max-width:100%;max-height:100%;
+  object-fit:contain;display:block;
+  cursor:zoom-in;
+}
+.dp-main-vid{
+  width:100%;aspect-ratio:16/9;
+  position:relative;
+}
+.dp-main-vid iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.dp-main-vid .dp-vid-cover{position:absolute;inset:0;z-index:2;cursor:default;}
+
+/* 우측 사이드바 */
+.dp-sidebar{
+  width:200px;flex-shrink:0;
+  overflow-y:auto;
+  background:rgba(8,8,8,.95);
+  border-left:1px solid var(--bd);
+  padding:.5rem;
+  display:flex;flex-direction:column;gap:.4rem;
+}
+.dp-sb-item{
+  width:100%;aspect-ratio:16/9;
+  overflow:hidden;cursor:pointer;
+  position:relative;border:1px solid transparent;
+  transition:border-color .2s;flex-shrink:0;
+}
+.dp-sb-item.active{border-color:var(--ac);}
+.dp-sb-item:hover{border-color:rgba(221,216,204,.3);}
+.dp-sb-item img,.dp-sb-item video{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.dp-sb-play{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(8,8,8,.4);pointer-events:none;
+}
+.dp-sb-play svg{width:24px;height:24px;fill:rgba(255,255,255,.8);}
 .dp-img-bg{
   width:100%;height:auto;display:block;background:#0e0e0e;
   will-change:transform;transition:transform .1s linear;
@@ -960,7 +1009,13 @@ footer{
       <div class="dp-meta" id="dp-meta"></div>
     </div>
   </div>
-  <div class="dp-desc" id="dp-desc">
+  <div class="dp-body">
+    <div class="dp-main" id="dp-main">
+      <img class="dp-main-img" id="dp-main-img" src="" alt="">
+    </div>
+    <div class="dp-sidebar" id="dp-sidebar"></div>
+  </div>
+  <div class="dp-desc" id="dp-desc" style="display:none;">
     <div class="dp-desc-overview">
       <span class="dp-desc-label">Overview</span>
       <p class="dp-desc-text" id="dp-desc-overview-text"></p>
@@ -971,7 +1026,6 @@ footer{
       <div class="dp-stat-row" id="dp-stat-row"></div>
     </div>
   </div>
-  <div class="dp-imgs" id="dp-imgs">
     <div class="dp-img ph"></div>
     <div class="dp-img ph"></div>
     <div class="dp-img ph"></div>
@@ -1485,23 +1539,72 @@ function showDetail(cat,i){
     vEl.innerHTML='';
   }
 
-  // 이미지 + 클립 렌더링 (순차 체크 — 404 나오면 거기서 멈춤)
-  const imgEl=document.getElementById('dp-imgs');
-  // stage(space_8~10) 는 원본 크기 유지
-  const isStage = cat==='space' && i>=8;
-  imgEl.className = 'dp-imgs' + (isStage ? ' natural' : '');
-  if(media && media.items){
-    imgEl.innerHTML='<div class="dp-img ph" style="min-height:80px;"><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--M);font-size:10px;letter-spacing:.14em;color:var(--t3);">[ 로딩 중... ]</span></div>';
+  // 사이드바 + 메인 뷰어 렌더링
+  const sidebarEl=document.getElementById('dp-sidebar');
+  const mainEl=document.getElementById('dp-main');
+  const mainImg=document.getElementById('dp-main-img');
 
-    // 병렬로 전체 체크 — 순차 대기 없음
+  function setMainItem(item, isFirst){
+    mainEl.innerHTML='';
+    if(item.isVid){
+      // YouTube 영상
+      const wrap=document.createElement('div');
+      wrap.className='dp-main-vid';
+      wrap.innerHTML=`<iframe src="https://www.youtube.com/embed/${item.ytId}?autoplay=1&mute=1&loop=1&playlist=${item.ytId}&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3" allow="autoplay;fullscreen" allowfullscreen></iframe><div class="dp-vid-cover"></div>`;
+      mainEl.appendChild(wrap);
+    } else if(item.isLocalVid){
+      const v=document.createElement('video');
+      v.style.cssText='max-width:100%;max-height:100%;object-fit:contain;display:block;';
+      v.autoplay=true;v.muted=true;v.loop=true;v.playsInline=true;
+      v.innerHTML=`<source src="${item.src}" type="video/mp4">`;
+      mainEl.appendChild(v);
+    } else {
+      const img=document.createElement('img');
+      img.className='dp-main-img';
+      img.src=item.src;
+      img.alt='';
+      if(item.constrain) img.style.cssText='max-width:75%;max-height:100%;object-fit:contain;';
+      img.onclick=()=>openLb(item.src);
+      mainEl.appendChild(img);
+    }
+  }
+
+  function buildSidebar(items){
+    sidebarEl.innerHTML='';
+    items.forEach((item, idx)=>{
+      const div=document.createElement('div');
+      div.className='dp-sb-item'+(idx===0?' active':'');
+      if(item.isVid){
+        div.innerHTML=`<img src="https://img.youtube.com/vi/${item.ytId}/mqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover;">
+          <div class="dp-sb-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`;
+      } else if(item.isLocalVid){
+        div.innerHTML=`<video muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;"><source src="${item.src}" type="video/mp4"></video>
+          <div class="dp-sb-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`;
+      } else {
+        div.innerHTML=`<img src="${item.src}" alt="" style="width:100%;height:100%;object-fit:cover;">`;
+      }
+      div.onclick=()=>{
+        document.querySelectorAll('.dp-sb-item').forEach(el=>el.classList.remove('active'));
+        div.classList.add('active');
+        setMainItem(item, false);
+      };
+      sidebarEl.appendChild(div);
+    });
+  }
+
+  if(media && media.items){
+    // YouTube 영상 아이템 추가
+    const allItems=[];
+    if(hasVid) allItems.push({isVid:true, ytId:media.youtubeId});
+
+    // 이미지 체크 후 사이드바 구성
     async function checkAll(items){
-      const results = await Promise.all(items.map(item=>{
-        if(item.type==='vid') return Promise.resolve(null); // vid는 일단 제외
+      const results=await Promise.all(items.map(item=>{
+        if(item.type==='vid') return Promise.resolve({isLocalVid:true, src:item.src});
         return new Promise(res=>{
           const img=new Image();
-          img.onload=()=>res({...item, src:item.src});
+          img.onload=()=>res({...item});
           img.onerror=()=>{
-            // png 실패시 jpg 시도
             if(item.alt){
               const img2=new Image();
               img2.onload=()=>res({...item, src:item.alt});
@@ -1512,40 +1615,32 @@ function showDetail(cat,i){
           img.src=item.src;
         });
       }));
-      // null 제거 후 연속된 것만 (첫 null 이전까지)
       const valid=[];
-      for(const r of results){
-        if(!r) break;
-        valid.push(r);
-      }
+      for(const r of results){ if(!r) break; valid.push(r); }
       return valid;
     }
 
     checkAll(media.items).then(valid=>{
-      if(valid.length===0){
-        imgEl.innerHTML=`<div class="dp-img ph"></div><div class="dp-img ph"></div>`;
-        return;
+      const finalItems=[...allItems, ...valid];
+      if(finalItems.length===0) return;
+      buildSidebar(finalItems);
+      setMainItem(finalItems[0], true);
+      // desc 블록 표시
+      const descEl=document.getElementById('dp-desc');
+      if(w.overview){
+        descEl.style.display='grid';
+        document.getElementById('dp-desc-overview-text').innerHTML=w.overview.split('\n\n').map(p=>`<span style="display:block;margin-bottom:1em;">${p}</span>`).join('');
+        document.getElementById('dp-desc-chips').innerHTML=(w.chips||[]).map(c=>`<span class="dp-desc-chip${c.h?' highlight':''}">${c.t}</span>`).join('');
+        document.getElementById('dp-stat-row').innerHTML=(w.stats||[]).map(s=>`<div class="dp-stat"><span class="dp-stat-k">${s.k}</span><span class="dp-stat-v">${s.v}</span></div>`).join('');
       }
-      imgEl.innerHTML=valid.map(item=>{
-        if(item.type==='img'){
-          const style=item.constrain?'style="max-width:75%;margin:0 auto;display:block;"':'';
-          return `<div class="dp-img"${item.constrain?' style="display:flex;justify-content:center;background:var(--bg);"':''}><img class="dp-img-bg" src="${item.src}" alt="" loading="lazy" ${style}></div>`;
-        } else {
-          return `<div class="dp-img">
-            <video style="width:100%;height:auto;display:block;background:#0e0e0e;"
-              autoplay muted loop playsinline>
-              <source src="${item.src}" type="video/mp4">
-            </video>
-          </div>`;
-        }
-      }).join('');
     });
   } else {
-    imgEl.innerHTML=`
-      <div class="dp-img ph"></div>
-      <div class="dp-img ph"></div>
-      <div class="dp-img ph"></div>
-      <div class="dp-img ph"></div>`;
+    // 미디어 데이터 없을 때
+    if(hasVid){
+      const items=[{isVid:true, ytId:media.youtubeId}];
+      buildSidebar(items);
+      setMainItem(items[0], true);
+    }
   }
 
   document.getElementById('dp').classList.add('open');
