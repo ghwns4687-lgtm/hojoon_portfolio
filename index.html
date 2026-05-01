@@ -104,7 +104,7 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
 }
 .h-bot{display:flex;justify-content:space-between;align-items:center;}
 /* 툴 뱃지 — Hero 하단에 항상 보임 */
-.h-tools-badges{display:flex;flex-wrap:wrap;gap:.4rem;}
+.h-tools-badges{display:flex;flex-wrap:wrap;gap:.4rem;max-width:calc(100% - 100px);}
 .h-badge{
   font-family:var(--M);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   padding:.5rem 1rem;
@@ -112,7 +112,7 @@ nav.s{background:rgba(8,8,8,.97);border-bottom:1px solid var(--bd);}
   color:var(--t2);
   transition:border-color .2s,color .2s;
 }
-.h-badge:hover{border-color:var(--ac);color:var(--ac);}
+.h-badge:hover{border-color:rgba(221,216,204,.12);color:var(--t2);}
 .h-badge.main{border-color:rgba(51,170,255,.25);color:rgba(51,170,255,.7);}
 .h-sc{font-family:var(--M);font-size:9px;letter-spacing:.2em;color:var(--t3);display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
 .scl{width:1px;height:28px;background:rgba(221,216,204,.12);animation:sb 2s infinite;}
@@ -1617,15 +1617,15 @@ function openLb(src){
   const lb=document.getElementById('lb');
   const img=document.getElementById('lb-img');
   if(!lb||!img) return;
-  _lbScale=1;_lbTx=0;_lbTy=0;
+  _lbScale=2.5;_lbTx=0;_lbTy=0;
   img.src=src;
-  img.style.transition='transform .3s cubic-bezier(.25,.46,.45,.94),opacity .3s ease';
-  img.style.transform='scale(.92)';
+  img.style.transition='transform .35s cubic-bezier(.25,.46,.45,.94),opacity .3s ease';
+  img.style.transform='scale(2.2)';
   img.style.opacity='0';
   lb.classList.add('open');
   document.body.style.overflow='hidden';
   requestAnimationFrame(()=>{
-    img.style.transform='translate(0,0) scale(1)';
+    img.style.transform=`translate(0,0) scale(2.5)`;
     img.style.opacity='1';
   });
   _lbShowHint();
@@ -1782,36 +1782,55 @@ setTimeout(()=>{
   if(f)f.classList.add('loaded');
 },100);
 
-/* ── Hero 영상 순환 — 하드코딩 타이머 ── */
+/* ── Hero 영상 순환 — 랜덤 ── */
 (function(){
   const videos=[
-    {id:'CQ0DzSbh4ks', start:12, dur:83},  // 파빌리온 (95초 - 12초)
-    {id:'acCnJlKUkEs', start:0,  dur:41},  // 게이트
-    {id:'furwa3ICGpw', start:0,  dur:58},  // 마차
-    {id:'VaIKmb5KU5w', start:0,  dur:33},  // 지브러쉬 락
-    {id:'d6nyNFcwCzI', start:0,  dur:36},  // 쥬이서
-    {id:'_RORN5Y1ov8', start:0,  dur:39},  // 레트로
+    {id:'CQ0DzSbh4ks', start:12, dur:83},
+    {id:'acCnJlKUkEs', start:0,  dur:41},
+    {id:'furwa3ICGpw', start:0,  dur:58},
+    {id:'VaIKmb5KU5w', start:0,  dur:33},
+    {id:'d6nyNFcwCzI', start:0,  dur:36},
+    {id:'_RORN5Y1ov8', start:0,  dur:39},
   ];
-  let cur=0;
+  let queue=[];
   let timer=null;
+
+  function shuffle(arr){
+    const a=[...arr];
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  // 파빌리온 첫 시작 고정, 나머지 랜덤
+  function buildQueue(){
+    const rest=shuffle(videos.slice(1));
+    queue=[videos[0],...rest];
+  }
+
+  let cur=0;
+  buildQueue();
 
   function buildSrc(v){
     return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}`;
   }
 
   function goNext(){
-    cur=(cur+1)%videos.length;
+    cur++;
+    if(cur>=queue.length){ buildQueue(); cur=0; }
+    const v=queue[cur];
     const f=document.getElementById('hero-iframe');
     if(!f) return;
     f.classList.remove('loaded');
-    f.src=buildSrc(videos[cur]);
+    f.src=buildSrc(v);
     setTimeout(()=>f.classList.add('loaded'), 800);
     clearTimeout(timer);
-    timer=setTimeout(goNext, videos[cur].dur*1000);
+    timer=setTimeout(goNext, v.dur*1000);
   }
 
-  // 첫 영상 타이머 시작
-  timer=setTimeout(goNext, videos[cur].dur*1000);
+  timer=setTimeout(goNext, queue[0].dur*1000);
 })();
 
 /* ── Detail 패럴랙스 ── */
