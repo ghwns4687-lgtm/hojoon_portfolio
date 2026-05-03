@@ -481,10 +481,13 @@ footer{
 .dp-title .ac{color:var(--ac);}
 .dp-meta{display:none;}
 
-/* 영상 — hero 안에서 풀사이즈 */
+/* 영상 — hero 안에서 풀사이즈, 좌우 여백 없이 꽉 채움 */
 .dp-vid-wrap{position:absolute;inset:0;width:100%;height:100%;background:#0a0a0a;z-index:1;}
 .dp-vid-wrap.has-vid{aspect-ratio:unset;}
-.dp-vid-wrap video,.dp-vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;object-fit:cover;}
+.dp-vid-wrap video,.dp-vid-wrap iframe{
+  position:absolute;inset:0;width:100%;height:100%;
+  border:none;object-fit:cover;object-position:center center;
+}
 .dp-vid-wrap.has-vid::after{
   content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
   background:
@@ -637,8 +640,9 @@ footer{
   color:var(--t2);
   width:36px;height:52px;
   cursor:pointer;
-  transition:border-color .2s,color .2s,background .2s;
+  transition:border-color .2s,color .2s,background .2s,opacity .3s;
   display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
 }
 .dp-nav-arrow:hover{border-color:var(--ac);color:var(--ac);background:rgba(8,8,8,.95);}
 .dp-nav-arrow.prev{left:0;border-left:none;border-radius:0 2px 2px 0;}
@@ -775,286 +779,13 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 
 
 
+
 </style>
 </head>
 <body>
 
-<!-- ═══ 배경 데코 SVG ═══ -->
-<svg style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:0;" viewBox="0 0 1440 3600" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
 
-<!-- ==========================================================
-     WORKS 구간 우측 — 등고선 + 레이어드 프레임
-     (썸네일 그리드 오른쪽 여백, y 660~1260)
-     ========================================================== -->
-
-<!-- 등고선 물결 — 썸네일 오른쪽 끝부터 화면 끝까지만 -->
-<g stroke="rgba(51,170,255,.09)" stroke-width=".65" fill="none">
-  <path d="M1440,668 Q1392,656 1330,670 Q1268,684 1210,666"/>
-  <path d="M1440,792 Q1394,780 1332,794 Q1270,808 1212,790"/>
-  <path d="M1440,916 Q1396,904 1334,918 Q1272,932 1214,914"/>
-  <path d="M1440,1040 Q1398,1028 1336,1042 Q1274,1056 1216,1038"/>
-  <path d="M1440,1164 Q1400,1152 1338,1166 Q1276,1180 1218,1162"/>
-</g>
-<g fill="rgba(51,170,255,.2)">
-  <circle cx="1330" cy="670"  r="2.2"/><circle cx="1210" cy="666"  r="1.6"/>
-  <circle cx="1332" cy="794"  r="1.8"/><circle cx="1212" cy="790"  r="1.4"/>
-  <circle cx="1334" cy="918"  r="2.2"/><circle cx="1214" cy="914"  r="1.6"/>
-  <circle cx="1336" cy="1042" r="1.8"/><circle cx="1216" cy="1038" r="1.4"/>
-</g>
-
-<!-- 레이어드 측량 프레임 — 우측 상단 여백 -->
-<rect x="1258" y="632" width="172" height="126" stroke="rgba(221,216,204,.10)" stroke-width=".8" fill="none"/>
-<rect x="1271" y="645" width="146" height="100" stroke="rgba(51,170,255,.12)" stroke-width=".6" fill="none"/>
-<line x1="1258" y1="632" x2="1288" y2="632" stroke="rgba(51,170,255,.50)" stroke-width="1.2"/>
-<line x1="1258" y1="632" x2="1258" y2="662" stroke="rgba(51,170,255,.50)" stroke-width="1.2"/>
-<line x1="1430" y1="758" x2="1400" y2="758" stroke="rgba(51,170,255,.30)" stroke-width=".9"/>
-<line x1="1430" y1="758" x2="1430" y2="728" stroke="rgba(51,170,255,.30)" stroke-width=".9"/>
-<text x="1262" y="628" font-family="'IBM Plex Mono',monospace" font-size="6" fill="rgba(51,170,255,.30)" letter-spacing="1.5">FRAME_A</text>
-<text x="1262" y="774" font-family="'IBM Plex Mono',monospace" font-size="6" fill="rgba(51,170,255,.20)" letter-spacing="1.5">ENV.ART</text>
-
-<!-- 스타버스트 — works 우측 상단 여백 -->
-<g transform="translate(1388,700)" opacity=".50">
-  <line x1="0"   y1="-46" x2="0"   y2="46"   stroke="rgba(221,216,204,.50)" stroke-width=".9"/>
-  <line x1="-46" y1="0"   x2="46"  y2="0"    stroke="rgba(221,216,204,.50)" stroke-width=".9"/>
-  <line x1="-32" y1="-32" x2="32"  y2="32"   stroke="rgba(221,216,204,.26)" stroke-width=".55"/>
-  <line x1="32"  y1="-32" x2="-32" y2="32"   stroke="rgba(221,216,204,.26)" stroke-width=".55"/>
-  <line x1="0"   y1="-56" x2="0"   y2="-46"  stroke="rgba(221,216,204,.78)" stroke-width="1.4"/>
-  <line x1="0"   y1="46"  x2="0"   y2="56"   stroke="rgba(221,216,204,.78)" stroke-width="1.4"/>
-  <line x1="-56" y1="0"   x2="-46" y2="0"    stroke="rgba(221,216,204,.78)" stroke-width="1.4"/>
-  <line x1="46"  y1="0"   x2="56"  y2="0"    stroke="rgba(221,216,204,.78)" stroke-width="1.4"/>
-  <circle cx="0" cy="0" r="5.5" fill="rgba(221,216,204,.58)"/>
-  <circle cx="0" cy="0" r="2.5" fill="rgba(255,255,255,.92)"/>
-</g>
-
-<!-- ==========================================================
-     ZBRUSH STUDY 옆 빈 공간 — 조준경 (50%~100% x, y ~1160~1340)
-     썸네일이 50%까지만 차지하므로 60% 이후 공간에 배치
-     ========================================================== -->
-
-<!-- 조준경 타겟링 — 크게, 선명하게 -->
-<g transform="translate(900,1240)" opacity=".54">
-  <circle cx="0" cy="0" r="82" stroke="rgba(221,216,204,.07)" stroke-width=".8" fill="none" stroke-dasharray="6,9"/>
-  <circle cx="0" cy="0" r="58" stroke="rgba(51,170,255,.16)" stroke-width=".8" fill="none"/>
-  <circle cx="0" cy="0" r="34" stroke="rgba(51,170,255,.26)" stroke-width="1"  fill="none"/>
-  <circle cx="0" cy="0" r="11" stroke="rgba(51,170,255,.40)" stroke-width="1.1" fill="none"/>
-  <circle cx="0" cy="0" r="3.5" fill="rgba(51,170,255,.72)"/>
-  <line x1="-96" y1="0"  x2="-62" y2="0"  stroke="rgba(51,170,255,.44)" stroke-width="1.1"/>
-  <line x1="62"  y1="0"  x2="96"  y2="0"  stroke="rgba(51,170,255,.44)" stroke-width="1.1"/>
-  <line x1="0"   y1="-96" x2="0" y2="-62" stroke="rgba(51,170,255,.44)" stroke-width="1.1"/>
-  <line x1="0"   y1="62"  x2="0" y2="96"  stroke="rgba(51,170,255,.44)" stroke-width="1.1"/>
-  <line x1="-66" y1="-66" x2="-54" y2="-54" stroke="rgba(51,170,255,.24)" stroke-width=".7"/>
-  <line x1="54"  y1="-54" x2="66"  y2="-66" stroke="rgba(51,170,255,.24)" stroke-width=".7"/>
-  <line x1="-66" y1="66"  x2="-54" y2="54"  stroke="rgba(51,170,255,.24)" stroke-width=".7"/>
-  <line x1="54"  y1="54"  x2="66"  y2="66"  stroke="rgba(51,170,255,.24)" stroke-width=".7"/>
-  <text x="70"  y="-70" font-family="'IBM Plex Mono',monospace" font-size="7"   fill="rgba(51,170,255,.38)" letter-spacing="1">TGT_01</text>
-  <text x="-110" y="110" font-family="'IBM Plex Mono',monospace" font-size="6.5" fill="rgba(51,170,255,.26)" letter-spacing="1">CRS:195  SPD:3.6KT</text>
-</g>
-
-<!-- 손그림 스케치 화살표들 — ZBrush 옆 우측 공간 -->
-<!-- 얇고 삐뚤빼뚤한 화살표 1 (CCTV 이미지 스타일) -->
-<g opacity=".38" stroke="rgba(221,216,204,.45)" fill="none">
-  <!-- 화살표 줄기 — 살짝 흔들리는 path -->
-  <path d="M1140,1180 C1158,1172 1174,1168 1196,1174 C1218,1180 1234,1188 1252,1182" stroke-width="1.2" stroke-linecap="round"/>
-  <!-- 화살촉 (작은 삼각형) -->
-  <path d="M1248,1178 L1256,1182 L1246,1188" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<!-- 화살표 2 — 아래 방향 -->
-<g opacity=".32" stroke="rgba(221,216,204,.38)" fill="none">
-  <path d="M1180,1210 C1176,1228 1172,1244 1174,1264 C1176,1280 1182,1292 1178,1308" stroke-width="1.1" stroke-linecap="round"/>
-  <path d="M1174,1304 L1178,1314 L1184,1304" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<!-- 손글씨 느낌 짧은 선들 -->
-<line x1="1120" y1="1290" x2="1158" y2="1294" stroke="rgba(221,216,204,.28)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="1122" y1="1302" x2="1152" y2="1306" stroke="rgba(221,216,204,.22)" stroke-width=".8" stroke-linecap="round"/>
-<line x1="1126" y1="1314" x2="1144" y2="1317" stroke="rgba(221,216,204,.16)" stroke-width=".7" stroke-linecap="round"/>
-
-<!-- + 마커 -->
-<line x1="1296" y1="1170" x2="1312" y2="1170" stroke="rgba(51,170,255,.36)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="1304" y1="1162" x2="1304" y2="1178" stroke="rgba(51,170,255,.36)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="1360" y1="1300" x2="1374" y2="1300" stroke="rgba(51,170,255,.28)" stroke-width=".8" stroke-linecap="round"/>
-<line x1="1367" y1="1293" x2="1367" y2="1307" stroke="rgba(51,170,255,.28)" stroke-width=".8" stroke-linecap="round"/>
-
-<!-- 겹치는 링 2단 — 우측 -->
-<g transform="translate(1420,1240)" opacity=".30">
-  <circle cx="0" cy="0"  r="30" stroke="rgba(221,216,204,.30)" stroke-width=".6" fill="none"/>
-  <circle cx="0" cy="60" r="30" stroke="rgba(221,216,204,.22)" stroke-width=".5" fill="none"/>
-</g>
-
-<!-- ==========================================================
-     INTERIOR 구간 — 왼쪽 여백 + 오른쪽 여백
-     (y 1380~2000, 썸네일 그리드 밖 여백)
-     ========================================================== -->
-
-<!-- 스캔박스 — interior 헤더 오른쪽 여백 -->
-<rect x="650" y="1390" width="140" height="96" stroke="rgba(51,170,255,.20)" stroke-width=".7" fill="none" stroke-dasharray="4,4"/>
-<rect x="658" y="1398" width="124" height="80" stroke="rgba(51,170,255,.09)" stroke-width=".5" fill="none"/>
-<line x1="650" y1="1390" x2="676" y2="1390" stroke="rgba(51,170,255,.48)" stroke-width="1.1"/>
-<line x1="650" y1="1390" x2="650" y2="1416" stroke="rgba(51,170,255,.48)" stroke-width="1.1"/>
-<line x1="790" y1="1486" x2="764" y2="1486" stroke="rgba(51,170,255,.28)" stroke-width=".8"/>
-<line x1="790" y1="1486" x2="790" y2="1460" stroke="rgba(51,170,255,.28)" stroke-width=".8"/>
-<text x="652" y="1386" font-family="'IBM Plex Mono',monospace" font-size="6" fill="rgba(51,170,255,.38)" letter-spacing="1">X:0924 Y:1390</text>
-
-<!-- 손그림 화살표들 — interior 오른쪽 끝 여백 (그리드 바깥) -->
-<!-- 투박한 브러시 화살표 (FBI 이미지 오른쪽 하단 스타일) -->
-<g opacity=".40" stroke="rgba(221,216,204,.50)" fill="rgba(221,216,204,.35)" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 굵은 화살표 줄기 -->
-  <path d="M1380,1560 C1374,1576 1368,1596 1362,1618 C1358,1634 1356,1648 1352,1666" stroke-width="2.2" fill="none"/>
-  <!-- 굵은 화살촉 -->
-  <path d="M1340,1660 L1352,1678 L1366,1658" stroke-width="2" fill="none"/>
-</g>
-<!-- 얇은 기술도면 화살표 -->
-<g opacity=".34" stroke="rgba(51,170,255,.40)" fill="none" stroke-linecap="round">
-  <path d="M1400,1620 C1412,1608 1424,1598 1432,1588 C1438,1580 1436,1572 1432,1564" stroke-width="1"/>
-  <path d="M1428,1562 L1434,1558 L1436,1566" stroke-width=".9" stroke-linejoin="round"/>
-</g>
-
-<!-- 점선 격자 + D값 — interior 오른쪽 끝 여백 -->
-<line x1="1330" y1="1720" x2="1330" y2="1980" stroke="rgba(51,170,255,.07)" stroke-width=".5" stroke-dasharray="3,9"/>
-<line x1="1390" y1="1720" x2="1390" y2="1980" stroke="rgba(51,170,255,.06)" stroke-width=".5" stroke-dasharray="3,9"/>
-<line x1="1310" y1="1800" x2="1440" y2="1800" stroke="rgba(51,170,255,.07)" stroke-width=".5" stroke-dasharray="3,9"/>
-<line x1="1310" y1="1900" x2="1440" y2="1900" stroke="rgba(51,170,255,.06)" stroke-width=".4" stroke-dasharray="3,9"/>
-<text x="1312" y="1796" font-family="'IBM Plex Mono',monospace" font-size="6" fill="rgba(51,170,255,.22)" letter-spacing="1">D1.0</text>
-<text x="1312" y="1896" font-family="'IBM Plex Mono',monospace" font-size="6" fill="rgba(51,170,255,.16)" letter-spacing="1">D2.0</text>
-
-<!-- ==========================================================
-     STAGE 오른쪽 빈 공간 — 크고 선명하게
-     (y ~2040~2440, 썸네일 오른쪽 완전 빈 공간)
-     ========================================================== -->
-
-<!-- 오실로스코프 파형 — 크게, 중앙에 배치 -->
-<g transform="translate(1170,2220)" opacity=".52">
-  <rect x="-152" y="-78" width="304" height="156" stroke="rgba(221,216,204,.13)" stroke-width=".9" fill="none"/>
-  <rect x="-142" y="-68" width="284" height="136" stroke="rgba(51,170,255,.09)"  stroke-width=".6" fill="none"/>
-  <line x1="-142" y1="0" x2="142" y2="0" stroke="rgba(51,170,255,.13)" stroke-width=".6"/>
-  <path d="M-142,0 L-114,0 L-96,-50 L-78,50 L-60,-32 L-42,32 L-22,0 L10,0 L30,-44 L50,44 L70,-28 L90,28 L110,0 L142,0"
-        stroke="rgba(51,170,255,.40)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="-152" y1="-78" x2="-124" y2="-78" stroke="rgba(51,170,255,.54)" stroke-width="1.2"/>
-  <line x1="-152" y1="-78" x2="-152" y2="-50" stroke="rgba(51,170,255,.54)" stroke-width="1.2"/>
-  <line x1="152"  y1="78"  x2="124"  y2="78"  stroke="rgba(51,170,255,.34)" stroke-width=".9"/>
-  <line x1="152"  y1="78"  x2="152"  y2="50"  stroke="rgba(51,170,255,.34)" stroke-width=".9"/>
-  <!-- + 마커 -->
-  <line x1="-128" y1="-52" x2="-114" y2="-52" stroke="rgba(51,170,255,.38)" stroke-width=".9" stroke-linecap="round"/>
-  <line x1="-121" y1="-59" x2="-121" y2="-45" stroke="rgba(51,170,255,.38)" stroke-width=".9" stroke-linecap="round"/>
-  <line x1="114"  y1="52"  x2="128"  y2="52"  stroke="rgba(51,170,255,.26)" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="121"  y1="45"  x2="121"  y2="59"  stroke="rgba(51,170,255,.26)" stroke-width=".8" stroke-linecap="round"/>
-  <text x="-144" y="-84" font-family="'IBM Plex Mono',monospace" font-size="7" fill="rgba(51,170,255,.36)" letter-spacing="1.5">OSC.WAVE.01</text>
-  <text x="-144" y="96"  font-family="'IBM Plex Mono',monospace" font-size="6.5" fill="rgba(51,170,255,.24)" letter-spacing="1">BRG:195  RNG:43NM</text>
-</g>
-
-<!-- 스타버스트 — stage 오른쪽 상단 -->
-<g transform="translate(1408,2060)" opacity=".56">
-  <line x1="0"   y1="-50" x2="0"   y2="50"   stroke="rgba(221,216,204,.56)" stroke-width=".9"/>
-  <line x1="-50" y1="0"   x2="50"  y2="0"    stroke="rgba(221,216,204,.56)" stroke-width=".9"/>
-  <line x1="-35" y1="-35" x2="35"  y2="35"   stroke="rgba(221,216,204,.30)" stroke-width=".6"/>
-  <line x1="35"  y1="-35" x2="-35" y2="35"   stroke="rgba(221,216,204,.30)" stroke-width=".6"/>
-  <line x1="0"   y1="-60" x2="0"   y2="-50"  stroke="rgba(221,216,204,.85)" stroke-width="1.5"/>
-  <line x1="0"   y1="50"  x2="0"   y2="60"   stroke="rgba(221,216,204,.85)" stroke-width="1.5"/>
-  <line x1="-60" y1="0"   x2="-50" y2="0"    stroke="rgba(221,216,204,.85)" stroke-width="1.5"/>
-  <line x1="50"  y1="0"   x2="60"  y2="0"    stroke="rgba(221,216,204,.85)" stroke-width="1.5"/>
-  <circle cx="0" cy="0" r="6"   fill="rgba(221,216,204,.62)"/>
-  <circle cx="0" cy="0" r="2.8" fill="rgba(255,255,255,.95)"/>
-</g>
-
-<!-- 손그림 화살표들 — stage 오른쪽 빈 공간 -->
-<!-- 굵은 투박한 화살표 (하향) -->
-<g opacity=".45" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M1076,2100 C1070,2120 1064,2144 1060,2168 C1056,2188 1054,2208 1048,2228" stroke="rgba(221,216,204,.48)" stroke-width="2.4" fill="none"/>
-  <path d="M1036,2222 L1048,2242 L1062,2220" stroke="rgba(221,216,204,.48)" stroke-width="2.2" fill="none"/>
-</g>
-<!-- 얇은 기술도면 화살표 (우향) -->
-<g opacity=".38" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M1060,2340 C1080,2334 1102,2330 1124,2332 C1144,2334 1162,2340 1180,2336" stroke="rgba(51,170,255,.42)" stroke-width="1.1" fill="none"/>
-  <path d="M1176,2332 L1184,2336 L1174,2342" stroke="rgba(51,170,255,.42)" stroke-width="1"   fill="none"/>
-</g>
-<!-- 손글씨 느낌 짧은 메모 라인들 -->
-<line x1="1054" y1="2370" x2="1098" y2="2374" stroke="rgba(221,216,204,.28)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="1056" y1="2384" x2="1088" y2="2388" stroke="rgba(221,216,204,.20)" stroke-width=".8" stroke-linecap="round"/>
-<line x1="1058" y1="2398" x2="1076" y2="2401" stroke="rgba(221,216,204,.14)" stroke-width=".7" stroke-linecap="round"/>
-<!-- + 마커들 -->
-<line x1="1104" y1="2108" x2="1118" y2="2108" stroke="rgba(51,170,255,.34)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="1111" y1="2101" x2="1111" y2="2115" stroke="rgba(51,170,255,.34)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="1200" y1="2400" x2="1214" y2="2400" stroke="rgba(51,170,255,.26)" stroke-width=".8" stroke-linecap="round"/>
-<line x1="1207" y1="2393" x2="1207" y2="2407" stroke="rgba(51,170,255,.26)" stroke-width=".8" stroke-linecap="round"/>
-
-<!-- ==========================================================
-     ABOUT 구간 (y 2460~2960)
-     ========================================================== -->
-
-<!-- 레이어드 직사각형 3중 + 헤일로 — 왼쪽 여백 -->
-<g transform="translate(210,2720)" opacity=".42">
-  <rect x="-92" y="-132" width="184" height="264" stroke="rgba(221,216,204,.11)" stroke-width=".9" fill="none"/>
-  <rect x="-76" y="-116" width="152" height="232" stroke="rgba(51,170,255,.09)"  stroke-width=".7" fill="none"/>
-  <rect x="-60" y="-100" width="120" height="200" stroke="rgba(51,170,255,.06)"  stroke-width=".5" fill="none"/>
-  <circle cx="0" cy="-132" r="30" stroke="rgba(221,216,204,.18)" stroke-width=".8" fill="none"/>
-  <line x1="-92" y1="-132" x2="-62" y2="-132" stroke="rgba(51,170,255,.48)" stroke-width="1.2"/>
-  <line x1="-92" y1="-132" x2="-92" y2="-102" stroke="rgba(51,170,255,.48)" stroke-width="1.2"/>
-  <line x1="92"  y1="132"  x2="62"  y2="132"  stroke="rgba(51,170,255,.28)" stroke-width=".9"/>
-  <line x1="92"  y1="132"  x2="92"  y2="102"  stroke="rgba(51,170,255,.28)" stroke-width=".9"/>
-  <text x="-50" y="150" font-family="'IBM Plex Mono',monospace" font-size="6.5" fill="rgba(51,170,255,.24)" letter-spacing="2">ABOUT.ENV</text>
-</g>
-
-<!-- 데이터 블록 — about 왼쪽 -->
-<g opacity=".28" transform="translate(42,2900)">
-  <line x1="-4" y1="-10" x2="118" y2="-10" stroke="rgba(51,170,255,.22)" stroke-width=".7"/>
-  <text x="0"  y="6"  font-family="'IBM Plex Mono',monospace" font-size="7.5" fill="rgba(51,170,255,.36)" letter-spacing="1">BRG  14deg</text>
-  <text x="0"  y="22" font-family="'IBM Plex Mono',monospace" font-size="7.5" fill="rgba(51,170,255,.28)" letter-spacing="1">RNG  43NM</text>
-  <text x="0"  y="38" font-family="'IBM Plex Mono',monospace" font-size="7.5" fill="rgba(51,170,255,.22)" letter-spacing="1">CRS 195deg</text>
-  <text x="0"  y="54" font-family="'IBM Plex Mono',monospace" font-size="7.5" fill="rgba(51,170,255,.16)" letter-spacing="1">SPD  3.6KT</text>
-  <line x1="-4" y1="62" x2="118" y2="62" stroke="rgba(51,170,255,.15)" stroke-width=".6"/>
-</g>
-
-<!-- 손그림 화살표 — about 오른쪽 -->
-<g opacity=".42" stroke-linecap="round" stroke-linejoin="round">
-  <!-- 굵은 화살표 (FBI 스타일) -->
-  <path d="M1200,2640 C1214,2628 1230,2618 1248,2612 C1264,2606 1280,2604 1296,2600" stroke="rgba(221,216,204,.44)" stroke-width="2.2" fill="none"/>
-  <path d="M1292,2596 L1302,2600 L1290,2608" stroke="rgba(221,216,204,.44)" stroke-width="2"   fill="none"/>
-</g>
-<!-- + 마커 about -->
-<line x1="1340" y1="2700" x2="1356" y2="2700" stroke="rgba(51,170,255,.32)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="1348" y1="2692" x2="1348" y2="2708" stroke="rgba(51,170,255,.32)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="1100" y1="2880" x2="1114" y2="2880" stroke="rgba(221,216,204,.24)" stroke-width=".8" stroke-linecap="round"/>
-<line x1="1107" y1="2873" x2="1107" y2="2887" stroke="rgba(221,216,204,.24)" stroke-width=".8" stroke-linecap="round"/>
-
-<!-- ==========================================================
-     CONTACT 구간 (y 2980~3600)
-     ========================================================== -->
-
-<!-- 스타버스트 소형 — contact 오른쪽 -->
-<g transform="translate(1290,3050)" opacity=".52">
-  <line x1="0"   y1="-30" x2="0"   y2="30"   stroke="rgba(221,216,204,.55)" stroke-width=".9"/>
-  <line x1="-30" y1="0"   x2="30"  y2="0"    stroke="rgba(221,216,204,.55)" stroke-width=".9"/>
-  <line x1="-21" y1="-21" x2="21"  y2="21"   stroke="rgba(221,216,204,.28)" stroke-width=".55"/>
-  <line x1="21"  y1="-21" x2="-21" y2="21"   stroke="rgba(221,216,204,.28)" stroke-width=".55"/>
-  <line x1="0"   y1="-38" x2="0"   y2="-30"  stroke="rgba(221,216,204,.80)" stroke-width="1.4"/>
-  <line x1="0"   y1="30"  x2="0"   y2="38"   stroke="rgba(221,216,204,.80)" stroke-width="1.4"/>
-  <line x1="-38" y1="0"   x2="-30" y2="0"    stroke="rgba(221,216,204,.80)" stroke-width="1.4"/>
-  <line x1="30"  y1="0"   x2="38"  y2="0"    stroke="rgba(221,216,204,.80)" stroke-width="1.4"/>
-  <circle cx="0" cy="0" r="4.5" fill="rgba(221,216,204,.62)"/>
-  <circle cx="0" cy="0" r="2"   fill="rgba(255,255,255,.95)"/>
-</g>
-
-<!-- 손그림 화살표들 — contact 왼쪽 하단 -->
-<!-- 굵은 투박한 대각 화살표 (FBI 이미지 오른쪽 하단처럼) -->
-<g opacity=".46" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M84,3080 C96,3100 112,3124 130,3148 C146,3168 162,3186 178,3206" stroke="rgba(221,216,204,.48)" stroke-width="2.4" fill="none"/>
-  <path d="M166,3202 L180,3218 L192,3200" stroke="rgba(221,216,204,.48)" stroke-width="2.2" fill="none"/>
-</g>
-<!-- 얇은 화살표 — 반대 방향 -->
-<g opacity=".36" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M280,3160 C298,3148 318,3138 336,3130 C352,3122 368,3118 384,3114" stroke="rgba(51,170,255,.40)" stroke-width="1.1" fill="none"/>
-  <path d="M380,3110 L388,3114 L378,3120" stroke="rgba(51,170,255,.40)" stroke-width="1"   fill="none"/>
-</g>
-<!-- 손글씨 느낌 메모 라인들 -->
-<line x1="84"  y1="3230" x2="136" y2="3236" stroke="rgba(221,216,204,.26)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="86"  y1="3244" x2="124" y2="3250" stroke="rgba(221,216,204,.18)" stroke-width=".8" stroke-linecap="round"/>
-<line x1="88"  y1="3258" x2="110" y2="3262" stroke="rgba(221,216,204,.12)" stroke-width=".7" stroke-linecap="round"/>
-<!-- + 마커 contact -->
-<line x1="220" y1="3070" x2="234" y2="3070" stroke="rgba(51,170,255,.34)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="227" y1="3063" x2="227" y2="3077" stroke="rgba(51,170,255,.34)" stroke-width=".9" stroke-linecap="round"/>
-<line x1="400" y1="3200" x2="414" y2="3200" stroke="rgba(221,216,204,.26)" stroke-width=".8" stroke-linecap="round"/>
-<line x1="407" y1="3193" x2="407" y2="3207" stroke="rgba(221,216,204,.26)" stroke-width=".8" stroke-linecap="round"/>
-
-</svg>
+<!-- ═══ 배경 데코 CSS ═══ -->
 
 <nav id="nav">
   <span class="nav-l">HOJOON / 3D-BG</span>
@@ -1109,7 +840,8 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 </section>
 
 <!-- ═══ WORKS ═══ -->
-<section id="works" style="position:relative;overflow:hidden;">
+<section id="works" style="position:relative;overflow:visible;">
+
   <div class="wk-hd rv">
     <div class="wk-t">WOR<span class="ac">KS</span></div>
     <div class="wk-m">9 Projects<br>Click → Detail</div>
@@ -1196,8 +928,9 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 </section>
 
 <!-- ═══ INTERIOR ═══ -->
-<section id="interior" class="sd-section">
-  <div class="sd-hd rv">
+<section id="interior" class="sd-section" style="overflow:visible;">
+
+    <div class="sd-hd rv">
     <div>
       <span class="sd-tag">Background in Space Design</span>
       <div class="sd-t">INTE<span class="ac">RIOR</span></div>
@@ -1272,8 +1005,9 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 </section>
 
 <!-- ═══ STAGE ═══ -->
-<section id="stage" class="sd-section">
-  <div class="sd-hd rv">
+<section id="stage" class="sd-section" style="overflow:visible;">
+
+    <div class="sd-hd rv">
     <div>
       <span class="sd-tag">Background in Space Design</span>
       <div class="sd-t">STA<span class="ac">GE</span></div>
@@ -1305,8 +1039,9 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 </section>
 
 <!-- ═══ ABOUT ═══ -->
-<section id="about">
-  <div class="ab-bgnum">01</div>
+<section id="about" style="overflow:visible;">
+
+    <div class="ab-bgnum">01</div>
   <div class="ab-inner rv">
     <div class="ab-left">
       <div class="ab-big">ENV<br><span class="ac">ART</span><br><em>IST</em></div>
@@ -1326,7 +1061,8 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 </section>
 
 <!-- ═══ CONTACT ═══ -->
-<section id="contact">
+<section id="contact" style="overflow:visible;">
+
 
   <div class="ct-inner rv">
     <div class="ct-cta">LET'S<br><span class="ac">BUILD</span><br><em>WORLDS</em></div>
@@ -2302,6 +2038,61 @@ const obs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});
 },{threshold:0.06});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* ══════════════════════════════════════════
+   디테일 페이지 수정
+   1. 영상 좌우 여백 없이 꽉 채우기
+   2. 넥스트/프리뷰 버튼 — 영상 구간 숨김
+   3. 사이드바 스크롤 연동
+══════════════════════════════════════════ */
+
+// 넥스트/프리뷰 버튼 가시성 — dp-body 보일 때만 표시
+(function(){
+  const dpEl2 = document.getElementById('dp');
+  const prevBtn = document.getElementById('dp-prev');
+  const nextBtn = document.getElementById('dp-next');
+  const dpBody  = document.querySelector('.dp-body');
+  if(!dpEl2||!prevBtn||!nextBtn||!dpBody) return;
+
+  function updateArrowVisibility(){
+    if(!dpEl2.classList.contains('open')) return;
+    const bodyRect = dpBody.getBoundingClientRect();
+    // dp-body 상단이 뷰포트 안에 들어오면 화살표 표시
+    const visible = bodyRect.top < window.innerHeight * 0.8;
+    prevBtn.style.opacity = visible ? '1' : '0';
+    prevBtn.style.pointerEvents = visible ? 'auto' : 'none';
+    nextBtn.style.opacity = visible ? '1' : '0';
+    nextBtn.style.pointerEvents = visible ? 'auto' : 'none';
+  }
+
+  dpEl2.addEventListener('scroll', updateArrowVisibility, {passive:true});
+
+  // openDetail 호출 시 초기 숨김
+  const _origOpen = window.openDetail;
+  window.openDetail = function(){
+    if(prevBtn){ prevBtn.style.opacity='0'; prevBtn.style.pointerEvents='none'; }
+    if(nextBtn){ nextBtn.style.opacity='0'; nextBtn.style.pointerEvents='none'; }
+    if(_origOpen) _origOpen.apply(this, arguments);
+  };
+})();
+
+// 사이드바 스크롤 연동 — dp-main 위에서 wheel 시 썸네일 순서대로
+(function(){
+  const dpMain = document.getElementById('dp-main');
+  if(!dpMain) return;
+
+  dpMain.addEventListener('wheel', function(e){
+    e.preventDefault();
+    const items = document.querySelectorAll('.dp-sb-item');
+    if(!items.length) return;
+    let activeIdx = 0;
+    items.forEach((el,i)=>{ if(el.classList.contains('active')) activeIdx=i; });
+    const next = e.deltaY > 0
+      ? Math.min(activeIdx+1, items.length-1)
+      : Math.max(activeIdx-1, 0);
+    if(next !== activeIdx) items[next].click();
+  }, {passive:false});
+})();
 </script>
 <!-- ═══ CUSTOM CURSOR ═══ -->
 <div id="custom-cursor">
