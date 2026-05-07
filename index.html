@@ -199,7 +199,7 @@ nav.s .nav-links a{color:rgba(221,216,204,.75);}
 .gi.pos-retro .gt-bg,
 .gi.pos-retro .gt-vid{object-position:center 15% !important;}
 
-/* zbrush study — cover로 변경, 검정 여백 제거 */
+/* zbrush study */
 .gi.pos-zstudy .gt-bg,
 .gi.pos-zstudy .gt-vid{
   object-fit:contain;
@@ -1748,12 +1748,12 @@ const DETAIL_MEDIA = {
   },
   game_8: {
     items: [
-      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_01.webp',constrain:true},
+      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_01.webp',constrain:'95'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_02.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_03.webp',constrain:true},
+      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_03.webp',constrain:'95'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_04.webp'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_05.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_06.webp',constrain:true},
+      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_06.webp',constrain:'90'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_07.webp'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_08.webp'},
     ]
@@ -1960,7 +1960,10 @@ function showDetail(cat,i){
       const img=document.createElement('img');
       img.className='dp-main-img';
       img.src=item.src;img.alt='';
-      if(item.constrain) img.style.cssText='max-width:90%;max-height:90%;margin:auto;display:block;';
+      if(item.constrain){
+        const pct = typeof item.constrain === 'string' ? item.constrain : '90';
+        img.style.cssText=`max-width:${pct}%;max-height:${pct}%;margin:auto;display:block;`;
+      }
       img.onclick=()=>openLb(item.src);
       mainEl.appendChild(img);
     }
