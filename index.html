@@ -202,8 +202,9 @@ nav.s .nav-links a{color:rgba(221,216,204,.75);}
 /* zbrush study — cover로 변경, 검정 여백 제거 */
 .gi.pos-zstudy .gt-bg,
 .gi.pos-zstudy .gt-vid{
-  object-fit:contain;
+  object-fit:cover;
   object-position:center center;
+  transform:scale(0.85);
 }
 
 /* zbrush rock 호버 — 원본 비율 전체 표시 */
@@ -1752,7 +1753,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_03.webp',constrain:true},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_04.webp'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_05.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_06.webp'},
+      {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_06.webp',constrain:true},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_07.webp'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_08.webp'},
     ]
@@ -1959,6 +1960,7 @@ function showDetail(cat,i){
       const img=document.createElement('img');
       img.className='dp-main-img';
       img.src=item.src;img.alt='';
+      if(item.constrain) img.style.cssText='max-width:80%;max-height:80%;margin:auto;display:block;';
       img.onclick=()=>openLb(item.src);
       mainEl.appendChild(img);
     }
