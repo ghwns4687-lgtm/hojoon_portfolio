@@ -1537,17 +1537,17 @@ const GW=[
   },
 ];
 const SW=[
-  {t:"PAJU\nCAFE",                    type:"Interior",year:"2023"},
-  {t:"SUWON\nCOEXISTENCE",           type:"Interior",year:"2023"},
-  {t:"ITAEWON\nMUSIC OFFICE",         type:"Interior",year:"2023"},
-  {t:"JIPYEONG\nBREWERY",            type:"Interior",year:"2022"},
-  {t:"GIMPO\nFLEX SQUARE",           type:"Interior",year:"2022"},
-  {t:"PAJU\nSHINSEGAE RAWROW",       type:"Interior",year:"2022"},
-  {t:"GOOGLE\nOFFICE",               type:"Interior",year:"2022"},
-  {t:"YEOJU\nCAFE",                  type:"Interior",year:"2022"},
-  {t:"LDP\nLOOK LOOK",               type:"Stage",   year:"2023"},
-  {t:"A KIND OF\nALASKA",            type:"Stage",   year:"2022"},
-  {t:"THE PEACE\nOF WORLD",          type:"Stage",   year:"2022"},
+  {t:"PAJU\nCAFE",                    type:"Interior",year:"2023",stats:[{k:"Role",v:"Interior Designer"},{k:"Pipeline",v:"SketchUp → Enscape"}]},
+  {t:"SUWON\nCOEXISTENCE",           type:"Interior",year:"2023",stats:[{k:"Role",v:"Interior Designer"},{k:"Pipeline",v:"SketchUp → Enscape"}]},
+  {t:"ITAEWON\nMUSIC OFFICE",         type:"Interior",year:"2023",stats:[{k:"Role",v:"Interior Designer"},{k:"Pipeline",v:"SketchUp → Enscape"}]},
+  {t:"JIPYEONG\nBREWERY",            type:"Interior",year:"2022",stats:[{k:"Role",v:"Interior Designer"},{k:"Pipeline",v:"SketchUp → Enscape"}]},
+  {t:"GIMPO\nFLEX SQUARE",           type:"Interior",year:"2022",stats:[{k:"Role",v:"Interior Designer"},{k:"Pipeline",v:"SketchUp → Enscape"}]},
+  {t:"PAJU\nSHINSEGAE RAWROW",       type:"Interior",year:"2022",stats:[{k:"Role",v:"Interior Designer"},{k:"Pipeline",v:"SketchUp → Enscape"}]},
+  {t:"GOOGLE\nOFFICE",               type:"Interior",year:"2022",stats:[{k:"Role",v:"Interior Designer"},{k:"Pipeline",v:"SketchUp → Enscape"}]},
+  {t:"YEOJU\nCAFE",                  type:"Interior",year:"2022",stats:[{k:"Role",v:"Interior Designer"},{k:"Pipeline",v:"SketchUp → Enscape"}]},
+  {t:"LDP\nLOOK LOOK",               type:"Stage",   year:"2023",stats:[{k:"Role",v:"Stage Designer"},{k:"Pipeline",v:"SketchUp → On-site Supervision"}]},
+  {t:"A KIND OF\nALASKA",            type:"Stage",   year:"2022",stats:[{k:"Role",v:"Stage Designer"},{k:"Pipeline",v:"SketchUp → On-site Supervision"}]},
+  {t:"THE PEACE\nOF WORLD",          type:"Stage",   year:"2022",stats:[{k:"Role",v:"Stage Designer"},{k:"Pipeline",v:"SketchUp → On-site Supervision"}]},
 ];
 
 function openDetail(cat,i){
@@ -2039,6 +2039,11 @@ function closeDetail(){
   history.pushState(null,'','#');
   document.getElementById('dp').classList.remove('open');
   document.body.style.overflow='';
+  const mainEl = document.getElementById('dp-main');
+  const thumbsEl = document.getElementById('dp-sb-thumbs');
+  const sidebarEl = document.querySelector('.dp-sb-info');
+  if(mainEl) mainEl.innerHTML='';
+  if(thumbsEl) thumbsEl.innerHTML='';
 }
 
 /* ── About Panel ── */
