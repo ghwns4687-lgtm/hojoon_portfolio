@@ -2395,12 +2395,17 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
   };
 })();
 
-// 사이드바 스크롤 연동 — dp-main 위에서 wheel 시 썸네일 순서대로
+// 사이드바 스크롤 연동 — dp-main 위에서 wheel 시 썸네일 순서대로 (스크롤 다 내려갔을 때만)
 (function(){
   const dpMain = document.getElementById('dp-main');
-  if(!dpMain) return;
+  const dpEl3  = document.getElementById('dp');
+  if(!dpMain || !dpEl3) return;
 
   dpMain.addEventListener('wheel', function(e){
+    // dp가 완전히 스크롤 내려갔을 때만 이미지 전환
+    const atBottom = dpEl3.scrollTop + dpEl3.clientHeight >= dpEl3.scrollHeight - 10;
+    if(!atBottom) return; // 아직 스크롤 중이면 기본 스크롤 허용
+
     e.preventDefault();
     const items = document.querySelectorAll('.dp-sb-item');
     if(!items.length) return;
@@ -2412,6 +2417,16 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
     if(next !== activeIdx) items[next].click();
   }, {passive:false});
 })();
+
+// 뒤로가기 → 메인으로
+window.addEventListener('popstate', function(){
+  const dpEl4 = document.getElementById('dp');
+  if(dpEl4 && dpEl4.classList.contains('open')){
+    dpEl4.classList.remove('open');
+    document.body.style.overflow='';
+    history.pushState(null,'',location.pathname);
+  }
+});
 </script>
 <!-- ═══ CUSTOM CURSOR ═══ -->
 <div id="custom-cursor">
