@@ -1884,7 +1884,7 @@ function navigateProject(dir){
   const total=cat==='game'?totalGame:totalSpace;
   if(newIdx<0) newIdx=total-1;
   if(newIdx>=total) newIdx=0;
-  openDetail(cat==='game'?'work':'space', newIdx);
+  openDetail(cat, newIdx);
 }
 
 function showDetail(cat,i){
