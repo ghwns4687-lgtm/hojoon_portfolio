@@ -625,7 +625,7 @@ footer{
 .dp-sb-thumbs::-webkit-scrollbar-thumb{background:rgba(51,170,255,.2);}
 
 .dp-sb-item{
-  width:100%;aspect-ratio:16/6;
+  width:100%;aspect-ratio:16/5;
   overflow:hidden;cursor:pointer;
   position:relative;
   border:1px solid rgba(221,216,204,.06);
@@ -1274,14 +1274,14 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
       </div>
       <div class="ap-info">
         <div class="ap-name">HO&nbsp;&nbsp;JOON&nbsp;&nbsp;<span>HWANG</span></div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:rgba(221,216,204,.75);margin-bottom:.6rem;">3D Env Artist — Game · Level · Props</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.13em;color:rgba(221,216,204,.3);margin-bottom:1.2rem;">GHWNS4687@GMAIL.COM · KR · 1992</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.85rem;letter-spacing:.12em;color:rgba(221,216,204,.75);margin-bottom:.8rem;">3D Env Artist — Game · Level · Props</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.76rem;letter-spacing:.13em;color:rgba(221,216,204,.3);margin-bottom:1.6rem;line-height:2;">GHWNS4687@GMAIL.COM · KR · 1992</div>
         <div style="border-top:1px solid rgba(221,216,204,.06);padding-top:1rem;">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.2em;color:rgba(51,170,255,.45);margin-bottom:.6rem;">TOOLS</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em;color:rgba(221,216,204,.45);line-height:2;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:.63rem;letter-spacing:.2em;color:rgba(51,170,255,.45);margin-bottom:.8rem;">TOOLS</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;letter-spacing:.08em;color:rgba(221,216,204,.45);line-height:2.3;">
             <span style="color:rgba(221,216,204,.75);">3DS Max</span> · <span style="color:rgba(221,216,204,.75);">ZBrush</span> · <span style="color:rgba(221,216,204,.75);">Substance Painter</span> · <span style="color:rgba(221,216,204,.75);">UE5</span> · <span style="color:rgba(221,216,204,.75);">Marmoset</span> · <span style="color:rgba(221,216,204,.75);">Photoshop</span> <span style="color:rgba(221,216,204,.2);">/</span> Rizom UV · Knald · Unity
           </div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.14em;color:rgba(221,216,204,.3);margin-top:.8rem;">— Full Pipeline</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:.73rem;letter-spacing:.14em;color:rgba(221,216,204,.3);margin-top:1rem;">— Full Pipeline</div>
         </div>
       </div>
     </div>
@@ -1450,30 +1450,6 @@ const GW=[
     ]
   },
   {
-    t:"SCI-FI\nCORRIDOR",
-    engine:"Unreal Engine 5",tools:"3DS Max · Substance Painter",year:"2023",type:"Environment",hasVideo:false,
-    overview:`<strong>모듈화 구조</strong>를 기반으로 SF 복도 환경을 구성하고, 반복되는 패널 구조 위에 하이트 디테일을 더해 금속 표면의 밀도를 형성했습니다. <strong>Emissive와 반사 재질의 대비</strong>를 통해 SF 환경 특유의 재질감과 공간 분위기를 구축했습니다.`,
-    chips:[{t:"Metal",h:true},{t:"Plastic Panel",h:false},{t:"Emissive",h:true},{t:"UE5 Lumen",h:false}],
-    stats:[
-      {k:"Role",v:"Full Pipeline"},
-      {k:"Scope",v:"Environment Art · Material Authoring · Lighting · Scene Composition"},
-      {k:"Focus",v:"모듈화 구조 · 금속 패널 디테일 · 재질 대비"},
-      {k:"Pipeline",v:"3DS Max → ZBrush → Marmoset → Substance Painter → UE5"},
-    ]
-  },
-  {
-    t:"FIRE\nPLACE",
-    engine:"Marmoset Toolbag",tools:"3DS Max · Substance Painter",year:"2023",type:"Props",hasVideo:false,
-    overview:`단일 오브젝트 안에서 재질의 '시간'을 읽히게 만드는 것이 핵심 목표였습니다. 그을음, 열균열, 금속 산화를 Substance Painter에서 레이어 단위로 쌓아 벽난로가 오랫동안 사용된 흔적을 표면에 담았습니다.`,
-    chips:[{t:"Stone",h:true},{t:"Soot · Wear",h:true},{t:"Oxidized Metal",h:false}],
-    stats:[
-      {k:"Role",v:"Full Pipeline"},
-      {k:"Scope",v:"Modeling · UV · Texturing · Presentation"},
-      {k:"Focus",v:"표면 노화 · 웨더링"},
-      {k:"Pipeline",v:"3DS Max → Substance → Marmoset"},
-    ]
-  },
-  {
     t:"OLD\nCARRIAGE",
     engine:"Marmoset Toolbag",tools:"3DS Max · Substance Painter",year:"2023",type:"Props",hasVideo:false,
     overview:`나무, 금속, 패브릭 등 서로 다른 재질이 자연스럽게 공존할 수 있도록 구성했으며, <strong>소재별 노화 표현</strong>과 밀도 있는 소품 배치를 통해 오랜 시간 사용된 환경의 분위기와 생활감을 구현하는 데 집중했습니다.`,
@@ -1510,6 +1486,18 @@ const GW=[
     ]
   },
   {
+    t:"SCI-FI\nCORRIDOR",
+    engine:"Unreal Engine 5",tools:"3DS Max · Substance Painter",year:"2023",type:"Environment",hasVideo:false,
+    overview:`<strong>모듈화 구조</strong>를 기반으로 SF 복도 환경을 구성하고, 반복되는 패널 구조 위에 하이트 디테일을 더해 금속 표면의 밀도를 형성했습니다. <strong>Emissive와 반사 재질의 대비</strong>를 통해 SF 환경 특유의 재질감과 공간 분위기를 구축했습니다.`,
+    chips:[{t:"Metal",h:true},{t:"Plastic Panel",h:false},{t:"Emissive",h:true},{t:"UE5 Lumen",h:false}],
+    stats:[
+      {k:"Role",v:"Full Pipeline"},
+      {k:"Scope",v:"Environment Art · Material Authoring · Lighting · Scene Composition"},
+      {k:"Focus",v:"모듈화 구조 · 금속 패널 디테일 · 재질 대비"},
+      {k:"Pipeline",v:"3DS Max → ZBrush → Marmoset → Substance Painter → UE5"},
+    ]
+  },
+  {
     t:"RETRO\nCOMPUTER",
     engine:"Marmoset Toolbag",tools:"3DS Max · Substance Painter",year:"2022",type:"Props",hasVideo:false,
     overview:`80년대 레트로 컴퓨터 하드 서페이스 프랍입니다. 플라스틱 사출 광택, UV 황변, 키보드 각인 마모를 Substance에서 재현했으며, 정확한 로우폴리 토폴로지와 노말 베이크 품질에 집중한 작업입니다.`,
@@ -1518,6 +1506,18 @@ const GW=[
       {k:"Role",v:"Full Pipeline"},
       {k:"Scope",v:"Modeling · UV · Bake · Texturing · Presentation"},
       {k:"Focus",v:"플라스틱 재질 · 하드 서페이스"},
+      {k:"Pipeline",v:"3DS Max → Substance → Marmoset"},
+    ]
+  },
+  {
+    t:"FIRE\nPLACE",
+    engine:"Marmoset Toolbag",tools:"3DS Max · Substance Painter",year:"2023",type:"Props",hasVideo:false,
+    overview:`단일 오브젝트 안에서 재질의 '시간'을 읽히게 만드는 것이 핵심 목표였습니다. 그을음, 열균열, 금속 산화를 Substance Painter에서 레이어 단위로 쌓아 벽난로가 오랫동안 사용된 흔적을 표면에 담았습니다.`,
+    chips:[{t:"Stone",h:true},{t:"Soot · Wear",h:true},{t:"Oxidized Metal",h:false}],
+    stats:[
+      {k:"Role",v:"Full Pipeline"},
+      {k:"Scope",v:"Modeling · UV · Texturing · Presentation"},
+      {k:"Focus",v:"표면 노화 · 웨더링"},
       {k:"Pipeline",v:"3DS Max → Substance → Marmoset"},
     ]
   },
