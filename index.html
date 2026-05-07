@@ -625,7 +625,7 @@ footer{
 .dp-sb-thumbs::-webkit-scrollbar-thumb{background:rgba(51,170,255,.2);}
 
 .dp-sb-item{
-  width:100%;aspect-ratio:16/5;
+  width:100%;aspect-ratio:16/4;
   overflow:hidden;cursor:pointer;
   position:relative;
   border:1px solid rgba(221,216,204,.06);
@@ -1002,21 +1002,21 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
     </div>
     <!-- 행 2: 캐리지 3.5 : 쥬이서 2.5 : zbrush rock 4 -->
     <div class="g-row rv">
-      <div class="gi pos-carriage" style="flex:3.8" onclick="openDetail('game',4)">
+      <div class="gi pos-carriage" style="flex:3.8" onclick="openDetail('game',2)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/old_carriage/old_carriage_thumb.webp" alt="Old Carriage" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/old_carriage/old_carriage_hover.webp" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi pos-juicer" style="flex:2.2" onclick="openDetail('game',5)">
+      <div class="gi pos-juicer" style="flex:2.2" onclick="openDetail('game',3)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/old_juicer/old_juicer_thumb.webp" alt="Old Juicer" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/old_juicer/old_juicer_hover.webp" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi pos-zrock" style="flex:4" onclick="openDetail('game',6)">
+      <div class="gi pos-zrock" style="flex:4" onclick="openDetail('game',4)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_thumb.webp" alt="ZBrush Rock" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_hover.webp" alt="" loading="lazy">
@@ -1026,14 +1026,14 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
     </div>
     <!-- 행 3: sci-fi 7.5 : 레트로 2.5 -->
     <div class="g-row rv">
-      <div class="gi" style="flex:6.5" onclick="openDetail('game',2)">
+      <div class="gi" style="flex:6.5" onclick="openDetail('game',5)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_thumb.webp" alt="Sci-Fi Corridor" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_hover.webp" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">SCI-FI CORRIDOR</span></span><span class="ov-m">Environment · UE5</span></div></div>
       </div>
-      <div class="gi pos-retro" style="flex:3.5" onclick="openDetail('game',7)">
+      <div class="gi pos-retro" style="flex:3.5" onclick="openDetail('game',6)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/retro_computer/retro_computer_thumb.webp" alt="Retro Computer" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/retro_computer/retro_computer_hover.webp" alt="" loading="lazy">
@@ -1043,7 +1043,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
     </div>
     <!-- 행 4: fire place + zbrush study — 나머지 공간은 투명 -->
     <div class="g-row fp-row rv">
-      <div class="gi pos-fire" style="width:22%;min-width:0;" onclick="openDetail('game',3)">
+      <div class="gi pos-fire" style="width:22%;min-width:0;" onclick="openDetail('game',7)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.webp" alt="Fire Place" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.webp" alt="" loading="lazy">
@@ -1617,37 +1617,6 @@ const DETAIL_MEDIA = {
     ]
   },
   game_2: {
-    items: [
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_01.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_02.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_03.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_04.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_05.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_06.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_07.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_08.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_09.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_10.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_11.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_12.webp'},
-      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_13.webp'},
-    ]
-  },
-  game_3: {
-    items: [
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_01.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_02.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_03.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_04.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_05.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_06.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_07.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_08.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_09.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_10.webp'},
-    ]
-  },
-  game_4: {
     youtubeId: 'furwa3ICGpw',
     items: [
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_01.webp'},
@@ -1675,7 +1644,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_23.webp'},
     ]
   },
-  game_5: {
+  game_3: {
     youtubeId: 'd6nyNFcwCzI',
     items: [
       {type:'img',src:'image/3d_graphic/old_juicer/old_juicer_01.webp'},
@@ -1692,7 +1661,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/old_juicer/old_juicer_12.webp'},
     ]
   },
-  game_6: {
+  game_4: {
     youtubeId: 'VaIKmb5KU5w',
     items: [
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_01.webp'},
@@ -1710,7 +1679,24 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_13.webp'},
     ]
   },
-  game_7: {
+  game_5: {
+    items: [
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_01.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_02.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_03.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_04.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_05.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_06.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_07.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_08.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_09.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_10.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_11.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_12.webp'},
+      {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_13.webp'},
+    ]
+  },
+  game_6: {
     youtubeId: '_RORN5Y1ov8',
     items: [
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_01.webp'},
@@ -1743,6 +1729,20 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_28.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_29.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_30.webp'},
+    ]
+  },
+  game_7: {
+    items: [
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_01.webp'},
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_02.webp'},
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_03.webp'},
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_04.webp'},
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_05.webp'},
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_06.webp'},
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_07.webp'},
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_08.webp'},
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_09.webp'},
+      {type:'img',src:'image/3d_graphic/fire_place/fire_place_10.webp'},
     ]
   },
   game_8: {
