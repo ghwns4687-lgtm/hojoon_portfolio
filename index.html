@@ -1259,8 +1259,18 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 
     <!-- 프로필 -->
     <div class="ap-profile">
-      <div class="ap-photo">
-        <img src="image/profile.webp" alt="Hojoon">
+      <div style="position:relative;flex-shrink:0;margin-bottom:10px;margin-right:6px;overflow:visible;">
+        <!-- 뒤에 깔리는 회색 오프셋 박스 -->
+        <div style="position:absolute;top:6px;left:6px;width:280px;height:340px;background:rgba(221,216,204,.06);border:1px solid rgba(221,216,204,.12);z-index:0;"></div>
+        <!-- 상단 선 + 빨간 점 -->
+        <div style="position:absolute;top:-12px;left:0;right:0;height:1px;background:rgba(221,216,204,.1);z-index:2;"></div>
+        <div style="position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:rgba(255,78,58,.85);z-index:3;"></div>
+        <!-- 상하 파란 선 (사진 프레임 바깥) -->
+        <div style="position:absolute;top:-12px;left:20%;right:20%;height:1px;background:rgba(51,170,255,.5);z-index:2;"></div>
+        <div style="position:absolute;bottom:-18px;left:20%;right:20%;height:1px;background:rgba(51,170,255,.5);z-index:2;"></div>
+        <div class="ap-photo" style="position:relative;z-index:1;display:block;">
+          <img src="image/profile.webp" alt="Hojoon">
+        </div>
       </div>
       <div class="ap-info">
         <div class="ap-name">HO&nbsp;&nbsp;JOON&nbsp;&nbsp;<span>HWANG</span></div>
