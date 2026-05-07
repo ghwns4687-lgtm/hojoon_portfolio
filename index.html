@@ -202,13 +202,11 @@ nav.s .nav-links a{color:rgba(221,216,204,.75);}
 /* zbrush study */
 .gi.pos-zstudy .gt-bg,
 .gi.pos-zstudy .gt-vid{
-  object-fit:contain;
+  object-fit:cover;
   object-position:center center;
-  background:#111;
-  transform:scale(1.2);
 }
-.gi.pos-zstudy:hover .gt-bg{ transform:scale(1.2); }
-.gi.pos-zstudy:not(:hover) .gt-bg{ transform:scale(1.2); }
+.gi.pos-zstudy:hover .gt-bg{ transform:scale(1.06); }
+.gi.pos-zstudy:not(:hover) .gt-bg{ transform:scale(1); }
 
 /* zbrush rock 호버 — 원본 비율 전체 표시 */
 .gi.pos-zrock .gt-vid{
@@ -1054,7 +1052,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
       </div>
-      <div class="gi pos-zstudy" style="width:45%;min-width:0;" onclick="openDetail('game',8)">
+      <div class="gi pos-zstudy" style="width:43%;min-width:0;" onclick="openDetail('game',8)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.webp" alt="ZBrush Study" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.webp" alt="" loading="lazy">
