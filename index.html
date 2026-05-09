@@ -1227,27 +1227,30 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 <!-- ═══ CONTACT ═══ -->
 <section id="contact" style="overflow:visible;">
 
-  <div class="ct-inner rv" style="align-items:center;padding:2.5rem 2.5rem 3rem;gap:3rem;">
+  <div class="ct-inner rv" style="align-items:center;padding:2.5rem 2.5rem 3rem;gap:1rem;flex-direction:column;">
 
-    <!-- 왼쪽: 한 줄 철학 문장 -->
-    <div style="font-family:var(--D);font-size:clamp(1.6rem,2.4vw,2.4rem);line-height:1;color:var(--txt);white-space:nowrap;letter-spacing:.02em;flex-shrink:0;">
-      SPACE WAS ALWAYS <span style="color:var(--ac);">THE POINT.</span>
+    <!-- 1행: 문장 + 이메일 세로 중앙 정렬 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:.55rem;">
+      <div style="font-family:var(--D);font-size:clamp(1.6rem,2.4vw,2.4rem);line-height:1;color:var(--txt);white-space:nowrap;letter-spacing:.02em;text-align:center;">
+        SPACE WAS ALWAYS <span style="color:var(--ac);">THE POINT.</span>
+      </div>
+      <a href="mailto:ghwns4687@gmail.com" style="font-family:var(--M);font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:rgba(221,216,204,.85);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .2s;">
+        <span style="display:inline-block;width:16px;height:1px;background:var(--ac);opacity:.6;flex-shrink:0;"></span>ghwns4687@gmail.com
+      </a>
     </div>
 
-    <!-- 가운데: 얇은 선 -->
-    <div style="flex:1;height:1px;background:rgba(221,216,204,.08);"></div>
-
-    <!-- 오른쪽: 이메일 + 서브 정보 -->
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.55rem;flex-shrink:0;">
-      <a href="mailto:ghwns4687@gmail.com" style="font-family:var(--M);font-size:13px;letter-spacing:.13em;text-transform:uppercase;color:rgba(221,216,204,.9);text-decoration:none;display:flex;align-items:center;gap:.55rem;transition:color .2s;">
-        <span style="display:inline-block;width:20px;height:1px;background:var(--ac);opacity:.6;"></span>ghwns4687@gmail.com
-      </a>
-      <div style="display:flex;align-items:center;gap:.6rem;font-family:var(--M);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(221,216,204,.3);">
+    <!-- 2행: 시그니처 선 마감 -->
+    <div style="display:flex;align-items:center;gap:.65rem;width:100%;">
+      <div style="height:1px;flex:1;background:rgba(221,216,204,.09);"></div>
+      <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,78,58,.65);flex-shrink:0;"></div>
+      <div style="display:flex;align-items:center;gap:.5rem;font-family:var(--M);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(221,216,204,.3);white-space:nowrap;">
         <span style="width:5px;height:5px;border-radius:50%;background:var(--ac);display:inline-block;animation:blink 2s infinite;flex-shrink:0;"></span>
         <span style="color:var(--ac);">Available</span>
         <span style="color:rgba(221,216,204,.12);">·</span>
         3D Background Artist · Environment
       </div>
+      <div style="width:4px;height:4px;border-radius:50%;background:rgba(51,170,255,.45);flex-shrink:0;"></div>
+      <div style="height:1px;flex:1;background:rgba(221,216,204,.09);"></div>
     </div>
 
   </div>
