@@ -430,6 +430,21 @@ footer{
 .ct-links a i{display:inline-block;width:18px;height:1px;background:rgba(221,216,204,.15);transition:all .25s;}
 .ct-links a:hover{color:var(--txt);}
 .ct-links a:hover i{width:32px;background:var(--ac);}
+.ct-email-link{
+  font-family:var(--M);font-size:15px;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(221,216,204,.85);text-decoration:none;display:flex;align-items:center;gap:.6rem;
+  transition:color .25s,letter-spacing .25s,font-weight .25s;
+  cursor:copy;position:relative;
+}
+.ct-email-link:hover{color:#fff;letter-spacing:.16em;font-weight:700;}
+.ct-email-line{display:inline-block;width:20px;height:1px;background:var(--ac);opacity:.6;flex-shrink:0;transition:width .3s,opacity .25s;}
+.ct-email-link:hover .ct-email-line{width:48px;opacity:1;}
+.ct-copied{
+  position:absolute;top:-1.6rem;left:50%;transform:translateX(-50%);
+  font-family:var(--M);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ac);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;
+}
+.ct-copied.show{opacity:1;}
 
 /* ════════════════════
    DETAIL PAGE
@@ -992,7 +1007,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
           <img class="gt-bg" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_thumb.webp" alt="Medieval War Pavilion" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_hover.webp" alt="" loading="lazy">
         </div>
-        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Featured · Environment · UE5</span></div></div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Environment · UE5</span></div></div>
       </div>
       <div class="gi pos-gate" style="flex:3.7" onclick="openDetail('game',1)">
         <div class="gt">
@@ -1009,21 +1024,21 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
           <img class="gt-bg" src="image/3d_graphic/old_carriage/old_carriage_thumb.webp" alt="Old Carriage" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/old_carriage/old_carriage_hover.webp" alt="" loading="lazy">
         </div>
-        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · UE5</span></div></div>
       </div>
       <div class="gi pos-juicer" style="flex:2.2" onclick="openDetail('game',3)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/old_juicer/old_juicer_thumb.webp" alt="Old Juicer" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/old_juicer/old_juicer_hover.webp" alt="" loading="lazy">
         </div>
-        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · UE5</span></div></div>
       </div>
       <div class="gi pos-zrock" style="flex:4" onclick="openDetail('game',4)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_thumb.webp" alt="ZBrush Rock" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_hover.webp" alt="" loading="lazy">
         </div>
-        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH ROCK</span></span><span class="ov-m">Study · ZBrush</span></div></div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MODULAR ROCK ASSET PACK</span></span><span class="ov-m">Props · Environment · UE5</span></div></div>
       </div>
     </div>
     <!-- 행 3: sci-fi 7.5 : 레트로 2.5 -->
@@ -1040,7 +1055,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
           <img class="gt-bg" src="image/3d_graphic/retro_computer/retro_computer_thumb.webp" alt="Retro Computer" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/retro_computer/retro_computer_hover.webp" alt="" loading="lazy">
         </div>
-        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">RETRO COMPUTER</span></span><span class="ov-m">Props · Marmoset</span></div></div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">RETRO COMPUTER</span></span><span class="ov-m">Props · UE5</span></div></div>
       </div>
     </div>
     <!-- 행 4: fire place + zbrush study — 나머지 공간은 투명 -->
@@ -1050,14 +1065,14 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
           <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.webp" alt="Fire Place" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.webp" alt="" loading="lazy">
         </div>
-        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · Marmoset</span></div></div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · UE5</span></div></div>
       </div>
       <div class="gi pos-zstudy" style="width:42.3%;min-width:0;" onclick="openDetail('game',8)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.webp" alt="ZBrush Study" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.webp" alt="" loading="lazy">
         </div>
-        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH STUDY</span></span><span class="ov-m">Study · ZBrush</span></div></div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH STUDY</span></span><span class="ov-m">Study · ZBrush · UE5 · Marmoset</span></div></div>
       </div>
       <!-- 나머지 — 아주 좁은 여백만 -->
       <div style="width:7%;background:transparent;pointer-events:none;flex-shrink:0;"></div>
@@ -1237,8 +1252,9 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
       </div>
 
       <!-- 이메일 -->
-      <a href="mailto:ghwns4687@gmail.com" style="font-family:var(--M);font-size:15px;letter-spacing:.13em;text-transform:uppercase;color:rgba(221,216,204,.85);text-decoration:none;display:flex;align-items:center;gap:.6rem;transition:color .2s;">
-        <span style="display:inline-block;width:20px;height:1px;background:var(--ac);opacity:.6;flex-shrink:0;"></span>ghwns4687@gmail.com
+      <a href="mailto:ghwns4687@gmail.com" class="ct-email-link" onclick="copyEmail(event)">
+        <span class="ct-email-line"></span>ghwns4687@gmail.com
+        <span class="ct-copied" id="copiedMsg">Copied ✓</span>
       </a>
     </div>
 
@@ -1490,8 +1506,8 @@ const GW=[
     ]
   },
   {
-    t:"ZBRUSH\nROCK",
-    engine:"ZBrush",tools:"ZBrush · Substance Painter",year:"2023",type:"Study",hasVideo:false,
+    t:"MODULAR ROCK\nASSET PACK",
+    engine:"ZBrush",tools:"ZBrush · Substance Painter",year:"2023",type:"Props · Environment",hasVideo:false,
     overview:`ZBrush에서 <strong>형태와 실루엣이 다른 3종의 암석 에셋을 개별 제작</strong>하고, 이를 <strong>조합해 하나의 바다 위 아치형 지형 구조</strong>로 읽히도록 씬을 구성했습니다. 각 에셋은 개별 스컬핑 단계에서 형태와 실루엣이 다르게 제작되었으며, 이를 조합해 전체 구조에서 스케일과 흐름이 자연스럽게 이어지도록 배치했습니다. Substance Painter로 전반적인 재질 톤과 표면 마감을 정리했습니다.`,
     chips:[{t:"Organic",h:true},{t:"Rock Sculpt",h:false},{t:"ZBrush",h:true}],
     stats:[
@@ -2452,6 +2468,15 @@ window.addEventListener('popstate', function(){
     history.pushState(null,'',location.pathname);
   }
 });
+
+function copyEmail(e){
+  e.preventDefault();
+  navigator.clipboard.writeText('ghwns4687@gmail.com').then(()=>{
+    const msg = document.getElementById('copiedMsg');
+    msg.classList.add('show');
+    setTimeout(()=>msg.classList.remove('show'), 1800);
+  });
+}
 </script>
 <!-- ═══ CUSTOM CURSOR ═══ -->
 <div id="custom-cursor">
