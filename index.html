@@ -1227,19 +1227,22 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 <!-- ═══ CONTACT ═══ -->
 <section id="contact" style="overflow:visible;">
 
-  <div class="ct-inner rv" style="align-items:center;padding:2.5rem 2.5rem 3rem;gap:1rem;flex-direction:column;">
+  <!-- 메인 -->
+  <div style="display:flex;flex-direction:column;align-items:center;padding:6rem 2.5rem 6rem;gap:4rem;">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.4rem;">
 
-    <!-- 1행: 문장 + 이메일 세로 중앙 정렬 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:.55rem;">
-      <div style="font-family:var(--D);font-size:clamp(1.6rem,2.4vw,2.4rem);line-height:1;color:var(--txt);white-space:nowrap;letter-spacing:.02em;text-align:center;">
+      <!-- 문장 -->
+      <div style="font-family:var(--D);font-size:clamp(2rem,4vw,3.6rem);line-height:1;color:var(--txt);white-space:nowrap;text-align:center;letter-spacing:.02em;">
         SPACE WAS ALWAYS <span style="color:var(--ac);">THE POINT.</span>
       </div>
-      <a href="mailto:ghwns4687@gmail.com" style="font-family:var(--M);font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:rgba(221,216,204,.85);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .2s;">
-        <span style="display:inline-block;width:16px;height:1px;background:var(--ac);opacity:.6;flex-shrink:0;"></span>ghwns4687@gmail.com
+
+      <!-- 이메일 -->
+      <a href="mailto:ghwns4687@gmail.com" style="font-family:var(--M);font-size:15px;letter-spacing:.13em;text-transform:uppercase;color:rgba(221,216,204,.85);text-decoration:none;display:flex;align-items:center;gap:.6rem;transition:color .2s;">
+        <span style="display:inline-block;width:20px;height:1px;background:var(--ac);opacity:.6;flex-shrink:0;"></span>ghwns4687@gmail.com
       </a>
     </div>
 
-    <!-- 2행: 시그니처 선 마감 -->
+    <!-- 시그니처 선 -->
     <div style="display:flex;align-items:center;gap:.65rem;width:100%;">
       <div style="height:1px;flex:1;background:rgba(221,216,204,.09);"></div>
       <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,78,58,.65);flex-shrink:0;"></div>
@@ -1252,14 +1255,15 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
       <div style="width:4px;height:4px;border-radius:50%;background:rgba(51,170,255,.45);flex-shrink:0;"></div>
       <div style="height:1px;flex:1;background:rgba(221,216,204,.09);"></div>
     </div>
-
   </div>
-</section>
 
-<footer>
-  <span>© 2025 Hojoon</span>
-  <span>3D Background Artist — Environment</span>
-</footer>
+  <!-- 푸터 -->
+  <div style="border-top:1px solid rgba(221,216,204,.06);padding:1.2rem 2.5rem;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-family:var(--M);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(221,216,204,.15);">© 2025 Hojoon</span>
+    <span style="font-family:var(--M);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(221,216,204,.1);">3D Background Artist</span>
+  </div>
+
+</section>
 
 <!-- ═══ ABOUT PANEL ═══ -->
 <div id="ap">
