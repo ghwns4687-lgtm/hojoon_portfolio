@@ -415,17 +415,17 @@ footer{
   pointer-events:none;user-select:none;white-space:nowrap;overflow:hidden;
 }
 .ct-inner{
-  padding:1.5rem 2.5rem 4rem;
-  display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:3rem;
+  padding:1.5rem 2.5rem 3.5rem;
+  display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:nowrap;gap:2rem;
   position:relative;z-index:1;
 }
-.ct-cta{font-family:var(--D);font-size:clamp(3rem,7vw,6.5rem);line-height:.88;color:var(--txt);}
+.ct-cta{font-family:var(--D);font-size:clamp(1.8rem,3.5vw,3rem);line-height:.92;color:var(--txt);flex-shrink:0;}
 .ct-cta .ac{color:var(--ac);}
 .ct-cta em{display:block;font-style:normal;color:var(--t3);}
-.ct-links{list-style:none;display:flex;flex-direction:column;gap:1rem;}
+.ct-links{list-style:none;display:flex;flex-direction:column;gap:.7rem;flex-shrink:0;}
 .ct-links a{
-  font-family:var(--M);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--t2);text-decoration:none;display:flex;align-items:center;gap:.7rem;transition:color .2s;
+  font-family:var(--M);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(221,216,204,.6);text-decoration:none;display:flex;align-items:center;gap:.7rem;transition:color .2s;
 }
 .ct-links a i{display:inline-block;width:18px;height:1px;background:rgba(221,216,204,.15);transition:all .25s;}
 .ct-links a:hover{color:var(--txt);}
@@ -1226,23 +1226,30 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 
 <!-- ═══ CONTACT ═══ -->
 <section id="contact" style="overflow:visible;">
-  <!-- Contact 타이틀 옆 선 그래픽 -->
-  <div style="display:flex;align-items:center;padding:4rem 2.5rem 0;pointer-events:none;">
-    <div style="font-family:var(--D);font-size:clamp(2rem,5vw,4rem);color:rgba(51,170,255,.06);letter-spacing:-.02em;white-space:nowrap;">CONTACT</div>
-    <div style="flex:1;display:flex;align-items:center;gap:10px;padding:0 2rem;pointer-events:none;">
-      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(221,216,204,.20),rgba(221,216,204,.03));"></div>
-      <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,78,58,.55);flex-shrink:0;"></div>
-      <div style="width:32px;height:1px;background:rgba(221,216,204,.07);flex-shrink:0;"></div>
-    </div>
-  </div>
 
-  <div class="ct-inner rv">
-    <div class="ct-cta">LET'S<br><span class="ac">BUILD</span><br><em>WORLDS</em></div>
-    <ul class="ct-links">
-      <li><a href="mailto:hello@hojoon.com"><i></i>hello@hojoon.com</a></li>
-      <li><a href="#"><i></i>ArtStation</a></li>
-      <li><a href="#"><i></i>LinkedIn</a></li>
-    </ul>
+  <div class="ct-inner rv" style="align-items:center;padding:2.5rem 2.5rem 3rem;gap:3rem;">
+
+    <!-- 왼쪽: 한 줄 철학 문장 -->
+    <div style="font-family:var(--D);font-size:clamp(1.6rem,2.4vw,2.4rem);line-height:1;color:var(--txt);white-space:nowrap;letter-spacing:.02em;flex-shrink:0;">
+      SPACE WAS ALWAYS <span style="color:var(--ac);">THE POINT.</span>
+    </div>
+
+    <!-- 가운데: 얇은 선 -->
+    <div style="flex:1;height:1px;background:rgba(221,216,204,.08);"></div>
+
+    <!-- 오른쪽: 이메일 + 서브 정보 -->
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.55rem;flex-shrink:0;">
+      <a href="mailto:ghwns4687@gmail.com" style="font-family:var(--M);font-size:13px;letter-spacing:.13em;text-transform:uppercase;color:rgba(221,216,204,.9);text-decoration:none;display:flex;align-items:center;gap:.55rem;transition:color .2s;">
+        <span style="display:inline-block;width:20px;height:1px;background:var(--ac);opacity:.6;"></span>ghwns4687@gmail.com
+      </a>
+      <div style="display:flex;align-items:center;gap:.6rem;font-family:var(--M);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(221,216,204,.3);">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--ac);display:inline-block;animation:blink 2s infinite;flex-shrink:0;"></span>
+        <span style="color:var(--ac);">Available</span>
+        <span style="color:rgba(221,216,204,.12);">·</span>
+        3D Background Artist · Environment
+      </div>
+    </div>
+
   </div>
 </section>
 
