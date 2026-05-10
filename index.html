@@ -2296,6 +2296,11 @@ function showDetail(cat,i){
   document.getElementById('dp').classList.add('open');
   document.getElementById('dp').scrollTop=0;
   document.body.style.overflow='hidden';
+
+  // 모바일이면 세로 나열 레이아웃으로
+  if(window.innerWidth < 768){
+    renderMobileDetail(w, cat, i, media);
+  }
 }
 
 /* 썸네일 hover YouTube 제어 */
@@ -2316,6 +2321,14 @@ function closeDetail(){
   const sidebarEl = document.querySelector('.dp-sb-info');
   if(mainEl) mainEl.innerHTML='';
   if(thumbsEl) thumbsEl.innerHTML='';
+  // 모바일 컨테이너 제거 + dp-body 복구
+  const mobBody = document.getElementById('mob-detail-body');
+  if(mobBody) mobBody.remove();
+  const body = document.querySelector('.dp-body');
+  if(body) body.style.display='';
+  // 힌트 숨기기
+  const hint = document.getElementById('rotate-hint');
+  if(hint) hint.style.display='none';
 }
 
 /* ── About Panel ── */
@@ -2325,6 +2338,111 @@ function toggleMobMenu(){
 function closeMobMenu(){
   document.getElementById('mob-menu').classList.remove('open');
 }
+
+/* ── 모바일 가로모드 힌트 ── */
+(function(){
+  const hint = document.createElement('div');
+  hint.id = 'rotate-hint';
+  hint.style.cssText = `
+    display:none;position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);
+    background:rgba(8,8,8,.88);border:1px solid rgba(51,170,255,.25);
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.16em;
+    color:rgba(51,170,255,.8);padding:.5rem 1.2rem;z-index:9999;
+    white-space:nowrap;pointer-events:none;
+    animation:fadein .4s ease;
+  `;
+  hint.textContent = '🔄  가로로 돌리면 더 잘 보여요';
+  document.body.appendChild(hint);
+
+  function checkRotate(){
+    if(window.innerWidth < 768 && document.getElementById('dp') && document.getElementById('dp').classList.contains('open')){
+      if(window.innerHeight > window.innerWidth){
+        hint.style.display = 'block';
+      } else {
+        hint.style.display = 'none';
+      }
+    } else {
+      hint.style.display = 'none';
+    }
+  }
+  window.addEventListener('orientationchange', checkRotate);
+  window.addEventListener('resize', checkRotate);
+  const origShow = window.showDetail;
+  window._afterShowDetail = checkRotate;
+})();
+
+/* ── 모바일 디테일 — 이미지 세로 나열 ── */
+function renderMobileDetail(w, cat, i, media){
+  const dp = document.getElementById('dp');
+  const body = document.querySelector('.dp-body');
+
+  // dp-body 숨기고 모바일 이미지 컨테이너 생성
+  body.style.display = 'none';
+
+  // 기존 모바일 컨테이너 제거
+  const existing = document.getElementById('mob-detail-body');
+  if(existing) existing.remove();
+
+  const container = document.createElement('div');
+  container.id = 'mob-detail-body';
+  container.style.cssText = 'width:100%;padding-bottom:4rem;';
+
+  // 1. 인포 섹션
+  const infoDiv = document.createElement('div');
+  infoDiv.style.cssText = 'padding:1.5rem 1.2rem;border-bottom:1px solid rgba(221,216,204,.07);';
+  let infoHtml = '';
+  if(w.overview) infoHtml += `<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.9;color:rgba(221,216,204,.65);margin-bottom:1.2rem;">${w.overview}</div>`;
+  if(w.stats) infoHtml += w.stats.map(s=>`
+    <div style="display:flex;flex-direction:column;gap:.2rem;padding:.6rem 0;border-bottom:1px solid rgba(221,216,204,.06);">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(51,170,255,.5);">${s.k}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:rgba(221,216,204,.6);">${s.v}</span>
+    </div>`).join('');
+  infoDiv.innerHTML = infoHtml;
+  container.appendChild(infoDiv);
+
+  // 2. 이미지 나열
+  if(media && media.items){
+    async function checkAll(items){
+      const results = await Promise.all(items.map(item=>{
+        if(item.type==='vid') return Promise.resolve({isLocalVid:true, src:item.src});
+        return new Promise(res=>{
+          const img=new Image();
+          img.onload=()=>res({...item});
+          img.onerror=()=>{ if(item.alt){ const i2=new Image(); i2.onload=()=>res({...item,src:item.alt}); i2.onerror=()=>res(null); i2.src=item.alt; } else res(null); };
+          img.src=item.src;
+        });
+      }));
+      const valid=[];
+      for(const r of results){ if(!r) break; valid.push(r); }
+      return valid;
+    }
+    checkAll(media.items).then(valid=>{
+      valid.forEach(item=>{
+        const wrap = document.createElement('div');
+        wrap.style.cssText = 'width:100%;';
+        if(item.isLocalVid){
+          const v = document.createElement('video');
+          v.style.cssText = 'width:100%;display:block;';
+          v.autoplay=true; v.muted=true; v.loop=true; v.playsInline=true;
+          v.innerHTML = `<source src="${item.src}" type="video/mp4">`;
+          wrap.appendChild(v);
+        } else {
+          const img = document.createElement('img');
+          img.src = item.src;
+          img.alt = '';
+          img.style.cssText = 'width:100%;display:block;';
+          img.onclick = ()=>openLb(item.src);
+          wrap.appendChild(img);
+        }
+        container.appendChild(wrap);
+      });
+    });
+  }
+
+  dp.appendChild(container);
+  if(window._afterShowDetail) window._afterShowDetail();
+}
+
 function openAbout(){
   history.pushState({about:true},'','#about');
   document.getElementById('ap').classList.add('open');
