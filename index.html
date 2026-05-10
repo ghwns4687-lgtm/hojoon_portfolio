@@ -723,6 +723,9 @@ footer{
 ════════════════════ */
 @media(max-width:768px){
 
+  /* 가로 스크롤 완전 차단 */
+  html, body{overflow-x:hidden !important;}
+
   /* 커스텀 커서 숨김 */
   #custom-cursor{display:none !important;}
 
@@ -737,36 +740,80 @@ footer{
   .h-sub{font-size:9px;letter-spacing:.12em;}
   .h-scroll{display:none;}
 
-  /* ── 프로젝트 그리드 ── */
+  /* ── 3D WORKS 메인 그리드 (g-row) — 세로 스택 ── */
+  .g-row{
+    flex-direction:column !important;
+    height:auto !important;
+    gap:2px !important;
+  }
+  .g-row.fp-row{
+    flex-direction:column !important;
+    height:auto !important;
+    gap:2px !important;
+  }
+  .gi{
+    flex:none !important;
+    width:100% !important;
+    height:56vw !important;
+  }
+  .g-row.fp-row .gi{
+    width:100% !important;
+    height:56vw !important;
+  }
+  .gt{height:100% !important;}
+  .gt-bg, .gt-vid{
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+  }
+  /* 모바일에서 오버레이 항상 표시 */
+  .gi-ov{opacity:1 !important;}
+  .gi-ov .ov-t-inner{transform:translateY(0) !important;}
+  .gi-ov .ov-m{opacity:1 !important;transform:translateY(0) !important;}
+
+  /* ── Space Design / Interior / Stage 그리드 ── */
   .sd-grid{
     grid-template-columns:1fr !important;
-    gap:2px;
+    gap:2px !important;
   }
-  .sd-grid>.sd-item:first-child{grid-column:auto;grid-row:auto;}
+  .sd-grid>.sd-item:first-child{grid-column:auto !important;grid-row:auto !important;}
   .sd-thumb{height:56vw !important;aspect-ratio:unset !important;}
+  /* 스테이지 전용 그리드 초기화 */
+  .sd-grid.sd-stage{grid-template-columns:1fr !important;}
+  .sd-grid.sd-stage>.sd-item:first-child{grid-column:auto !important;grid-row:auto !important;}
+  .sd-grid.sd-stage>.sd-item:first-child .sd-thumb{height:56vw !important;aspect-ratio:unset !important;}
+  .sd-grid.sd-stage .alaska{grid-column:auto !important;grid-row:auto !important;}
+  .sd-grid.sd-stage .peace{grid-column:auto !important;grid-row:auto !important;}
+  .sd-grid.sd-stage .sd-text-block{grid-column:auto !important;grid-row:auto !important;}
+  /* LDP 썸네일 */
+  .st-ldp{width:100% !important;height:56vw !important;}
+  .st-ldp .sd-thumb{height:100% !important;}
+  .st-right{flex-direction:column !important;width:100% !important;}
+  .st-right .sd-item .sd-thumb{height:56vw !important;}
+  /* 모바일 오버레이 항상 표시 */
   .sd-ov{opacity:1 !important;}
   .sd-ov-t-inner{transform:translateY(0) !important;}
   .sd-ov-m{opacity:1 !important;transform:translateY(0) !important;}
 
   /* ── About ── */
-  .ab-inner{grid-template-columns:1fr;}
-  .ab-left{padding:0 1.2rem;border-right:none;border-bottom:1px solid var(--bd);}
-  .ab-right{padding:1.5rem 1.2rem;}
+  .ab-inner{grid-template-columns:1fr !important;}
+  .ab-left{padding:0 1.2rem !important;border-right:none !important;border-bottom:1px solid var(--bd);}
+  .ab-right{padding:1.5rem 1.2rem !important;}
   .ab-big{font-size:clamp(3.5rem,18vw,6rem);}
-  .ab-bgnum{display:none;}
+  .ab-bgnum{display:none !important;}
 
   /* ── Contact ── */
-  .ct-bg{display:none;}
+  .ct-bg{display:none !important;}
   .ct-inner{
     flex-direction:column !important;
     align-items:center !important;
     padding:3rem 1.5rem 3rem !important;
     gap:1.5rem !important;
-    text-align:center;
+    text-align:center !important;
   }
-  .ct-email-link{font-size:11px;letter-spacing:.1em;}
+  .ct-email-link{font-size:11px !important;letter-spacing:.1em !important;}
 
-  /* ── 디테일 페이지 이미지 높이 ── */
+  /* ── 디테일 페이지 이미지 검은 여백 제거 ── */
   .dp-img-bg{
     height:56vw !important;
     min-height:unset !important;
@@ -783,26 +830,25 @@ footer{
     overflow:visible !important;
     padding:1.5rem 1.2rem !important;
   }
-  .dp-title{font-size:clamp(2rem,12vw,4rem);}
+  .dp-title{font-size:clamp(2rem,12vw,4rem) !important;}
   .dp-thumb-row{
-    display:flex !important;
     flex-direction:column !important;
     gap:2px !important;
   }
   .dp-thumb-row img{
     width:100% !important;
     height:auto !important;
-    aspect-ratio:16/9;
-    object-fit:cover;
+    aspect-ratio:16/9 !important;
+    object-fit:cover !important;
   }
   .dp-stats{grid-template-columns:1fr !important;}
-  .dp-chips{flex-wrap:wrap;}
+  .dp-chips{flex-wrap:wrap !important;}
 
   /* ── 푸터 ── */
   .ct-footer{
     flex-direction:column !important;
     gap:.5rem !important;
-    text-align:center;
+    text-align:center !important;
     padding:1rem 1.2rem !important;
   }
 }
