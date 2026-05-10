@@ -2467,8 +2467,13 @@ function closeAbout(){
 }
 document.getElementById('dp-back').onclick=closeDetail;
 window.addEventListener('popstate',e=>{
+  if(e.state&&e.state.lb){
+    // 라이트박스 뒤로가기 — lb만 닫고 dp 유지
+    const lb=document.getElementById('lb');
+    if(lb&&lb.classList.contains('open')) closeLb();
+    return;
+  }
   if(e.state&&e.state.about){
-    // about에서 뒤로가기 — 이미 닫힘
     closeAbout();
   } else if(e.state&&e.state.cat!==undefined){
     showDetail(e.state.cat,e.state.i);
@@ -2476,6 +2481,10 @@ window.addEventListener('popstate',e=>{
     document.getElementById('dp').classList.remove('open');
     document.getElementById('ap').classList.remove('open');
     document.body.style.overflow='';
+    const mobBody=document.getElementById('mob-detail-body');
+    if(mobBody) mobBody.remove();
+    const body=document.querySelector('.dp-body');
+    if(body) body.style.display='';
   }
 });
 window.addEventListener('load',()=>{
@@ -2651,18 +2660,6 @@ window.addEventListener('load',function(){
     _lbTouches=Array.from(e.touches);
   },{passive:true});
 
-  // 모바일 뒤로가기로 라이트박스만 닫기 (디테일 페이지 유지)
-  window.addEventListener('popstate',function(e){
-    const lb=document.getElementById('lb');
-    if(lb && lb.classList.contains('open')){
-      closeLb();
-      // 디테일 페이지 상태 복구
-      const cat=window._dpCat, idx=window._dpIdx;
-      if(cat!==undefined && idx!==undefined){
-        history.pushState({cat,i:idx},'','#work-'+(idx+1));
-      }
-    }
-  });
   // 라이트박스 열릴 때 history 추가
   const origOpenLb=window.openLb;
   window.openLb=function(src){
@@ -2900,7 +2897,8 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 })();
 
 // 뒤로가기 → 메인으로
-window.addEventListener('popstate', function(){
+window.addEventListener('popstate', function(e){
+  if(e.state&&e.state.lb) return; // 라이트박스 뒤로가기는 위에서 처리
   const dpEl4 = document.getElementById('dp');
   if(dpEl4 && dpEl4.classList.contains('open')){
     dpEl4.classList.remove('open');
