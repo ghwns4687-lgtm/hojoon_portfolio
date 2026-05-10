@@ -771,78 +771,50 @@ footer{
   .gi-ov .ov-t-inner{transform:translateY(0) !important;}
   .gi-ov .ov-m{opacity:1 !important;transform:translateY(0) !important;}
 
-  /* ── Space Design / Interior / Stage 그리드 ── */
+  /* ── Space Design 인테리어/무대 — 2열로 작게 ── */
   .sd-grid{
-    grid-template-columns:1fr !important;
+    grid-template-columns:1fr 1fr !important;
     gap:2px !important;
   }
   .sd-grid>.sd-item:first-child{grid-column:auto !important;grid-row:auto !important;}
-  .sd-thumb{height:56vw !important;aspect-ratio:unset !important;}
-  /* 스테이지 전용 그리드 초기화 */
-  .sd-grid.sd-stage{grid-template-columns:1fr !important;}
+  .sd-thumb{height:30vw !important;aspect-ratio:unset !important;}
+  .sd-grid.sd-stage{grid-template-columns:1fr 1fr !important;}
   .sd-grid.sd-stage>.sd-item:first-child{grid-column:auto !important;grid-row:auto !important;}
-  .sd-grid.sd-stage>.sd-item:first-child .sd-thumb{height:56vw !important;aspect-ratio:unset !important;}
+  .sd-grid.sd-stage>.sd-item:first-child .sd-thumb{height:30vw !important;aspect-ratio:unset !important;}
   .sd-grid.sd-stage .alaska{grid-column:auto !important;grid-row:auto !important;}
   .sd-grid.sd-stage .peace{grid-column:auto !important;grid-row:auto !important;}
   .sd-grid.sd-stage .sd-text-block{grid-column:auto !important;grid-row:auto !important;}
-  /* LDP 썸네일 */
-  .st-ldp{width:100% !important;height:56vw !important;}
+  .st-ldp{width:100% !important;height:30vw !important;}
   .st-ldp .sd-thumb{height:100% !important;}
-  .st-right{flex-direction:column !important;width:100% !important;}
-  .st-right .sd-item .sd-thumb{height:56vw !important;}
+  .st-right{flex-direction:row !important;flex-wrap:wrap !important;width:100% !important;}
+  .st-right .sd-item{width:50% !important;}
+  .st-right .sd-item .sd-thumb{height:30vw !important;}
   /* 모바일 오버레이 항상 표시 */
   .sd-ov{opacity:1 !important;}
   .sd-ov-t-inner{transform:translateY(0) !important;}
   .sd-ov-m{opacity:1 !important;transform:translateY(0) !important;}
 
-  /* ── About ── */
+  /* ── About ENVARTIST 크기 축소 ── */
   .ab-inner{grid-template-columns:1fr !important;}
-  .ab-left{padding:0 1.2rem !important;border-right:none !important;border-bottom:1px solid var(--bd);}
+  .ab-left{padding:2rem 1.2rem !important;border-right:none !important;border-bottom:1px solid var(--bd);}
   .ab-right{padding:1.5rem 1.2rem !important;}
-  .ab-big{font-size:clamp(3.5rem,18vw,6rem);}
+  .ab-big{font-size:clamp(2.5rem,12vw,4rem) !important;line-height:.9 !important;}
   .ab-bgnum{display:none !important;}
+  .ab-p{font-size:12px !important;}
 
-  /* ── Contact ── */
+  /* ── Contact 크기 축소 ── */
   .ct-bg{display:none !important;}
   .ct-inner{
     flex-direction:column !important;
     align-items:center !important;
-    padding:3rem 1.5rem 3rem !important;
-    gap:1.5rem !important;
+    padding:2rem 1.5rem !important;
+    gap:1rem !important;
     text-align:center !important;
   }
+  #ct-main{padding:2rem 1.2rem !important;gap:1.5rem !important;}
+  #ct-top{gap:1rem !important;}
+  #ct-phrase{font-size:clamp(1.2rem,6vw,2rem) !important;white-space:normal !important;}
   .ct-email-link{font-size:11px !important;letter-spacing:.1em !important;}
-
-  /* ── 디테일 페이지 이미지 검은 여백 제거 ── */
-  .dp-img-bg{
-    height:56vw !important;
-    min-height:unset !important;
-    position:relative !important;
-    top:auto !important;
-  }
-  .dp-img{
-    height:56vw !important;
-    position:relative !important;
-    top:auto !important;
-  }
-  .dp-scroll{
-    height:auto !important;
-    overflow:visible !important;
-    padding:1.5rem 1.2rem !important;
-  }
-  .dp-title{font-size:clamp(2rem,12vw,4rem) !important;}
-  .dp-thumb-row{
-    flex-direction:column !important;
-    gap:2px !important;
-  }
-  .dp-thumb-row img{
-    width:100% !important;
-    height:auto !important;
-    aspect-ratio:16/9 !important;
-    object-fit:cover !important;
-  }
-  .dp-stats{grid-template-columns:1fr !important;}
-  .dp-chips{flex-wrap:wrap !important;}
 
   /* ── 푸터 ── */
   .ct-footer{
@@ -1379,11 +1351,11 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 <section id="contact" style="overflow:visible;">
 
   <!-- 메인 -->
-  <div style="display:flex;flex-direction:column;align-items:center;padding:6rem 2.5rem 6rem;gap:4rem;">
-    <div style="display:flex;flex-direction:column;align-items:center;gap:2.4rem;">
+  <div id="ct-main" style="display:flex;flex-direction:column;align-items:center;padding:6rem 2.5rem 6rem;gap:4rem;">
+    <div id="ct-top" style="display:flex;flex-direction:column;align-items:center;gap:2.4rem;">
 
       <!-- 문장 -->
-      <div style="font-family:var(--D);font-size:clamp(2rem,4vw,3.6rem);line-height:1;color:var(--txt);white-space:nowrap;text-align:center;letter-spacing:.02em;">
+      <div id="ct-phrase" style="font-family:var(--D);font-size:clamp(2rem,4vw,3.6rem);line-height:1;color:var(--txt);white-space:nowrap;text-align:center;letter-spacing:.02em;">
         SPACE WAS ALWAYS <span style="color:var(--ac);">THE POINT.</span>
       </div>
 
