@@ -729,9 +729,48 @@ footer{
   /* 커스텀 커서 숨김 */
   #custom-cursor{display:none !important;}
 
-  /* ── 네비 ── */
-  .nav-links{display:none;}
-  .nav-avail{display:none;}
+  /* ── 네비 — 햄버거 메뉴로 변경 ── */
+  .nav-links{display:none !important;}
+  .nav-avail{display:none !important;}
+  #mob-menu-btn{display:flex !important;}
+  #mob-menu{display:none;}
+  #mob-menu.open{
+    display:flex !important;
+    flex-direction:column;
+    position:fixed;top:44px;left:0;right:0;
+    background:rgba(8,8,8,.97);
+    border-bottom:1px solid var(--bd);
+    z-index:500;padding:1rem 1.5rem 1.5rem;gap:.8rem;
+  }
+  #mob-menu a{
+    font-family:var(--M);font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:rgba(221,216,204,.6);
+    text-decoration:none;padding:.5rem 0;
+    border-bottom:1px solid rgba(221,216,204,.06);
+  }
+  #mob-menu a:last-child{border-bottom:none;}
+
+  /* ── About 패널 세로 배치 ── */
+  .ap-inner{padding:2rem 1.2rem 4rem !important;}
+  .ap-profile{
+    flex-direction:column !important;
+    gap:1.5rem !important;
+    align-items:center !important;
+  }
+  .ap-photo{
+    width:180px !important;
+    height:220px !important;
+  }
+  .ap-info{width:100% !important;}
+  .ap-name{font-size:clamp(2rem,10vw,3.5rem) !important;text-align:center !important;}
+  .ap-tl-item{
+    flex-direction:column !important;
+    gap:.4rem !important;
+  }
+  .ap-yr{
+    min-width:unset !important;
+    width:100% !important;
+  }
 
   /* ── 히어로 ── */
   .h-cta{font-size:clamp(3.5rem,18vw,7rem);}
@@ -1104,8 +1143,21 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-dot"><div class="ndot"></div>Available</div>
+    <!-- 모바일 햄버거 버튼 -->
+    <button id="mob-menu-btn" onclick="toggleMobMenu()" style="display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;">
+      <span style="display:block;width:20px;height:1px;background:rgba(221,216,204,.7);"></span>
+      <span style="display:block;width:20px;height:1px;background:rgba(221,216,204,.7);"></span>
+      <span style="display:block;width:20px;height:1px;background:rgba(221,216,204,.7);"></span>
+    </button>
   </div>
 </nav>
+<!-- 모바일 드롭다운 메뉴 -->
+<div id="mob-menu">
+  <a href="#works" onclick="closeMobMenu()">3D Works</a>
+  <a href="#interior" onclick="closeMobMenu()">Space Design</a>
+  <a href="#about" onclick="openAbout();closeMobMenu();return false;">About</a>
+  <a href="#contact" onclick="closeMobMenu()">Contact</a>
+</div>
 
 <!-- ═══ HERO ═══ -->
 <section id="hero">
@@ -2237,6 +2289,12 @@ function closeDetail(){
 }
 
 /* ── About Panel ── */
+function toggleMobMenu(){
+  document.getElementById('mob-menu').classList.toggle('open');
+}
+function closeMobMenu(){
+  document.getElementById('mob-menu').classList.remove('open');
+}
 function openAbout(){
   history.pushState({about:true},'','#about');
   document.getElementById('ap').classList.add('open');
