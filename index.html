@@ -2651,11 +2651,16 @@ window.addEventListener('load',function(){
     _lbTouches=Array.from(e.touches);
   },{passive:true});
 
-  // 모바일 뒤로가기로 라이트박스 닫기
+  // 모바일 뒤로가기로 라이트박스만 닫기 (디테일 페이지 유지)
   window.addEventListener('popstate',function(e){
     const lb=document.getElementById('lb');
     if(lb && lb.classList.contains('open')){
       closeLb();
+      // 디테일 페이지 상태 복구
+      const cat=window._dpCat, idx=window._dpIdx;
+      if(cat!==undefined && idx!==undefined){
+        history.pushState({cat,i:idx},'','#work-'+(idx+1));
+      }
     }
   });
   // 라이트박스 열릴 때 history 추가
