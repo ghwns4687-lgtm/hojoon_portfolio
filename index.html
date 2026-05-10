@@ -896,7 +896,20 @@ footer{
   #ct-phrase{font-size:clamp(1.2rem,5vw,1.8rem) !important;white-space:normal !important;}
   .ct-email-link{font-size:11px !important;letter-spacing:.1em !important;}
 
-  /* ── 디테일 페이지 — 세로 스택으로 완전 재구성 ── */
+  /* ── 디테일 화살표 — 모바일에서 좌우 끝으로 ── */
+  .dp-nav-arrow.prev{left:0 !important;}
+  .dp-nav-arrow.next{right:0 !important;}
+  .dp-nav-arrow{
+    top:auto !important;
+    bottom:1.5rem !important;
+    transform:none !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+  }
+
+  /* ── 모바일 이미지 나열 여백 ── */
+  #mob-detail-body > div + div{margin-top:3px;}
+  #mob-detail-body img{display:block;width:100%;}
   .dp-body{
     flex-direction:column !important;
     height:auto !important;
@@ -2417,9 +2430,9 @@ function renderMobileDetail(w, cat, i, media){
       return valid;
     }
     checkAll(media.items).then(valid=>{
-      valid.forEach(item=>{
+      valid.forEach((item, index)=>{
         const wrap = document.createElement('div');
-        wrap.style.cssText = 'width:100%;';
+        wrap.style.cssText = `width:100%;${index > 0 ? 'margin-top:8px;' : ''}`;
         if(item.isLocalVid){
           const v = document.createElement('video');
           v.style.cssText = 'width:100%;display:block;';
