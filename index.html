@@ -2551,6 +2551,7 @@ function openLb(src){
   img.style.opacity='0';
   lb.classList.add('open');
   document.body.style.overflow='hidden';
+  history.pushState({lb:true},'','');
   requestAnimationFrame(()=>{
     img.style.transform=`translate(0,0) scale(2.5)`;
     img.style.opacity='1';
@@ -2895,6 +2896,7 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
 // 뒤로가기 → 메인으로
 window.addEventListener('popstate', function(e){
+  if(e.state&&e.state.lb) return;
   const dpEl4 = document.getElementById('dp');
   if(dpEl4 && dpEl4.classList.contains('open')){
     dpEl4.classList.remove('open');
