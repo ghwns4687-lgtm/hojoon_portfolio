@@ -751,7 +751,8 @@ footer{
   #mob-menu a:last-child{border-bottom:none;}
 
   /* ── About 패널 세로 배치 ── */
-  .ap-inner{padding:2rem 1.2rem 4rem !important;}
+  #ap{overflow-x:hidden !important;}
+  .ap-inner{padding:2rem 1.2rem 4rem !important;overflow-x:hidden !important;}
   .ap-profile{
     flex-direction:column !important;
     gap:1.5rem !important;
@@ -763,13 +764,41 @@ footer{
   }
   .ap-info{width:100% !important;}
   .ap-name{font-size:clamp(2rem,10vw,3.5rem) !important;text-align:center !important;}
+
+  /* 타임라인 폰트 크기 축소 + 가로 스크롤 방지 */
   .ap-tl-item{
+    display:flex !important;
     flex-direction:column !important;
     gap:.4rem !important;
+    padding:1.2rem 0 !important;
   }
   .ap-yr{
-    min-width:unset !important;
-    width:100% !important;
+    font-size:.6rem !important;
+    letter-spacing:.12em !important;
+  }
+  .ap-tl-co{
+    font-size:1.1rem !important;
+  }
+  .ap-tl-role{
+    font-size:.65rem !important;
+    letter-spacing:.1em !important;
+    line-height:1.8 !important;
+    white-space:normal !important;
+    word-break:keep-all !important;
+    overflow-wrap:break-word !important;
+  }
+  /* 2022-2023 sabbath year 인라인 그리드 → 세로로 */
+  .ap-tl-role[style*="grid"]{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    gap:.3rem .6rem !important;
+  }
+  .ap-tl-items{
+    font-size:.72rem !important;
+    letter-spacing:.06em !important;
+    line-height:2 !important;
+    word-break:keep-all !important;
+    overflow-wrap:break-word !important;
   }
 
   /* ── 히어로 ── */
@@ -916,6 +945,7 @@ footer{
   }
 }
 
+#mob-menu{display:none;}
 /* 홈 버튼 */
 .dp-home{
   position:fixed;top:0;left:50%;transform:translateX(-50%);
