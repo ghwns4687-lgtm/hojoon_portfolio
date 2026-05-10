@@ -795,11 +795,29 @@ footer{
   .sd-ov-m{opacity:1 !important;transform:translateY(0) !important;}
 
   /* ── About ENVARTIST 크기 축소 + 여백 정리 ── */
-  #about{padding:3rem 0 !important;}
-  .ab-inner{grid-template-columns:1fr !important;}
-  .ab-left{padding:2rem 1.2rem !important;border-right:none !important;border-bottom:1px solid var(--bd) !important;}
-  .ab-right{padding:1.5rem 1.2rem !important;}
-  .ab-big{font-size:clamp(2.5rem,12vw,4rem) !important;line-height:.9 !important;}
+  #about{padding:2rem 0 !important;}
+  #ab-inner-main{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+  }
+  #ab-left-main{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    gap:2rem !important;
+    padding:2rem 1.2rem !important;
+    border-right:none !important;
+    border-bottom:1px solid var(--bd) !important;
+  }
+  #ab-right-main{
+    flex:1 !important;
+    padding:1.5rem 1.2rem !important;
+    border-left:none !important;
+    border-top:none !important;
+    display:block !important;
+  }
+  .ab-big{font-size:clamp(2.2rem,10vw,3.5rem) !important;line-height:.9 !important;}
   .ab-bgnum{display:none !important;}
   .ab-p{font-size:12px !important;}
 
@@ -1094,7 +1112,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
   <div class="h-media">
     <div class="h-fb"></div>
     <iframe id="hero-iframe"
-      src="https://www.youtube.com/embed/CQ0DzSbh4ks?autoplay=1&mute=1&loop=1&playlist=CQ0DzSbh4ks&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=12&enablejsapi=1"
+      src="https://www.youtube.com/embed/CQ0DzSbh4ks?autoplay=1&mute=1&loop=1&playlist=CQ0DzSbh4ks&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=12&enablejsapi=1&vq=hd2160"
       allow="autoplay; fullscreen" allowfullscreen>
     </iframe>
   </div>
@@ -1368,14 +1386,14 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
     </div>
   </div>
   <div class="ab-bgnum" onclick="openAbout()" title="About 상세 보기 ↗">01</div>
-  <div class="ab-inner rv" style="display:flex;align-items:stretch;grid-template-columns:unset;">
+  <div class="ab-inner rv" id="ab-inner-main">
     <!-- 왼쪽: ENVARTIST + 버튼 -->
-    <div class="ab-left" style="flex-shrink:0;display:flex;align-items:center;gap:10rem;border-right:none;padding-right:10rem;">
+    <div class="ab-left" id="ab-left-main">
       <div class="ab-big">ENV<br><span class="ac">ART</span><br><em>IST</em></div>
       <button onclick="openAbout()" style="font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.16em;color:rgba(51,170,255,.65);background:none;border:1px solid rgba(51,170,255,.25);padding:.8rem 1.8rem;cursor:pointer;transition:border-color .2s,color .2s;white-space:nowrap;align-self:center;" onmouseover="this.style.borderColor='rgba(51,170,255,.6)';this.style.color='rgba(51,170,255,.9)'" onmouseout="this.style.borderColor='rgba(51,170,255,.25)';this.style.color='rgba(51,170,255,.65)'">PROFILE · CAREER ↗</button>
     </div>
     <!-- 오른쪽: 소개글 -->
-    <div style="flex:1;padding:0 8rem;border-left:1px solid var(--bd);display:flex;align-items:center;">
+    <div id="ab-right-main" style="flex:1;padding:0 8rem;border-left:1px solid var(--bd);display:flex;align-items:center;">
       <p class="ab-p" style="max-width:100%;margin-top:0;">3DS Max · ZBrush · Marmoset · Substance Painter · <strong style="color:rgba(221,216,204,.72);font-weight:400;">UE5</strong> 기반의 환경 제작 전 과정을 이해하고, 기획부터 씬 세팅까지 <strong style="color:rgba(221,216,204,.72);font-weight:400;">모든 단계를 직접 실행</strong>했습니다.<br><br>포트폴리오의 각 작업물은 <strong style="color:rgba(221,216,204,.72);font-weight:400;">공간 구성과 몰입감</strong>을 중심으로, 패브릭·석재·금속·유리·플라스틱·유기물 등 개별 오브젝트의 물성과 노화 방식·디테일에도 집중하며 <strong style="color:rgba(221,216,204,.72);font-weight:400;">라이팅</strong>과 함께 표현했습니다.<br><br><strong style="color:rgba(221,216,204,.72);font-weight:400;">인테리어 및 무대디자인</strong> 기반의 공간 연출 경험을 바탕으로, 플레이어가 공간에 자연스럽게 몰입할 수 있는 분위기와 환경을 구축하는 것을 추구합니다.<br><br>게임 배경 · 레벨 · 프랍 포지션을 목표로 합니다.</p>
     </div>
   </div>
@@ -2087,7 +2105,7 @@ function showDetail(cat,i){
     vEl.className='dp-vid-wrap has-vid';
     vEl.innerHTML=`
       <iframe
-        src="https://www.youtube.com/embed/${media.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${media.youtubeId}&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&showinfo=0"
+        src="https://www.youtube.com/embed/${media.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${media.youtubeId}&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&showinfo=0&vq=hd2160"
         allow="autoplay; fullscreen" allowfullscreen>
       </iframe>
       <div style="position:absolute;inset:0;z-index:2;cursor:default;"></div>`;
@@ -2493,7 +2511,7 @@ setTimeout(()=>{
   buildQueue();
 
   function buildSrc(v){
-    return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}`;
+    return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}&vq=hd2160`;
   }
 
   // 첫 영상 iframe에 세팅
@@ -2501,7 +2519,7 @@ setTimeout(()=>{
   if(heroF) heroF.src=buildSrc(queue[0]);
 
   function buildSrc(v){
-    return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}`;
+    return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}&vq=hd2160`;
   }
 
   function goNext(){
