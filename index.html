@@ -2471,7 +2471,6 @@ window.addEventListener('popstate',e=>{
   const lb=document.getElementById('lb');
   if(lb&&lb.classList.contains('open')){
     closeLb();
-    history.pushState(null,'','');
     return;
   }
   if(e.state&&e.state.about){
@@ -2896,6 +2895,8 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
 // 뒤로가기 → 메인으로
 window.addEventListener('popstate', function(e){
+  const lb=document.getElementById('lb');
+  if(lb&&lb.classList.contains('open')) return;
   if(e.state&&e.state.lb) return;
   const dpEl4 = document.getElementById('dp');
   if(dpEl4 && dpEl4.classList.contains('open')){
