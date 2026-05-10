@@ -2893,18 +2893,6 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
   }, {passive:false});
 })();
 
-// 뒤로가기 → 메인으로
-window.addEventListener('popstate', function(e){
-  const lb=document.getElementById('lb');
-  if(lb&&lb.classList.contains('open')) return;
-  if(e.state&&e.state.lb) return;
-  const dpEl4 = document.getElementById('dp');
-  if(dpEl4 && dpEl4.classList.contains('open')){
-    dpEl4.classList.remove('open');
-    document.body.style.overflow='';
-    history.pushState(null,'',location.pathname);
-  }
-});
 
 function copyEmail(e){
   e.preventDefault();
