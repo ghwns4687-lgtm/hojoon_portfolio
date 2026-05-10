@@ -717,6 +717,96 @@ footer{
   .dp-desc-breakdown{grid-column:1;}
 }
 
+/* ════════════════════
+   MOBILE (max-width: 768px)
+   컴퓨터 화면에는 전혀 영향 없음
+════════════════════ */
+@media(max-width:768px){
+
+  /* 커스텀 커서 숨김 */
+  #custom-cursor{display:none !important;}
+
+  /* ── 네비 ── */
+  .nav-links{display:none;}
+  .nav-avail{display:none;}
+
+  /* ── 히어로 ── */
+  .h-cta{font-size:clamp(3.5rem,18vw,7rem);}
+  .h-tools{flex-wrap:wrap;gap:.4rem;padding:0 1.2rem 1.2rem;}
+  .h-tools .tool-tag{font-size:8px;padding:.25rem .6rem;}
+  .h-sub{font-size:9px;letter-spacing:.12em;}
+  .h-scroll{display:none;}
+
+  /* ── 프로젝트 그리드 ── */
+  .sd-grid{
+    grid-template-columns:1fr !important;
+    gap:2px;
+  }
+  .sd-grid>.sd-item:first-child{grid-column:auto;grid-row:auto;}
+  .sd-thumb{height:56vw !important;aspect-ratio:unset !important;}
+  .sd-ov{opacity:1 !important;}
+  .sd-ov-t-inner{transform:translateY(0) !important;}
+  .sd-ov-m{opacity:1 !important;transform:translateY(0) !important;}
+
+  /* ── About ── */
+  .ab-inner{grid-template-columns:1fr;}
+  .ab-left{padding:0 1.2rem;border-right:none;border-bottom:1px solid var(--bd);}
+  .ab-right{padding:1.5rem 1.2rem;}
+  .ab-big{font-size:clamp(3.5rem,18vw,6rem);}
+  .ab-bgnum{display:none;}
+
+  /* ── Contact ── */
+  .ct-bg{display:none;}
+  .ct-inner{
+    flex-direction:column !important;
+    align-items:center !important;
+    padding:3rem 1.5rem 3rem !important;
+    gap:1.5rem !important;
+    text-align:center;
+  }
+  .ct-email-link{font-size:11px;letter-spacing:.1em;}
+
+  /* ── 디테일 페이지 이미지 높이 ── */
+  .dp-img-bg{
+    height:56vw !important;
+    min-height:unset !important;
+    position:relative !important;
+    top:auto !important;
+  }
+  .dp-img{
+    height:56vw !important;
+    position:relative !important;
+    top:auto !important;
+  }
+  .dp-scroll{
+    height:auto !important;
+    overflow:visible !important;
+    padding:1.5rem 1.2rem !important;
+  }
+  .dp-title{font-size:clamp(2rem,12vw,4rem);}
+  .dp-thumb-row{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:2px !important;
+  }
+  .dp-thumb-row img{
+    width:100% !important;
+    height:auto !important;
+    aspect-ratio:16/9;
+    object-fit:cover;
+  }
+  .dp-stats{grid-template-columns:1fr !important;}
+  .dp-chips{flex-wrap:wrap;}
+
+  /* ── 푸터 ── */
+  .ct-footer{
+    flex-direction:column !important;
+    gap:.5rem !important;
+    text-align:center;
+    padding:1rem 1.2rem !important;
+  }
+}
+
 /* 홈 버튼 */
 .dp-home{
   position:fixed;top:0;left:50%;transform:translateX(-50%);
