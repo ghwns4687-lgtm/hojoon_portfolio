@@ -2467,10 +2467,11 @@ function closeAbout(){
 }
 document.getElementById('dp-back').onclick=closeDetail;
 window.addEventListener('popstate',e=>{
-  if(e.state&&e.state.lb){
-    // 라이트박스 뒤로가기 — lb만 닫고 dp 유지
-    const lb=document.getElementById('lb');
-    if(lb&&lb.classList.contains('open')) closeLb();
+  // 라이트박스 열려있으면 먼저 닫기
+  const lb=document.getElementById('lb');
+  if(lb&&lb.classList.contains('open')){
+    closeLb();
+    history.pushState(null,'','');
     return;
   }
   if(e.state&&e.state.about){
@@ -2660,12 +2661,8 @@ window.addEventListener('load',function(){
     _lbTouches=Array.from(e.touches);
   },{passive:true});
 
-  // 라이트박스 열릴 때 history 추가
-  const origOpenLb=window.openLb;
-  window.openLb=function(src){
-    origOpenLb(src);
-    history.pushState({lb:true},'','');
-  };
+  // 라이트박스 열릴 때 history 추가하지 않음
+  // 뒤로가기 = 그냥 닫기만
 
   // 이미지 클릭 → 라이트박스
   const dpImgsEl=document.getElementById('dp-imgs');
@@ -2898,7 +2895,6 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
 // 뒤로가기 → 메인으로
 window.addEventListener('popstate', function(e){
-  if(e.state&&e.state.lb) return; // 라이트박스 뒤로가기는 위에서 처리
   const dpEl4 = document.getElementById('dp');
   if(dpEl4 && dpEl4.classList.contains('open')){
     dpEl4.classList.remove('open');
