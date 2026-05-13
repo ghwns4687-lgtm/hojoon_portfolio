@@ -2246,6 +2246,9 @@ function showDetail(cat,i){
 
   let currentCat=cat, currentIdx=i;
   window._dpCat=cat; window._dpIdx=i;
+  window._dpProjectKey=`${cat}_${i}`;
+
+  const _projectKey = `${cat}_${i}`;
 
   function setMainViewer(items, activeIdx){
     const item = items[activeIdx] || items[0];
@@ -2261,12 +2264,18 @@ function showDetail(cat,i){
       const img=document.createElement('img');
       img.className='dp-main-img';
       img.alt='';
+      img.dataset.project=_projectKey;
       if(item.constrain){
         const pct = typeof item.constrain === 'string' ? item.constrain : '90';
         img.style.maxWidth=pct+'%';
         img.style.maxHeight=pct+'%';
       }
       img.onclick=()=>openLb(item.src);
+      // 로드 완료 시점에 프로젝트가 바뀌었으면 무시
+      img.onload=()=>{
+        if(window._dpProjectKey !== _projectKey) return;
+        if(!mainEl.contains(img)){ mainEl.innerHTML=''; mainEl.appendChild(img); }
+      };
       img.src=item.src;
       mainEl.appendChild(img);
     }
