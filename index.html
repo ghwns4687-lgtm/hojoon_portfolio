@@ -2303,7 +2303,6 @@ function showDetail(cat,i){
   }
 
   if(media && media.items){
-    // checkAll 제거 — 비동기 없이 바로 렌더링, 실패한 이미지는 onerror로 처리
     const valid = media.items.map(item=>
       item.type==='vid' ? {isLocalVid:true, src:item.src} : {...item}
     );
@@ -2311,9 +2310,14 @@ function showDetail(cat,i){
     buildSidebar(valid);
     setMainViewer(valid, 0);
 
-    // 사이드바 스크롤 시 중앙에 위치한 썸네일 자동 active
+    // 이전 프로젝트 scroll 리스너 제거
+    if(thumbsEl._scrollHandler){
+      thumbsEl.removeEventListener('scroll', thumbsEl._scrollHandler);
+    }
+
+    // 새 scroll 리스너 등록 — 현재 프로젝트 valid만 참조
     let _sbScrollTimer=null;
-    thumbsEl.addEventListener('scroll', function(){
+    thumbsEl._scrollHandler = function(){
       clearTimeout(_sbScrollTimer);
       _sbScrollTimer=setTimeout(function(){
         const thumbsCenter = thumbsEl.getBoundingClientRect().top + thumbsEl.clientHeight / 2;
@@ -2332,7 +2336,8 @@ function showDetail(cat,i){
           setMainViewer(valid, closestIdx);
         }
       }, 150);
-    }, {passive:true});
+    };
+    thumbsEl.addEventListener('scroll', thumbsEl._scrollHandler, {passive:true});
   } else {
     // 미디어 없을 때 빈 상태
     sidebarEl.innerHTML='';
