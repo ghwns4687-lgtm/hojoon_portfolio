@@ -643,7 +643,7 @@ footer{
 .dp-sb-thumbs::-webkit-scrollbar-thumb{background:rgba(51,170,255,.2);}
 
 .dp-sb-item{
-  width:100%;aspect-ratio:16/4;
+  width:100%;aspect-ratio:16/5;
   overflow:hidden;cursor:pointer;
   position:relative;
   border:1px solid rgba(221,216,204,.06);
@@ -992,11 +992,14 @@ footer{
 }
 #lb-canvas.dragging{cursor:grabbing;}
 #lb-img{
-  max-width:92vw;max-height:92vh;
+  max-width:95vw;max-height:95vh;
+  width:auto;height:auto;
   object-fit:contain;display:block;
-  transform:scale(.92);opacity:0;
+  transform-origin:center center;
+  transform:scale(.95);opacity:0;
   transition:transform .3s cubic-bezier(.25,.46,.45,.94),opacity .3s ease;
   pointer-events:none;user-select:none;-webkit-user-drag:none;
+  image-rendering:auto;
 }
 #lb.open #lb-img{transform:scale(1);opacity:1;}
 #lb-close{
@@ -2574,16 +2577,16 @@ function openLb(src){
   const lb=document.getElementById('lb');
   const img=document.getElementById('lb-img');
   if(!lb||!img) return;
-  _lbScale=2.5;_lbTx=0;_lbTy=0;
+  _lbScale=1;_lbTx=0;_lbTy=0;
   img.src=src;
-  img.style.transition='transform .35s cubic-bezier(.25,.46,.45,.94),opacity .3s ease';
-  img.style.transform='scale(2.2)';
+  img.style.transition='transform .3s cubic-bezier(.25,.46,.45,.94),opacity .3s ease';
+  img.style.transform='scale(.95)';
   img.style.opacity='0';
   lb.classList.add('open');
   document.body.style.overflow='hidden';
   history.pushState({lb:true},'','');
   requestAnimationFrame(()=>{
-    img.style.transform=`translate(0,0) scale(2.5)`;
+    img.style.transform='translate(0,0) scale(1)';
     img.style.opacity='1';
   });
   _lbShowHint();
@@ -2618,26 +2621,38 @@ window.addEventListener('load',function(){
     if(_lbScale>1) _lbShowHint();
   },{passive:false});
 
-  // 드래그
+  // 드래그 — 4px 이상 움직여야 드래그로 인식 (클릭 오판 방지)
+  let _lbMouseDownX=0, _lbMouseDownY=0, _lbDragStarted=false;
+  const LB_DRAG_THRESHOLD=4;
+
   canvas.addEventListener('mousedown',function(e){
-    _lbDragging=true;
+    _lbMouseDownX=e.clientX;_lbMouseDownY=e.clientY;
+    _lbDragStarted=false;
     _lbSx=e.clientX-_lbTx;_lbSy=e.clientY-_lbTy;
-    canvas.classList.add('dragging');
   });
   window.addEventListener('mousemove',function(e){
+    if(!(_lbMouseDownX||_lbMouseDownY)) return;
+    if(!_lbDragStarted){
+      const dx=e.clientX-_lbMouseDownX, dy=e.clientY-_lbMouseDownY;
+      if(Math.hypot(dx,dy)<LB_DRAG_THRESHOLD) return;
+      _lbDragStarted=true;
+      _lbDragging=true;
+      canvas.classList.add('dragging');
+    }
     if(!_lbDragging) return;
     _lbTx=e.clientX-_lbSx;_lbTy=e.clientY-_lbSy;
     _lbClamp();_lbApply(false);
   });
   window.addEventListener('mouseup',function(){
-    _lbDragging=false;
+    _lbDragging=false;_lbDragStarted=false;
+    _lbMouseDownX=0;_lbMouseDownY=0;
     canvas.classList.remove('dragging');
   });
 
   // 더블클릭 토글
   canvas.addEventListener('dblclick',function(e){
     if(e.target===canvas||e.target===lb) return;
-    _lbScale=_lbScale>1?1:2.5;
+    _lbScale=_lbScale>1?1:2;
     _lbTx=0;_lbTy=0;
     _lbApply(true);
   });
