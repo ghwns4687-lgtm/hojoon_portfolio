@@ -2241,6 +2241,14 @@ function showDetail(cat,i){
   let currentCat=cat, currentIdx=i;
   window._dpCat=cat; window._dpIdx=i;
 
+  // 메인 뷰어 img 엘리먼트 고정 생성
+  const _mainImg = document.createElement('img');
+  _mainImg.className='dp-main-img';
+  _mainImg.alt='';
+  _mainImg.style.cssText='opacity:1;transition:none;';
+  _mainImg.onclick=()=>{ if(_mainImg.src) openLb(_mainImg.src); };
+  mainEl.appendChild(_mainImg);
+
   function setMainViewer(items, activeIdx){
     const item = items[activeIdx] || items[0];
     if(!item) return;
@@ -2253,27 +2261,20 @@ function showDetail(cat,i){
       v.innerHTML=`<source src="${item.src}" type="video/mp4">`;
       mainEl.appendChild(v);
     } else {
-      const img=document.createElement('img');
-      img.className='dp-main-img';
-      img.alt='';
-      img.style.opacity='0';
-      img.style.transition='opacity .2s ease';
+      // img가 없으면 다시 추가 (영상→이미지 전환 시)
+      if(!mainEl.contains(_mainImg)){
+        mainEl.innerHTML='';
+        mainEl.appendChild(_mainImg);
+      }
       if(item.constrain){
         const pct = typeof item.constrain === 'string' ? item.constrain : '90';
-        img.style.cssText+=`max-width:${pct}%;max-height:${pct}%;margin:auto;display:block;`;
+        _mainImg.style.maxWidth=pct+'%';
+        _mainImg.style.maxHeight=pct+'%';
+      } else {
+        _mainImg.style.maxWidth='';
+        _mainImg.style.maxHeight='';
       }
-      img.onclick=()=>openLb(item.src);
-      // 로드 완료 후 페이드인 — 그 전에 기존 이미지 제거
-      img.onload=()=>{
-        mainEl.innerHTML='';
-        mainEl.appendChild(img);
-        requestAnimationFrame(()=>{ img.style.opacity='1'; });
-      };
-      img.onerror=()=>{
-        mainEl.innerHTML='';
-        mainEl.appendChild(img);
-      };
-      img.src=item.src;
+      _mainImg.src = item.src;
     }
   }
 
