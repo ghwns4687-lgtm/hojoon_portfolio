@@ -583,7 +583,7 @@ footer{
 
 /* 우측 사이드바 */
 .dp-sidebar{
-  width:480px;flex-shrink:0;
+  width:320px;flex-shrink:0;
   height:100%;
   background:rgba(6,6,6,.98);
   border-left:1px solid var(--bd);
@@ -593,12 +593,12 @@ footer{
 /* 상단 고정 — 텍스트 정보 */
 .dp-sb-info{
   flex-shrink:0;
-  padding:1.2rem 1rem 1rem;
+  padding:.15rem .8rem .1rem;
   border-bottom:1px solid var(--bd);
 }
 .dp-sb-info-label{
   font-family:var(--M);font-size:8px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--ac);display:flex;align-items:center;gap:.4rem;margin-bottom:.8rem;
+  color:var(--ac);display:flex;align-items:center;gap:.4rem;margin-bottom:.4rem;
 }
 .dp-sb-info-label::before{content:'';width:10px;height:1px;background:var(--ac);}
 .dp-sb-stat{
@@ -606,7 +606,7 @@ footer{
 }
 .dp-sb-stat-row{
   display:flex;flex-direction:column;
-  padding:.5rem 0;
+  padding:.3rem 0;
   border-bottom:1px solid rgba(221,216,204,.07);
 }
 .dp-sb-stat-row:last-child{border-bottom:none;}
@@ -621,8 +621,8 @@ footer{
 .dp-sb-overview{
   font-family:var(--M);font-size:11px;letter-spacing:.02em;
   color:rgba(221,216,204,.62);line-height:1.85;
-  padding-bottom:.8rem;
-  margin-bottom:.4rem;
+  padding-bottom:.2rem;
+  margin-bottom:.1rem;
   border-bottom:1px solid rgba(221,216,204,.08);
 }
 .dp-sb-overview strong{
@@ -636,6 +636,7 @@ footer{
   display:flex;flex-direction:column;gap:.4rem;
   scrollbar-width:thin;
   scrollbar-color:rgba(51,170,255,.2) transparent;
+  position:relative;
 }
 .dp-sb-thumbs::-webkit-scrollbar{width:2px;}
 .dp-sb-thumbs::-webkit-scrollbar-track{background:transparent;}
@@ -654,10 +655,16 @@ footer{
   border-color:var(--ac);
   opacity:1;
   box-shadow:0 0 0 1px var(--ac);
+  position:sticky;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:2;
+  margin-top:.4rem;
+  margin-bottom:.4rem;
 }
 .dp-sb-item:hover{border-color:rgba(221,216,204,.25);opacity:.75;}
 .dp-sb-item img,.dp-sb-item video{
-  width:100%;height:100%;object-fit:cover;display:block;
+  width:100%;height:100%;object-fit:cover;object-position:center center;display:block;
 }
 
 /* 좌우 프로젝트 이동 화살표 */
@@ -674,7 +681,7 @@ footer{
 }
 .dp-nav-arrow:hover{border-color:var(--ac);color:var(--ac);background:rgba(8,8,8,.95);}
 .dp-nav-arrow.prev{left:0;border-left:none;border-radius:0 2px 2px 0;}
-.dp-nav-arrow.next{right:480px;border-right:none;border-radius:2px 0 0 2px;}
+.dp-nav-arrow.next{right:320px;border-right:none;border-radius:2px 0 0 2px;}
 .dp-nav-arrow svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;}
 
 .dp-img-bg{
@@ -2266,7 +2273,12 @@ function showDetail(cat,i){
         setMainViewer(items, idx);
         document.querySelectorAll('.dp-sb-item').forEach(el=>el.classList.remove('active'));
         div.classList.add('active');
-        div.scrollIntoView({block:'nearest',behavior:'smooth'});
+        // sticky 중앙 고정이므로 scrollIntoView 불필요 — 대신 목록을 해당 아이템 기준으로 스크롤
+        const thumbs = thumbsEl;
+        const itemTop = div.offsetTop;
+        const itemH = div.offsetHeight;
+        const thumbsH = thumbs.clientHeight;
+        thumbs.scrollTo({ top: itemTop - (thumbsH / 2) + (itemH / 2), behavior: 'smooth' });
       };
       thumbsEl.appendChild(div);
     });
@@ -2592,7 +2604,6 @@ window.addEventListener('load',function(){
 
   // 드래그
   canvas.addEventListener('mousedown',function(e){
-    if(_lbScale<=1) return;
     _lbDragging=true;
     _lbSx=e.clientX-_lbTx;_lbSy=e.clientY-_lbTy;
     canvas.classList.add('dragging');
@@ -2697,7 +2708,7 @@ window.addEventListener('load',function(){
   function updateLbCursor(){
     if(!curText||!curIcon) return;
     curIcon.style.display='none';
-    curText.textContent=_lbScale>1?'Wheel Drag':'Scroll to Zoom';
+    curText.textContent=_lbScale>1?'Drag':'Scroll to Zoom';
   }
 
   // Detail 이미지 호버 — 돋보기 아이콘 + Zoom
@@ -2921,7 +2932,7 @@ function copyEmail(e){
   <div id="lb-canvas">
     <img id="lb-img" src="" alt="">
   </div>
-  <div id="lb-hint">Scroll to zoom &nbsp;·&nbsp; Wheel drag to pan</div>
+  <div id="lb-hint">Scroll to zoom &nbsp;·&nbsp; Drag to pan</div>
 </div>
 
 </body>
