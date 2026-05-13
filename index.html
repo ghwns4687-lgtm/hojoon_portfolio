@@ -449,7 +449,8 @@ footer{
 /* ════════════════════
    DETAIL PAGE
 ════════════════════ */
-#dp{display:none;position:fixed;inset:0;z-index:300;background:var(--bg);overflow-y:auto;flex-direction:column;}
+#dp{display:none;position:fixed;inset:0;z-index:300;background:var(--bg);overflow-y:auto;flex-direction:column;scrollbar-width:none;}
+#dp::-webkit-scrollbar{display:none;}
 #dp.open{display:flex;}
 .dp-nav{
   position:sticky;top:0;z-index:10;height:44px;
@@ -589,7 +590,9 @@ footer{
   border-left:1px solid var(--bd);
   display:flex;flex-direction:column;
   overflow:hidden;
+  scrollbar-width:none;
 }
+.dp-sidebar::-webkit-scrollbar{display:none;}
 /* 상단 고정 — 텍스트 정보 */
 .dp-sb-info{
   flex-shrink:0;
