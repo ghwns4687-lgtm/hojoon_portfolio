@@ -2242,11 +2242,11 @@ function showDetail(cat,i){
   window._dpCat=cat; window._dpIdx=i;
 
   function setMainViewer(items, activeIdx){
-    mainEl.innerHTML='';
     const item = items[activeIdx] || items[0];
     if(!item) return;
 
     if(item.isLocalVid){
+      mainEl.innerHTML='';
       const v=document.createElement('video');
       v.style.cssText='max-width:100%;max-height:100%;object-fit:contain;display:block;';
       v.autoplay=true;v.muted=true;v.loop=true;v.playsInline=true;
@@ -2255,13 +2255,25 @@ function showDetail(cat,i){
     } else {
       const img=document.createElement('img');
       img.className='dp-main-img';
-      img.src=item.src;img.alt='';
+      img.alt='';
+      img.style.opacity='0';
+      img.style.transition='opacity .2s ease';
       if(item.constrain){
         const pct = typeof item.constrain === 'string' ? item.constrain : '90';
-        img.style.cssText=`max-width:${pct}%;max-height:${pct}%;margin:auto;display:block;`;
+        img.style.cssText+=`max-width:${pct}%;max-height:${pct}%;margin:auto;display:block;`;
       }
       img.onclick=()=>openLb(item.src);
-      mainEl.appendChild(img);
+      // 로드 완료 후 페이드인 — 그 전에 기존 이미지 제거
+      img.onload=()=>{
+        mainEl.innerHTML='';
+        mainEl.appendChild(img);
+        requestAnimationFrame(()=>{ img.style.opacity='1'; });
+      };
+      img.onerror=()=>{
+        mainEl.innerHTML='';
+        mainEl.appendChild(img);
+      };
+      img.src=item.src;
     }
   }
 
@@ -2336,7 +2348,7 @@ function showDetail(cat,i){
             allItems[closestIdx].classList.add('active');
             setMainViewer(valid, closestIdx);
           }
-        }, 80);
+        }, 150);
       }, {passive:true});
     });
   } else {
