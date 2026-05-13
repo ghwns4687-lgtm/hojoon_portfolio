@@ -2232,9 +2232,7 @@ function showDetail(cat,i){
   mainEl.innerHTML='';
   thumbsEl.innerHTML='';
 
-  // 비동기 취소 토큰 — 이전 checkAll 결과 무시용
-  const _token = Symbol();
-  showDetail._token = _token;
+  window._dpCat=cat; window._dpIdx=i;
 
   // 사이드바 상단 — 스탯 정보
   if(w && w.stats){
@@ -2296,59 +2294,36 @@ function showDetail(cat,i){
   }
 
   if(media && media.items){
-    // 이미지만 사이드바에 (YouTube 제외)
-    async function checkAll(items){
-      const results=await Promise.all(items.map(item=>{
-        if(item.type==='vid') return Promise.resolve({isLocalVid:true, src:item.src});
-        return new Promise(res=>{
-          const img=new Image();
-          img.onload=()=>res({...item});
-          img.onerror=()=>{
-            if(item.alt){
-              const img2=new Image();
-              img2.onload=()=>res({...item, src:item.alt});
-              img2.onerror=()=>res(null);
-              img2.src=item.alt;
-            } else res(null);
-          };
-          img.src=item.src;
+    // checkAll 제거 — 비동기 없이 바로 렌더링, 실패한 이미지는 onerror로 처리
+    const valid = media.items.map(item=>
+      item.type==='vid' ? {isLocalVid:true, src:item.src} : {...item}
+    );
+
+    buildSidebar(valid);
+    setMainViewer(valid, 0);
+
+    // 사이드바 스크롤 시 중앙에 위치한 썸네일 자동 active
+    let _sbScrollTimer=null;
+    thumbsEl.addEventListener('scroll', function(){
+      clearTimeout(_sbScrollTimer);
+      _sbScrollTimer=setTimeout(function(){
+        const thumbsCenter = thumbsEl.getBoundingClientRect().top + thumbsEl.clientHeight / 2;
+        const allItems = thumbsEl.querySelectorAll('.dp-sb-item');
+        let closestIdx = 0, closestDist = Infinity;
+        allItems.forEach((el, i)=>{
+          const rect = el.getBoundingClientRect();
+          const elCenter = rect.top + rect.height / 2;
+          const dist = Math.abs(elCenter - thumbsCenter);
+          if(dist < closestDist){ closestDist=dist; closestIdx=i; }
         });
-      }));
-      const valid=[];
-      for(const r of results){ if(!r) break; valid.push(r); }
-      return valid;
-    }
-
-    checkAll(media.items).then(valid=>{
-      if(showDetail._token !== _token) return; // 이미 다른 프로젝트로 전환됨
-      if(valid.length===0) return;
-      buildSidebar(valid);
-      setMainViewer(valid, 0);
-
-      // 사이드바 스크롤 시 중앙에 위치한 썸네일 자동 active
-      let _sbScrollTimer=null;
-      thumbsEl.addEventListener('scroll', function(){
-        clearTimeout(_sbScrollTimer);
-        _sbScrollTimer=setTimeout(function(){
-          const thumbsCenter = thumbsEl.getBoundingClientRect().top + thumbsEl.clientHeight / 2;
-          const allItems = thumbsEl.querySelectorAll('.dp-sb-item');
-          let closestIdx = 0, closestDist = Infinity;
-          allItems.forEach((el, i)=>{
-            const rect = el.getBoundingClientRect();
-            const elCenter = rect.top + rect.height / 2;
-            const dist = Math.abs(elCenter - thumbsCenter);
-            if(dist < closestDist){ closestDist=dist; closestIdx=i; }
-          });
-          // active 변경 및 메인 이미지 전환
-          const already = allItems[closestIdx].classList.contains('active');
-          if(!already){
-            allItems.forEach(el=>el.classList.remove('active'));
-            allItems[closestIdx].classList.add('active');
-            setMainViewer(valid, closestIdx);
-          }
-        }, 150);
-      }, {passive:true});
-    });
+        const already = allItems[closestIdx].classList.contains('active');
+        if(!already){
+          allItems.forEach(el=>el.classList.remove('active'));
+          allItems[closestIdx].classList.add('active');
+          setMainViewer(valid, closestIdx);
+        }
+      }, 150);
+    }, {passive:true});
   } else {
     // 미디어 없을 때 빈 상태
     sidebarEl.innerHTML='';
