@@ -999,6 +999,8 @@ footer{
   transform:scale(.95);opacity:0;
   transition:transform .3s cubic-bezier(.25,.46,.45,.94),opacity .3s ease;
   pointer-events:none;user-select:none;-webkit-user-drag:none;
+  -moz-user-select:none;-ms-user-select:none;
+  draggable:false;
   image-rendering:auto;
 }
 #lb.open #lb-img{transform:scale(1);opacity:1;}
@@ -2621,6 +2623,10 @@ window.addEventListener('load',function(){
     if(_lbScale>1) _lbShowHint();
   },{passive:false});
 
+  // 브라우저 기본 이미지 드래그(고스트 + 접근금지 커서) 완전 차단
+  img.addEventListener('dragstart',function(e){e.preventDefault();});
+  canvas.addEventListener('dragstart',function(e){e.preventDefault();});
+
   // 드래그 — 4px 이상 움직여야 드래그로 인식 (클릭 오판 방지)
   let _lbMouseDownX=0, _lbMouseDownY=0, _lbDragStarted=false;
   const LB_DRAG_THRESHOLD=4;
@@ -2961,7 +2967,7 @@ function copyEmail(e){
 <div id="lb">
   <button id="lb-close" onclick="closeLb()">✕ &nbsp;ESC</button>
   <div id="lb-canvas">
-    <img id="lb-img" src="" alt="">
+    <img id="lb-img" src="" alt="" draggable="false">
   </div>
   <div id="lb-hint">Scroll to zoom &nbsp;·&nbsp; Drag to pan</div>
 </div>
