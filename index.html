@@ -2309,12 +2309,15 @@ function showDetail(cat,i){
         setMainViewer(items, idx);
         document.querySelectorAll('.dp-sb-item').forEach(el=>el.classList.remove('active'));
         div.classList.add('active');
-        // 클릭한 아이템이 사이드바 중앙에 오도록 스크롤
+        // 아이템이 가운데 올 수 있을 때만 가운데로, 아니면 자연스럽게
         const thumbs = thumbsEl;
         const itemTop = div.offsetTop;
         const itemH = div.offsetHeight;
         const thumbsH = thumbs.clientHeight;
-        thumbs.scrollTo({ top: itemTop - (thumbsH / 2) + (itemH / 2), behavior: 'smooth' });
+        const idealTop = itemTop - (thumbsH / 2) + (itemH / 2);
+        const maxScroll = thumbs.scrollHeight - thumbsH;
+        const targetScroll = Math.max(0, Math.min(idealTop, maxScroll));
+        thumbs.scrollTo({ top: targetScroll, behavior: 'smooth' });
       };
       thumbsEl.appendChild(div);
     });
@@ -2339,20 +2342,35 @@ function showDetail(cat,i){
     thumbsEl._scrollHandler = function(){
       clearTimeout(_sbScrollTimer);
       _sbScrollTimer=setTimeout(function(){
-        const thumbsCenter = thumbsEl.getBoundingClientRect().top + thumbsEl.clientHeight / 2;
         const allItems = thumbsEl.querySelectorAll('.dp-sb-item');
-        let closestIdx = 0, closestDist = Infinity;
-        allItems.forEach((el, i)=>{
-          const rect = el.getBoundingClientRect();
-          const elCenter = rect.top + rect.height / 2;
-          const dist = Math.abs(elCenter - thumbsCenter);
-          if(dist < closestDist){ closestDist=dist; closestIdx=i; }
-        });
-        const already = allItems[closestIdx].classList.contains('active');
+        const thumbsH = thumbsEl.clientHeight;
+        const scrollTop = thumbsEl.scrollTop;
+        const maxScroll = thumbsEl.scrollHeight - thumbsH;
+
+        let activeIdx = 0;
+        // 맨 위 근처면 첫 번째
+        if(scrollTop < 10){
+          activeIdx = 0;
+        // 맨 아래 근처면 마지막
+        } else if(scrollTop >= maxScroll - 10){
+          activeIdx = allItems.length - 1;
+        } else {
+          // 가운데 기준으로 가장 가까운 아이템
+          const thumbsCenter = thumbsEl.getBoundingClientRect().top + thumbsH / 2;
+          let closestDist = Infinity;
+          allItems.forEach((el, i)=>{
+            const rect = el.getBoundingClientRect();
+            const elCenter = rect.top + rect.height / 2;
+            const dist = Math.abs(elCenter - thumbsCenter);
+            if(dist < closestDist){ closestDist=dist; activeIdx=i; }
+          });
+        }
+
+        const already = allItems[activeIdx].classList.contains('active');
         if(!already){
           allItems.forEach(el=>el.classList.remove('active'));
-          allItems[closestIdx].classList.add('active');
-          setMainViewer(valid, closestIdx);
+          allItems[activeIdx].classList.add('active');
+          setMainViewer(valid, activeIdx);
         }
       }, 150);
     };
