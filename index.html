@@ -2283,11 +2283,53 @@ function showDetail(cat,i){
       wrap.style.cssText='width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0e0e0e;';
       const inner=document.createElement('div');
       inner.style.cssText='width:100%;max-width:100%;aspect-ratio:16/9;position:relative;';
-      inner.innerHTML=`<iframe style="position:absolute;inset:0;width:100%;height:100%;border:none;"
-        src="https://www.youtube.com/embed/${item.id}?autoplay=1&mute=1&loop=1&playlist=${item.id}&controls=1&modestbranding=1&rel=0&iv_load_policy=3&vq=hd2160"
-        allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+      const playerId='yt-dp-'+Date.now();
+      const playerDiv=document.createElement('div');
+      playerDiv.id=playerId;
+      playerDiv.style.cssText='position:absolute;inset:0;width:100%;height:100%;';
+      inner.appendChild(playerDiv);
       wrap.appendChild(inner);
       mainEl.appendChild(wrap);
+      // YouTube IFrame API로 화질 강제
+      function initYTPlayer(){
+        new YT.Player(playerId,{
+          videoId: item.id,
+          playerVars:{autoplay:1,mute:1,loop:1,playlist:item.id,controls:1,modestbranding:1,rel:0,iv_load_policy:3},
+          events:{
+            onReady:function(e){
+              e.target.mute();
+              e.target.playVideo();
+            },
+            onStateChange:function(e){
+              // 재생 시작되면 가능한 최고 화질로 강제
+              if(e.data===YT.PlayerState.PLAYING){
+                const q=e.target.getAvailableQualityLevels();
+                // hd2160 > hd1440 > hd1080 > hd720 순으로 최고화질 선택
+                const prefer=['hd2160','hd1440','hd1080','hd720'];
+                for(const pq of prefer){
+                  if(q.includes(pq)){ e.target.setPlaybackQuality(pq); break; }
+                }
+              }
+            }
+          }
+        });
+      }
+      if(window.YT && window.YT.Player){
+        initYTPlayer();
+      } else {
+        // API 아직 로드 안 됐으면 로드 후 실행
+        if(!document.getElementById('yt-api-script')){
+          const s=document.createElement('script');
+          s.id='yt-api-script';
+          s.src='https://www.youtube.com/iframe_api';
+          document.head.appendChild(s);
+        }
+        const prev=window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady=function(){
+          if(prev) prev();
+          initYTPlayer();
+        };
+      }
     } else if(item.isLocalVid){
       const v=document.createElement('video');
       v.style.cssText='max-width:100%;max-height:100%;object-fit:contain;display:block;';
