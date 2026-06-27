@@ -1877,6 +1877,7 @@ const DETAIL_MEDIA = {
   game_0: {
     youtubeId: 'CQ0DzSbh4ks',
     items: [
+      {type:'youtube',id:'CQ0DzSbh4ks'},
       {type:'img',src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_01.webp'},
       {type:'img',src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_02.webp'},
       {type:'img',src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_03.webp'},
@@ -1910,6 +1911,7 @@ const DETAIL_MEDIA = {
   game_1: {
     youtubeId: 'acCnJlKUkEs',
     items: [
+      {type:'youtube',id:'acCnJlKUkEs'},
       {type:'img',src:'image/3d_graphic/medieval_gate/medieval_gate_01.webp'},
       {type:'img',src:'image/3d_graphic/medieval_gate/medieval_gate_02.webp'},
       {type:'img',src:'image/3d_graphic/medieval_gate/medieval_gate_03.webp'},
@@ -1929,6 +1931,7 @@ const DETAIL_MEDIA = {
   game_2: {
     youtubeId: 'furwa3ICGpw',
     items: [
+      {type:'youtube',id:'furwa3ICGpw'},
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_01.webp'},
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_02.webp'},
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_03.webp'},
@@ -1958,6 +1961,7 @@ const DETAIL_MEDIA = {
   game_3: {
     youtubeId: 'd6nyNFcwCzI',
     items: [
+      {type:'youtube',id:'d6nyNFcwCzI'},
       {type:'img',src:'image/3d_graphic/old_juicer/old_juicer_01.webp'},
       {type:'img',src:'image/3d_graphic/old_juicer/old_juicer_02.webp'},
       {type:'img',src:'image/3d_graphic/old_juicer/old_juicer_03.webp'},
@@ -1976,6 +1980,7 @@ const DETAIL_MEDIA = {
   game_4: {
     youtubeId: 'VaIKmb5KU5w',
     items: [
+      {type:'youtube',id:'VaIKmb5KU5w'},
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_01.webp'},
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_02.webp'},
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_03.webp'},
@@ -2013,6 +2018,7 @@ const DETAIL_MEDIA = {
   game_6: {
     youtubeId: '_RORN5Y1ov8',
     items: [
+      {type:'youtube',id:'_RORN5Y1ov8'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_01.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_02.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_03.webp'},
@@ -2272,7 +2278,17 @@ function showDetail(cat,i){
     const item = items[activeIdx] || items[0];
     if(!item) return;
     mainEl.innerHTML='';
-    if(item.isLocalVid){
+    if(item.isYoutube){
+      const wrap=document.createElement('div');
+      wrap.style.cssText='width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0e0e0e;';
+      const inner=document.createElement('div');
+      inner.style.cssText='width:100%;max-width:100%;aspect-ratio:16/9;position:relative;';
+      inner.innerHTML=`<iframe style="position:absolute;inset:0;width:100%;height:100%;border:none;"
+        src="https://www.youtube.com/embed/${item.id}?autoplay=1&mute=1&loop=1&playlist=${item.id}&controls=1&modestbranding=1&rel=0&iv_load_policy=3&vq=hd2160"
+        allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+      wrap.appendChild(inner);
+      mainEl.appendChild(wrap);
+    } else if(item.isLocalVid){
       const v=document.createElement('video');
       v.style.cssText='max-width:100%;max-height:100%;object-fit:contain;display:block;';
       v.autoplay=true;v.muted=true;v.loop=true;v.playsInline=true;
@@ -2304,7 +2320,18 @@ function showDetail(cat,i){
     items.forEach((item, idx)=>{
       const div=document.createElement('div');
       div.className='dp-sb-item'+(idx===0?' active':'');
-      div.innerHTML=`<img src="${item.src}" alt="" style="width:100%;height:100%;object-fit:cover;">`;
+      if(item.isYoutube){
+        div.innerHTML=`
+          <img src="https://img.youtube.com/vi/${item.id}/mqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="11" stroke="rgba(255,255,255,.7)" stroke-width="1.2"/>
+              <polygon points="10,8 18,12 10,16" fill="rgba(255,255,255,.85)"/>
+            </svg>
+          </div>`;
+      } else {
+        div.innerHTML=`<img src="${item.src}" alt="" style="width:100%;height:100%;object-fit:cover;">`;
+      }
       div.onclick=()=>{
         setMainViewer(items, idx);
         document.querySelectorAll('.dp-sb-item').forEach(el=>el.classList.remove('active'));
@@ -2324,9 +2351,11 @@ function showDetail(cat,i){
   }
 
   if(media && media.items){
-    const valid = media.items.map(item=>
-      item.type==='vid' ? {isLocalVid:true, src:item.src} : {...item}
-    );
+    const valid = media.items.map(item=>{
+      if(item.type==='vid') return {isLocalVid:true, src:item.src};
+      if(item.type==='youtube') return {isYoutube:true, id:item.id};
+      return {...item};
+    });
 
     buildSidebar(valid);
     setMainViewer(valid, 0);
