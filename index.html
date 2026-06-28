@@ -2288,29 +2288,6 @@ function showDetail(cat,i){
       playerDiv.id=playerId;
       playerDiv.style.cssText='position:absolute;inset:0;width:100%;height:100%;';
       inner.appendChild(playerDiv);
-      // 오버레이: 휠은 잡고, 클릭하면 잠깐 숨겨서 iframe에 클릭 전달
-      const ytOverlay = document.createElement('div');
-      ytOverlay.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:2;cursor:pointer;';
-      ytOverlay.addEventListener('wheel', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        const dpEl3 = document.getElementById('dp');
-        const atBottom = dpEl3.scrollTop + dpEl3.clientHeight >= dpEl3.scrollHeight - 10;
-        if(!atBottom){ dpEl3.scrollTop += e.deltaY; return; }
-        const sbItems = document.querySelectorAll('.dp-sb-item');
-        if(!sbItems.length) return;
-        let activeIdx = 0;
-        sbItems.forEach((el,i)=>{ if(el.classList.contains('active')) activeIdx=i; });
-        const next = e.deltaY > 0
-          ? Math.min(activeIdx+1, sbItems.length-1)
-          : Math.max(activeIdx-1, 0);
-        if(next !== activeIdx) sbItems[next].click();
-      }, {passive:false});
-      ytOverlay.addEventListener('mousedown', function(){
-        ytOverlay.style.display = 'none';
-        setTimeout(function(){ ytOverlay.style.display = ''; }, 300);
-      });
-      inner.appendChild(ytOverlay);
       function initYTPlayer(){
         new YT.Player(playerId,{
           videoId: item.id,
