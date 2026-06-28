@@ -2300,10 +2300,10 @@ function showDetail(cat,i){
               const iframeEl = e.target.getIframe();
               if(iframeEl){
                 iframeEl.style.pointerEvents = 'none';
-                inner.addEventListener('mouseenter', function(){
+                wrap.addEventListener('mouseenter', function(){
                   iframeEl.style.pointerEvents = 'auto';
                 });
-                inner.addEventListener('mouseleave', function(){
+                wrap.addEventListener('mouseleave', function(){
                   iframeEl.style.pointerEvents = 'none';
                 });
               }
