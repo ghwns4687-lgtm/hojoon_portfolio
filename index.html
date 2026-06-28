@@ -2314,6 +2314,8 @@ function showDetail(cat,i){
           }
         });
       }
+      wrap.appendChild(inner);
+      mainEl.appendChild(wrap);
       if(window.YT && window.YT.Player){
         initYTPlayer();
       } else {
