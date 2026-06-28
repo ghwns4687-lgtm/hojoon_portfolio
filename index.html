@@ -2288,16 +2288,15 @@ function showDetail(cat,i){
       playerDiv.id=playerId;
       playerDiv.style.cssText='position:absolute;inset:0;width:100%;height:100%;';
       inner.appendChild(playerDiv);
-      // iframe이 wheel 이벤트를 가로채지 못하도록 투명 오버레이 추가
-      // iframe은 wheel 이벤트를 window로 안 올려보냄
-      // → iframe에 focus 들어오면 window에서 wheel 잡아서 처리
-      inner._ytWheelHandler = function(e){
-        // dp-main 안에 있는 youtube가 활성화된 상태일 때만
-        if(!document.getElementById('dp-main').contains(inner)) return;
+      // 오버레이: 휠은 잡고, 클릭하면 잠깐 숨겨서 iframe에 클릭 전달
+      const ytOverlay = document.createElement('div');
+      ytOverlay.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:2;cursor:pointer;';
+      ytOverlay.addEventListener('wheel', function(e){
+        e.preventDefault();
+        e.stopPropagation();
         const dpEl3 = document.getElementById('dp');
         const atBottom = dpEl3.scrollTop + dpEl3.clientHeight >= dpEl3.scrollHeight - 10;
         if(!atBottom){ dpEl3.scrollTop += e.deltaY; return; }
-        e.preventDefault();
         const sbItems = document.querySelectorAll('.dp-sb-item');
         if(!sbItems.length) return;
         let activeIdx = 0;
@@ -2306,19 +2305,12 @@ function showDetail(cat,i){
           ? Math.min(activeIdx+1, sbItems.length-1)
           : Math.max(activeIdx-1, 0);
         if(next !== activeIdx) sbItems[next].click();
-      };
-      // iframe 클릭 시 window가 focus를 잃으므로, blur 감지해서 wheel 리스너 등록
-      window.addEventListener('blur', function onBlur(){
-        if(!document.getElementById('dp-main').contains(inner)){ window.removeEventListener('blur', onBlur); return; }
-        window.addEventListener('wheel', inner._ytWheelHandler, {passive:false});
+      }, {passive:false});
+      ytOverlay.addEventListener('mousedown', function(){
+        ytOverlay.style.display = 'none';
+        setTimeout(function(){ ytOverlay.style.display = ''; }, 300);
       });
-      // 다시 window 클릭하면 해제
-      window.addEventListener('focus', function onFocus(){
-        window.removeEventListener('wheel', inner._ytWheelHandler);
-      });
-      wrap.appendChild(inner);
-      mainEl.appendChild(wrap);
-      // YouTube IFrame API로 화질 강제
+      inner.appendChild(ytOverlay);
       function initYTPlayer(){
         new YT.Player(playerId,{
           videoId: item.id,
