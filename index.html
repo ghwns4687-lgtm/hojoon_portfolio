@@ -1274,16 +1274,26 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
     <div class="wk-m">9 Projects<br>Click → Detail</div>
   </div>
   <div class="grid" id="works-grid" style="position:relative;z-index:1;">
+    <!-- 행 0: THE OFFERING — 단독 wide -->
+    <div class="g-row rv" style="height:clamp(320px,40vw,520px);">
+      <div class="gi" style="flex:1" onclick="openDetail('game',0)">
+        <div class="gt">
+          <img class="gt-bg" src="image/3d_graphic/the_offering/the_offering_thumb.webp" alt="The Offering" loading="lazy">
+          <img class="gt-vid" src="image/3d_graphic/the_offering/the_offering__hover.webp" alt="" loading="lazy">
+        </div>
+        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">THE OFFERING</span></span><span class="ov-m">Environment · UE5</span></div></div>
+      </div>
+    </div>
     <!-- 행 1: 파빌리온 6.5 : 게이트 3.5 -->
     <div class="g-row rv">
-      <div class="gi" style="flex:6.3" onclick="openDetail('game',0)">
+      <div class="gi" style="flex:6.3" onclick="openDetail('game',1)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_thumb.webp" alt="Medieval War Pavilion" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_hover.webp" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MEDIEVAL WAR PAVILION</span></span><span class="ov-m">Environment · UE5</span></div></div>
       </div>
-      <div class="gi pos-gate" style="flex:3.7" onclick="openDetail('game',1)">
+      <div class="gi pos-gate" style="flex:3.7" onclick="openDetail('game',2)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/medieval_gate/medieval_gate_thumb.webp" alt="Medieval Gate" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/medieval_gate/medieval_gate_hover.webp" alt="" loading="lazy">
@@ -1293,21 +1303,21 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
     </div>
     <!-- 행 2: 캐리지 3.5 : 쥬이서 2.5 : zbrush rock 4 -->
     <div class="g-row rv">
-      <div class="gi pos-carriage" style="flex:3.8" onclick="openDetail('game',2)">
+      <div class="gi pos-carriage" style="flex:3.8" onclick="openDetail('game',3)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/old_carriage/old_carriage_thumb.webp" alt="Old Carriage" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/old_carriage/old_carriage_hover.webp" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD CARRIAGE</span></span><span class="ov-m">Props · UE5</span></div></div>
       </div>
-      <div class="gi pos-juicer" style="flex:2.2" onclick="openDetail('game',3)">
+      <div class="gi pos-juicer" style="flex:2.2" onclick="openDetail('game',4)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/old_juicer/old_juicer_thumb.webp" alt="Old Juicer" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/old_juicer/old_juicer_hover.webp" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">OLD JUICER</span></span><span class="ov-m">Props · UE5</span></div></div>
       </div>
-      <div class="gi pos-zrock" style="flex:4" onclick="openDetail('game',4)">
+      <div class="gi pos-zrock" style="flex:4" onclick="openDetail('game',5)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_thumb.webp" alt="ZBrush Rock" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_hover.webp" alt="" loading="lazy">
@@ -1317,14 +1327,14 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
     </div>
     <!-- 행 3: sci-fi 7.5 : 레트로 2.5 -->
     <div class="g-row rv">
-      <div class="gi" style="flex:6.5" onclick="openDetail('game',5)">
+      <div class="gi" style="flex:6.5" onclick="openDetail('game',6)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_thumb.webp" alt="Sci-Fi Corridor" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/sci_fi_corridor/sci_fi_corridor_hover.webp" alt="" loading="lazy">
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">SCI-FI CORRIDOR</span></span><span class="ov-m">Environment · UE5</span></div></div>
       </div>
-      <div class="gi pos-retro" style="flex:3.5" onclick="openDetail('game',6)">
+      <div class="gi pos-retro" style="flex:3.5" onclick="openDetail('game',7)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/retro_computer/retro_computer_thumb.webp" alt="Retro Computer" loading="lazy">
           <img class="gt-vid" src="image/3d_graphic/retro_computer/retro_computer_hover.webp" alt="" loading="lazy">
@@ -1333,25 +1343,8 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
       </div>
     </div>
     <!-- 행 4: fire place + zbrush study — 나머지 공간은 투명 -->
-    <div class="g-row fp-row rv">
-      <div class="gi pos-fire" style="width:22%;min-width:0;" onclick="openDetail('game',7)">
-        <div class="gt">
-          <img class="gt-bg" src="image/3d_graphic/fire_place/fire_place_thumb.webp" alt="Fire Place" loading="lazy">
-          <img class="gt-vid" src="image/3d_graphic/fire_place/fire_place_hover.webp" alt="" loading="lazy">
-        </div>
-        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">FIRE PLACE</span></span><span class="ov-m">Props · UE5</span></div></div>
-      </div>
-      <div class="gi pos-zstudy" style="width:42.3%;min-width:0;" onclick="openDetail('game',8)">
-        <div class="gt">
-          <img class="gt-bg" src="image/3d_graphic/zbrush_study/zbrush_study_thumb.webp" alt="ZBrush Study" loading="lazy">
-          <img class="gt-vid" src="image/3d_graphic/zbrush_study/zbrush_study_hover.webp" alt="" loading="lazy">
-        </div>
-        <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">ZBRUSH STUDY</span></span><span class="ov-m">Study · ZBrush · UE5 · Marmoset</span></div></div>
-      </div>
-      <!-- 나머지 — 아주 좁은 여백만 -->
-      <div style="width:7%;background:transparent;pointer-events:none;flex-shrink:0;"></div>
-      <!-- ── Works 여백 그래픽 — □ 가로로 동일 사이즈 ── -->
-      <div style="flex:1;min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:28px;pointer-events:none;z-index:0;">
+      <!-- ── Works 여백 그래픽 ── -->
+      <div style="display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:28px;padding:1.5rem 0;pointer-events:none;">
         <div style="width:10px;height:10px;border:1px solid rgba(221,216,204,.22);"></div>
         <div style="width:10px;height:10px;border:1px solid rgba(221,216,204,.22);"></div>
         <div style="width:10px;height:10px;border:1px solid rgba(221,216,204,.22);"></div>
@@ -1732,6 +1725,18 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
 /* ── 데이터 ── */
 const GW=[
   {
+    t:"THE\nOFFERING",
+    engine:"Unreal Engine 5",tools:"3DS Max · ZBrush · Substance Painter",year:"2025",type:"Environment",hasVideo:true,
+    overview:`어둠 속에서 울리는 제물의 종소리를 시각화했습니다. 부서진 석조 아치와 의식의 흔적이 남은 제단, 그 주위를 감싼 석상들로 구성된 다크 판타지 씬입니다. <strong>ZBrush 하이폴리 스컬핑</strong>으로 제작한 아치, 벨, 석상, 계단, 바위 등 모든 에셋을 직접 제작했으며, <strong>UE5 Lumen 기반의 촛불 라이팅</strong>과 눈 파티클, 비 연출을 통해 의식 공간 특유의 압도적인 분위기를 구현했습니다.`,
+    chips:[{t:"Dark Fantasy",h:true},{t:"Stone Sculpt",h:true},{t:"UE5 Lumen",h:false},{t:"Hi-poly Bake",h:false},{t:"Bronze · Rope",h:true}],
+    stats:[
+      {k:"Role",v:"Full Pipeline"},
+      {k:"Scope",v:"Environment Art · Sculpting · Material Authoring · Lighting · Scene Composition"},
+      {k:"Focus",v:"하이폴리 스컬핑 · 고대 석재 표현 · 다크 판타지 분위기 연출"},
+      {k:"Pipeline",v:"3DS Max → ZBrush → Rizom UV → Substance Painter → UE5"},
+    ]
+  },
+  {
     t:"MEDIEVAL\nWAR PAVILION",
     engine:"Unreal Engine 5",tools:"3DS Max · ZBrush · Substance Painter",year:"2024",type:"Environment",hasVideo:true,
     overview:`전쟁이 한창인 야영지의 지휘관 막사를 상상했습니다. 오랜 원정 끝에 비에 젖고 흙이 밟힌 공간이지만, 그 안에서 누군가가 여전히 머물고 있다는 흔적이 느껴지도록 했습니다. <strong>패브릭 재질</strong>의 <strong>질감과 환경</strong>에 맞춘 노화 표현에 집중했으며, <strong>버텍스 페인트 기반의 오염 디테일</strong>과 텐트 배치, 젖은 지면 및 물웅덩이 연출을 통해 공간의 분위기와 몰입감을 강화했습니다.`,
@@ -1875,6 +1880,42 @@ function makeImgs(folder, prefix, max){
 const DETAIL_MEDIA = {
   // ── 3D GRAPHIC ──
   game_0: {
+    youtubeId: 'fbGR9VQEzns',
+    items: [
+      {type:'youtube',id:'fbGR9VQEzns'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_01.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_02.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_03.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_04.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_05.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_06.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_07.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_08.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_09.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_10.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_11.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_12.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_13.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_14.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_15.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_16.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_17.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_18.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_19.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_20.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_21.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_22.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_23.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_24.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_25.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_26.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_27.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_28.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_29.webp'},
+      {type:'img',src:'image/3d_graphic/the_offering/the_offering_30.webp'},
+    ]
+  },
+  game_1: {
     youtubeId: 'CQ0DzSbh4ks',
     items: [
       {type:'youtube',id:'CQ0DzSbh4ks'},
@@ -1908,7 +1949,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/medieval_war_pavilion/medieval_war_pavilion_27.webp'},
     ]
   },
-  game_1: {
+  game_2: {
     youtubeId: 'acCnJlKUkEs',
     items: [
       {type:'youtube',id:'acCnJlKUkEs'},
@@ -1928,7 +1969,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/medieval_gate/medieval_gate_14.webp'},
     ]
   },
-  game_2: {
+  game_3: {
     youtubeId: 'furwa3ICGpw',
     items: [
       {type:'youtube',id:'furwa3ICGpw'},
@@ -1958,7 +1999,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_24.webp'},
     ]
   },
-  game_3: {
+  game_4: {
     youtubeId: 'd6nyNFcwCzI',
     items: [
       {type:'youtube',id:'d6nyNFcwCzI'},
@@ -1977,7 +2018,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/old_juicer/old_juicer_13.webp'},
     ]
   },
-  game_4: {
+  game_5: {
     youtubeId: 'VaIKmb5KU5w',
     items: [
       {type:'youtube',id:'VaIKmb5KU5w'},
@@ -1997,7 +2038,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_14.webp'},
     ]
   },
-  game_5: {
+  game_6: {
     items: [
       {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_01.webp'},
       {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_02.webp'},
@@ -2015,7 +2056,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/sci_fi_corridor/sci_fi_corridor_14.webp'},
     ]
   },
-  game_6: {
+  game_7: {
     youtubeId: '_RORN5Y1ov8',
     items: [
       {type:'youtube',id:'_RORN5Y1ov8'},
@@ -2051,7 +2092,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_30.webp'},
     ]
   },
-  game_7: {
+  game_8: {
     items: [
       {type:'img',src:'image/3d_graphic/fire_place/fire_place_01.webp'},
       {type:'img',src:'image/3d_graphic/fire_place/fire_place_02.webp'},
@@ -2066,7 +2107,7 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/fire_place/fire_place_11.webp'},
     ]
   },
-  game_8: {
+  game_9: {
     items: [
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_01.webp',constrain:'95'},
       {type:'img',src:'image/3d_graphic/zbrush_study/zbrush_study_02.webp'},
