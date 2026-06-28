@@ -2298,15 +2298,7 @@ function showDetail(cat,i){
               e.target.playVideo();
               // iframe에 pointer-events:none 적용 → 스크롤 통과
               const iframeEl = e.target.getIframe();
-              if(iframeEl){
-                iframeEl.style.pointerEvents = 'none';
-                wrap.addEventListener('mouseenter', function(){
-                  iframeEl.style.pointerEvents = 'auto';
-                });
-                wrap.addEventListener('mouseleave', function(){
-                  iframeEl.style.pointerEvents = 'none';
-                });
-              }
+              if(iframeEl) iframeEl.style.pointerEvents = 'none';
             },
             onStateChange:function(e){
               // 재생 시작되면 가능한 최고 화질로 강제
