@@ -2421,20 +2421,15 @@ function showDetail(cat,i){
         const maxScroll = thumbsEl.scrollHeight - thumbsH;
 
         let activeIdx = 0;
-        // 맨 위 근처면 첫 번째
-        if(scrollTop < 10){
-          activeIdx = 0;
-        } else {
-          // 가운데 기준으로 가장 가까운 아이템
-          const thumbsCenter = thumbsEl.getBoundingClientRect().top + thumbsH / 2;
-          let closestDist = Infinity;
-          allItems.forEach((el, i)=>{
-            const rect = el.getBoundingClientRect();
-            const elCenter = rect.top + rect.height / 2;
-            const dist = Math.abs(elCenter - thumbsCenter);
-            if(dist < closestDist){ closestDist=dist; activeIdx=i; }
-          });
-        }
+        // 가운데 기준으로 가장 가까운 아이템
+        const thumbsCenter = thumbsEl.getBoundingClientRect().top + thumbsH / 2;
+        let closestDist = Infinity;
+        allItems.forEach((el, i)=>{
+          const rect = el.getBoundingClientRect();
+          const elCenter = rect.top + rect.height / 2;
+          const dist = Math.abs(elCenter - thumbsCenter);
+          if(dist < closestDist){ closestDist=dist; activeIdx=i; }
+        });
 
         const already = allItems[activeIdx].classList.contains('active');
         if(!already){
@@ -3035,9 +3030,12 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
   if(!dpMain || !dpEl3) return;
 
   dpMain.addEventListener('wheel', function(e){
-    // dp가 완전히 스크롤 내려갔을 때만 이미지 전환
+    // 사이드바 위에서 스크롤하면 무시
+    const sb = document.getElementById('dp-sidebar');
+    if(sb && sb.contains(e.target)) return;
+
     const atBottom = dpEl3.scrollTop + dpEl3.clientHeight >= dpEl3.scrollHeight - 10;
-    if(!atBottom) return; // 아직 스크롤 중이면 기본 스크롤 허용
+    if(!atBottom) return;
 
     e.preventDefault();
     const items = document.querySelectorAll('.dp-sb-item');
