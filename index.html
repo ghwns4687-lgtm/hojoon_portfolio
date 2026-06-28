@@ -2287,7 +2287,6 @@ function showDetail(cat,i){
       const playerDiv=document.createElement('div');
       playerDiv.id=playerId;
       playerDiv.style.cssText='position:absolute;inset:0;width:100%;height:100%;';
-      playerDiv.style.pointerEvents = 'none';
       inner.appendChild(playerDiv);
       function initYTPlayer(){
         new YT.Player(playerId,{
@@ -2297,6 +2296,9 @@ function showDetail(cat,i){
             onReady:function(e){
               e.target.mute();
               e.target.playVideo();
+              // iframe에 pointer-events:none 적용 → 스크롤 통과
+              const iframeEl = e.target.getIframe();
+              if(iframeEl) iframeEl.style.pointerEvents = 'none';
             },
             onStateChange:function(e){
               // 재생 시작되면 가능한 최고 화질로 강제
