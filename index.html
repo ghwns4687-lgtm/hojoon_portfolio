@@ -551,7 +551,7 @@ footer{
 .dp-desc-chip.highlight{border-color:rgba(51,170,255,.28);color:rgba(51,170,255,.85);}
 
 /* 이미지 — 풀width, 자연스러운 비율 */
-.dp-imgs{display:flex;flex-direction:column;gap:6rem;padding:4rem 2.5rem 8rem;}
+.dp-imgs{display:none;flex-direction:column;gap:2rem;padding:2rem 1.2rem 4rem;}
 .dp-img{width:100%;background:var(--bg);overflow:hidden;position:relative;}
 .dp-img.ph{aspect-ratio:16/9;}
 .dp-img.ph::after{
@@ -924,13 +924,8 @@ footer{
   /* ── 모바일 이미지 나열 여백 ── */
   #mob-detail-body > div + div{margin-top:3px;}
   #mob-detail-body img{display:block;width:100%;}
-  .dp-body{
-    flex-direction:column !important;
-    height:auto !important;
-    position:relative !important;
-    top:auto !important;
-    overflow:visible !important;
-  }
+  .dp-body{display:none !important;}
+  .dp-imgs{display:flex !important;}
   .dp-main{
     width:100% !important;
     height:56vw !important;
@@ -2452,6 +2447,27 @@ function showDetail(cat,i){
     buildSidebar(valid);
     setMainViewer(valid, 0);
     setTimeout(()=>{ thumbsEl.scrollTop=0; }, 0);
+
+    // 모바일용 dp-imgs 빌드
+    const dpImgsEl = document.getElementById('dp-imgs');
+    if(dpImgsEl){
+      dpImgsEl.innerHTML='';
+      valid.forEach(item=>{
+        const div=document.createElement('div');
+        div.className='dp-img';
+        if(item.isYoutube){
+          div.innerHTML=`<iframe src="https://www.youtube.com/embed/${item.id}?autoplay=0&mute=1&loop=1&playlist=${item.id}&controls=1&modestbranding=1&rel=0" allow="autoplay; fullscreen" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;display:block;"></iframe>`;
+        } else {
+          const img=document.createElement('img');
+          img.src=item.src;
+          img.className='dp-img-bg';
+          img.style.cssText='width:100%;height:auto;display:block;';
+          img.onclick=()=>openLb(item.src);
+          div.appendChild(img);
+        }
+        dpImgsEl.appendChild(div);
+      });
+    }
 
     // 이전 프로젝트 scroll 리스너 제거
     if(thumbsEl._scrollHandler){
