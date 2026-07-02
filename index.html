@@ -2253,6 +2253,7 @@ function navigateProject(dir){
 
 function showDetail(cat,i){
   const w=cat==='game'?GW[i]:SW[i];
+  if(typeof gtag==='function') gtag('event','project_view',{project_name:w.t.replace('\n',' ')});
   const lines=w.t.split('\n');
   document.getElementById('dp-nav-t').textContent=w.t.replace('\n',' ');
   document.getElementById('dp-tg').textContent=lines[0];
@@ -2281,6 +2282,7 @@ function showDetail(cat,i){
         allow="autoplay; fullscreen" allowfullscreen>
       </iframe>
       <div style="position:absolute;inset:0;z-index:2;cursor:default;"></div>`;
+    if(typeof gtag==='function') gtag('event','project_video_play',{project_name:mediaKey, video_id:media.youtubeId});
   } else if(cat==='game'&&w.hasVideo){
     vEl.className='dp-vid-wrap has-vid';
     vEl.innerHTML=`<video autoplay muted loop playsinline><source src="" type="video/mp4"></video>`;
@@ -2342,6 +2344,7 @@ function showDetail(cat,i){
               // iframe에 pointer-events:none 적용 → 스크롤 통과
               const iframeEl = e.target.getIframe();
               if(iframeEl) iframeEl.style.pointerEvents = 'none';
+              if(typeof gtag==='function') gtag('event','project_video_play',{project_name:_projectKey, video_id:item.id});
             },
             onStateChange:function(e){
               // 재생 시작되면 가능한 최고 화질로 강제
@@ -3009,6 +3012,7 @@ setTimeout(()=>{
   // 첫 영상 iframe에 세팅
   const heroF=document.getElementById('hero-iframe');
   if(heroF) heroF.src=buildSrc(queue[0]);
+  if(typeof gtag==='function') gtag('event','hero_video_play',{video_id:queue[0].id});
 
   function buildSrc(v){
     return `https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&iv_load_policy=3&start=${v.start}&vq=hd2160`;
@@ -3023,6 +3027,7 @@ setTimeout(()=>{
     f.classList.remove('loaded');
     f.src=buildSrc(v);
     setTimeout(()=>f.classList.add('loaded'), 800);
+    if(typeof gtag==='function') gtag('event','hero_video_play',{video_id:v.id});
     clearTimeout(timer);
     timer=setTimeout(goNext, v.dur*1000);
   }
