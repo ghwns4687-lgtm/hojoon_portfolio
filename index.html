@@ -2754,14 +2754,22 @@ function closeLb(){
   if(cur){cur.classList.remove('visible');}
 }
 
-// zbrush rock 카드 — 호버 시 유튜브 영상 실제 재생
-document.querySelectorAll('.yt-hover-frame').forEach(frame=>{
-  const card = frame.closest('.gi');
-  if(!card) return;
+// zbrush rock 카드 — 화면에 들어오면 유튜브 영상을 미리 로드해서 계속 재생(음소거),
+// 호버 시엔 opacity만 전환 → 첫 호버 지연/재호버 시 재생 안 되는 문제 방지
+(function(){
+  const frame = document.querySelector('.yt-hover-frame');
+  if(!frame) return;
   const src = frame.getAttribute('data-yt-src');
-  card.addEventListener('mouseenter',()=>{ if(!frame.src) frame.src = src; });
-  card.addEventListener('mouseleave',()=>{ frame.src = ''; });
-});
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        if(!frame.getAttribute('src')) frame.src = src;
+        io.unobserve(entry.target);
+      }
+    });
+  },{rootMargin:'200px'});
+  io.observe(frame.closest('.gi'));
+})();
 
 // 이벤트 — DOMContentLoaded 보장
 window.addEventListener('load',function(){
