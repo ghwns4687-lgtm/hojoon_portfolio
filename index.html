@@ -1322,7 +1322,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
       <div class="gi pos-zrock" style="flex:4" onclick="openDetail('game',5)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_thumb.webp" alt="ZBrush Rock" loading="lazy">
-          <iframe class="gt-vid yt-hover-frame" data-yt-src="https://www.youtube.com/embed/VaIKmb5KU5w?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=VaIKmb5KU5w&amp;controls=0&amp;disablekb=1&amp;modestbranding=1&amp;rel=0&amp;iv_load_policy=3" title="" allow="autoplay; encrypted-media" loading="lazy"></iframe>
+          <iframe id="zrock-yt-frame" class="gt-vid yt-hover-frame" data-yt-src="https://www.youtube.com/embed/VaIKmb5KU5w?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=VaIKmb5KU5w&amp;controls=0&amp;disablekb=1&amp;modestbranding=1&amp;rel=0&amp;iv_load_policy=3" title="" allow="autoplay; encrypted-media" loading="lazy"></iframe>
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MODULAR ROCK ASSET PACK</span></span><span class="ov-m">Props · Environment · UE5</span></div></div>
       </div>
@@ -2754,21 +2754,68 @@ function closeLb(){
   if(cur){cur.classList.remove('visible');}
 }
 
-// zbrush rock 카드 — 화면에 들어오면 유튜브 영상을 미리 로드해서 계속 재생(음소거),
-// 호버 시엔 opacity만 전환 → 첫 호버 지연/재호버 시 재생 안 되는 문제 방지
+// zbrush rock 카드 — 화면에 들어오면 영상을 미리 로드만 해두고(대기, 재생X),
+// 호버할 때마다 항상 처음(0초)부터 재생 → 마우스 떼면 정지 → 다시 호버하면 다시 처음부터.
 (function(){
-  const frame = document.querySelector('.yt-hover-frame');
+  const frame = document.getElementById('zrock-yt-frame');
   if(!frame) return;
-  const src = frame.getAttribute('data-yt-src');
+  const card = frame.closest('.gi');
+  if(!card) return;
+  const embedSrc = frame.getAttribute('data-yt-src').replace('autoplay=1','autoplay=0') + '&enablejsapi=1&origin=' + encodeURIComponent(location.origin);
+  let apiReady=false, frameLoaded=false, player=null, wantsPlay=false;
+
+  function tryInit(){
+    if(apiReady && frameLoaded && !player && window.YT && window.YT.Player){
+      player = new YT.Player('zrock-yt-frame', {
+        events:{
+          onReady:(e)=>{
+            e.target.mute();
+            if(wantsPlay){ e.target.seekTo(0,true); e.target.playVideo(); }
+          },
+          onStateChange:(e)=>{
+            if(e.data === YT.PlayerState.ENDED){
+              e.target.seekTo(0,true);
+              e.target.playVideo();
+            }
+          }
+        }
+      });
+    }
+  }
+
+  card.addEventListener('mouseenter',()=>{
+    wantsPlay = true;
+    if(player && player.seekTo){ player.seekTo(0,true); player.playVideo(); }
+  });
+  card.addEventListener('mouseleave',()=>{
+    wantsPlay = false;
+    if(player && player.pauseVideo){ player.pauseVideo(); }
+  });
+
+  const prevReady = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = function(){
+    if(typeof prevReady === 'function') prevReady();
+    apiReady = true;
+    tryInit();
+  };
+
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
-        if(!frame.getAttribute('src')) frame.src = src;
+        frame.src = embedSrc;
+        frameLoaded = true;
+        if(window.YT && window.YT.Player){ apiReady = true; }
+        tryInit();
+        if(!window.YT){
+          const s=document.createElement('script');
+          s.src='https://www.youtube.com/iframe_api';
+          document.head.appendChild(s);
+        }
         io.unobserve(entry.target);
       }
     });
   },{rootMargin:'200px'});
-  io.observe(frame.closest('.gi'));
+  io.observe(card);
 })();
 
 // 이벤트 — DOMContentLoaded 보장
