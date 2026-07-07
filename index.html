@@ -1322,7 +1322,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(51,170,255,.18) transparent;}
       <div class="gi pos-zrock" style="flex:4" onclick="openDetail('game',5)">
         <div class="gt">
           <img class="gt-bg" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_thumb.webp" alt="ZBrush Rock" loading="lazy">
-          <img class="gt-vid" src="image/3d_graphic/zbrush_study_rock/zbrush_study_rock_hover.webp" alt="" loading="lazy">
+          <iframe class="gt-vid yt-hover-frame" data-yt-src="https://www.youtube.com/embed/VaIKmb5KU5w?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=VaIKmb5KU5w&amp;controls=0&amp;disablekb=1&amp;modestbranding=1&amp;rel=0&amp;iv_load_policy=3" title="" allow="autoplay; encrypted-media" loading="lazy"></iframe>
         </div>
         <div class="gi-ov"><div><span class="ov-t"><span class="ov-t-inner">MODULAR ROCK ASSET PACK</span></span><span class="ov-m">Props · Environment · UE5</span></div></div>
       </div>
@@ -1983,7 +1983,6 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_06.webp'},
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_07.webp'},
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_08.webp'},
-      {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_09.webp'},
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_10.webp'},
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_11.webp'},
       {type:'img',src:'image/3d_graphic/old_carriage/old_carriage_12.webp'},
@@ -2028,16 +2027,6 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_02.webp'},
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_03.webp'},
       {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_04.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_05.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_06.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_07.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_08.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_09.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_10.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_11.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_12.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_13.webp'},
-      {type:'img',src:'image/3d_graphic/zbrush_study_rock/zbrush_study_rock_14.webp'},
     ]
   },
   game_6: {
@@ -2077,19 +2066,10 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_13.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_14.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_15.webp'},
-      {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_16.webp'},
-      {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_17.webp'},
-      {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_18.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_19.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_20.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_21.webp'},
-      {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_22.webp'},
-      {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_23.webp'},
-      {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_24.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_25.webp'},
-      {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_26.webp'},
-      {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_27.webp'},
-      {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_28.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_29.webp'},
       {type:'img',src:'image/3d_graphic/retro_computer/retro_computer_30.webp'},
     ]
@@ -2102,7 +2082,6 @@ const DETAIL_MEDIA = {
       {type:'img',src:'image/3d_graphic/fire_place/fire_place_04.webp'},
       {type:'img',src:'image/3d_graphic/fire_place/fire_place_05.webp'},
       {type:'img',src:'image/3d_graphic/fire_place/fire_place_06.webp'},
-      {type:'img',src:'image/3d_graphic/fire_place/fire_place_07.webp'},
       {type:'img',src:'image/3d_graphic/fire_place/fire_place_08.webp'},
       {type:'img',src:'image/3d_graphic/fire_place/fire_place_09.webp'},
       {type:'img',src:'image/3d_graphic/fire_place/fire_place_10.webp'},
@@ -2774,6 +2753,15 @@ function closeLb(){
   const cur=document.getElementById('custom-cursor');
   if(cur){cur.classList.remove('visible');}
 }
+
+// zbrush rock 카드 — 호버 시 유튜브 영상 실제 재생
+document.querySelectorAll('.yt-hover-frame').forEach(frame=>{
+  const card = frame.closest('.gi');
+  if(!card) return;
+  const src = frame.getAttribute('data-yt-src');
+  card.addEventListener('mouseenter',()=>{ if(!frame.src) frame.src = src; });
+  card.addEventListener('mouseleave',()=>{ frame.src = ''; });
+});
 
 // 이벤트 — DOMContentLoaded 보장
 window.addEventListener('load',function(){
